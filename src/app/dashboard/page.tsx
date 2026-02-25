@@ -18,7 +18,6 @@ import {
   Clock,
   AlertTriangle,
   CheckCircle2,
-  Loader2,
   Shield,
   User,
 } from "lucide-react";

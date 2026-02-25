@@ -15,7 +15,6 @@ import {
   RefreshCw,
   Banknote,
   Loader2,
-  ExternalLink,
 } from "lucide-react";
 
 interface SubscriptionData {

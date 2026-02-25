@@ -73,7 +73,7 @@ export default function AdminClientsPage() {
       .finally(() => setLoading(false));
   };
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+  // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
   useEffect(() => { fetchClients(page, search, statusFilter); }, [page, statusFilter]);
 
   const handleSearch = () => {

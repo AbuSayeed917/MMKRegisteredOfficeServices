@@ -50,7 +50,7 @@ export const HeroSection = () => {
             {/* Heading */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] text-white mb-6">
               Your Professional{" "}
-              <span className="font-display italic bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] bg-clip-text text-transparent">
+              <span className="font-display italic bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] bg-clip-text text-transparent pr-[0.15em]">
                 Registered Office
               </span>{" "}
               Address
@@ -80,7 +80,7 @@ export const HeroSection = () => {
             </div>
 
             {/* Stats with animated counters */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
               {[
                 { icon: Users, value: 75, suffix: "+", label: "Active Clients" },
                 { icon: Building2, value: 75, prefix: "£", label: "Per Year" },
@@ -89,7 +89,7 @@ export const HeroSection = () => {
               ].map(({ icon: Icon, value, suffix, prefix, label }) => (
                 <div
                   key={label}
-                  className="flex items-center gap-3 bg-white/5 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white/10 hover:bg-white/10 hover:border-[#0ea5e9]/30 transition-all duration-300"
+                  className="flex flex-col items-center text-center gap-2 bg-white/5 backdrop-blur-sm rounded-2xl px-3 py-4 border border-white/10 hover:bg-white/10 hover:border-[#0ea5e9]/30 transition-all duration-300"
                 >
                   <div className="w-10 h-10 rounded-xl bg-[#0ea5e9]/20 flex items-center justify-center shrink-0">
                     <Icon className="size-5 text-[#38bdf8]" />
@@ -103,7 +103,7 @@ export const HeroSection = () => {
                         duration={2000}
                       />
                     </div>
-                    <div className="text-xs text-[#7a9eb5]">{label}</div>
+                    <div className="text-xs text-[#7a9eb5] whitespace-nowrap">{label}</div>
                   </div>
                 </div>
               ))}

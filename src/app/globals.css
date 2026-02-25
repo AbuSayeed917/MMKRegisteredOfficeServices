@@ -5,6 +5,11 @@
 @custom-variant dark (&:is(.dark *));
 
 html {
+  overflow-x: hidden;
+}
+
+/* Only apply smooth scroll when user clicks a link, not on page load/refresh */
+html:focus-within {
   scroll-behavior: smooth;
 }
 

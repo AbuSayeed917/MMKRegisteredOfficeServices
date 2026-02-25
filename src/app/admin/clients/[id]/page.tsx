@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,13 +10,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   ArrowLeft,
   Building2,
-  User,
-  Mail,
   Hash,
   Calendar,
   MapPin,
   Shield,
-  FileText,
   CreditCard,
   Clock,
   CheckCircle2,
@@ -97,7 +94,6 @@ const statusColors: Record<string, string> = {
 
 export default function ClientDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const [data, setData] = useState<ClientDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -112,9 +108,8 @@ export default function ClientDetailPage() {
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [clientId]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { fetchData(); }, [clientId]);
 
   const performAction = async (action: string) => {
     const reason =

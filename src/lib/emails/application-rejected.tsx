@@ -11,10 +11,6 @@ export function ApplicationRejectedEmail({
   companyName,
   reason,
 }: ApplicationRejectedEmailProps) {
-  const appUrl =
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "https://mmkregisteredofficeservices-production.up.railway.app";
-
   return (
     <BaseLayout preview={`Update regarding your application for ${companyName}`}>
       <Heading style={heading}>Application Update</Heading>
