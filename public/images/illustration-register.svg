@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="400" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f0f7fb"/>
+      <stop offset="100%" stop-color="#e4f0f8"/>
+    </linearGradient>
+    <linearGradient id="screenGrad" x1="120" y1="60" x2="280" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f0f7fb"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <style>
+      @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
+      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+      @keyframes checkDraw { 0% { stroke-dashoffset: 20; } 100% { stroke-dashoffset: 0; } }
+      .float { animation: float 4s ease-in-out infinite; }
+      .float-delay { animation: float 4s ease-in-out 1s infinite; }
+      .pulse { animation: pulse 3s ease-in-out infinite; }
+    </style>
+  </defs>
+
+  <!-- Background shape -->
+  <ellipse cx="200" cy="260" rx="160" ry="20" fill="#e4f0f8" opacity="0.6"/>
+
+  <!-- Person body -->
+  <g class="float-delay">
+    <!-- Legs -->
+    <rect x="70" y="220" width="14" height="40" rx="7" fill="#0c2d42"/>
+    <rect x="90" y="220" width="14" height="40" rx="7" fill="#0c2d42"/>
+    <!-- Torso -->
+    <rect x="62" y="160" width="50" height="65" rx="10" fill="#0ea5e9"/>
+    <!-- Arms -->
+    <rect x="112" y="165" width="45" height="12" rx="6" fill="#0ea5e9" transform="rotate(-15, 112, 171)"/>
+    <rect x="45" y="180" width="20" height="12" rx="6" fill="#0ea5e9"/>
+    <!-- Head -->
+    <circle cx="87" cy="142" r="22" fill="#f4c7a3"/>
+    <!-- Hair -->
+    <path d="M65 138 Q67 115 87 112 Q107 115 109 138" fill="#0c2d42"/>
+    <!-- Face -->
+    <circle cx="80" cy="140" r="2" fill="#0c2d42"/>
+    <circle cx="94" cy="140" r="2" fill="#0c2d42"/>
+    <path d="M83 148 Q87 152 91 148" stroke="#0c2d42" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Monitor/Screen -->
+  <g class="float">
+    <!-- Monitor stand -->
+    <rect x="215" y="230" width="50" height="8" rx="4" fill="#c4d6e0"/>
+    <rect x="235" y="210" width="10" height="25" rx="3" fill="#c4d6e0"/>
+
+    <!-- Monitor body -->
+    <rect x="155" y="65" width="170" height="150" rx="12" fill="#0c2d42"/>
+    <rect x="162" y="72" width="156" height="130" rx="8" fill="url(#screenGrad)"/>
+
+    <!-- Screen content - form -->
+    <!-- Form title bar -->
+    <rect x="175" y="82" width="130" height="18" rx="4" fill="#0ea5e9" opacity="0.15"/>
+    <rect x="182" y="88" width="60" height="6" rx="3" fill="#0ea5e9"/>
+
+    <!-- Form field 1 - filled -->
+    <rect x="175" y="108" width="130" height="14" rx="4" fill="#f0f7fb" stroke="#38bdf8" stroke-width="1"/>
+    <rect x="180" y="113" width="70" height="4" rx="2" fill="#0c2d42" opacity="0.5"/>
+    <!-- Checkmark 1 -->
+    <circle cx="315" cy="115" r="6" fill="#10b981"/>
+    <path d="M312 115 L314 117 L318 113" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Form field 2 - filled -->
+    <rect x="175" y="128" width="130" height="14" rx="4" fill="#f0f7fb" stroke="#38bdf8" stroke-width="1"/>
+    <rect x="180" y="133" width="55" height="4" rx="2" fill="#0c2d42" opacity="0.5"/>
+    <!-- Checkmark 2 -->
+    <circle cx="315" cy="135" r="6" fill="#10b981"/>
+    <path d="M312 135 L314 137 L318 133" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Form field 3 - active -->
+    <rect x="175" y="148" width="130" height="14" rx="4" fill="white" stroke="#0ea5e9" stroke-width="1.5"/>
+    <rect x="180" y="153" width="40" height="4" rx="2" fill="#0ea5e9" opacity="0.6" class="pulse"/>
+    <!-- Cursor blink -->
+    <rect x="222" y="151" width="2" height="8" rx="1" fill="#0ea5e9" class="pulse"/>
+
+    <!-- Form field 4 - empty -->
+    <rect x="175" y="168" width="130" height="14" rx="4" fill="#f0f7fb" stroke="#c4d6e0" stroke-width="1"/>
+
+    <!-- Submit button -->
+    <rect x="225" y="188" width="80" height="10" rx="5" fill="url(#accentGrad)"/>
+    <rect x="245" y="191" width="40" height="4" rx="2" fill="white" opacity="0.9"/>
+  </g>
+
+  <!-- Floating elements -->
+  <g class="float-delay" opacity="0.8">
+    <!-- Document icon top right -->
+    <rect x="340" y="40" width="30" height="38" rx="4" fill="white" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="346" y="50" width="18" height="3" rx="1.5" fill="#0ea5e9" opacity="0.4"/>
+    <rect x="346" y="56" width="14" height="3" rx="1.5" fill="#0ea5e9" opacity="0.4"/>
+    <rect x="346" y="62" width="16" height="3" rx="1.5" fill="#0ea5e9" opacity="0.4"/>
+  </g>
+
+  <g class="float" opacity="0.7">
+    <!-- Checkmark badge top left -->
+    <circle cx="40" cy="70" r="16" fill="#0ea5e9" opacity="0.15"/>
+    <circle cx="40" cy="70" r="10" fill="#0ea5e9"/>
+    <path d="M35 70 L38 73 L45 66" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Small decorative circles -->
+  <circle cx="350" cy="250" r="4" fill="#38bdf8" opacity="0.3" class="pulse"/>
+  <circle cx="30" cy="180" r="3" fill="#0ea5e9" opacity="0.3" class="pulse"/>
+  <circle cx="370" cy="130" r="5" fill="#38bdf8" opacity="0.2"/>
+</svg>

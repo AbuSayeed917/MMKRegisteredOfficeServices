@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <defs>
+    <linearGradient id="appBg" x1="0" y1="0" x2="400" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f0f7fb"/>
+      <stop offset="100%" stop-color="#e4f0f8"/>
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#0891d1"/>
+    </linearGradient>
+    <linearGradient id="badgeGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0d060"/>
+      <stop offset="100%" stop-color="#d4a830"/>
+    </linearGradient>
+    <style>
+      @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+      @keyframes pop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+      @keyframes confettiDrop1 { 0% { transform: translateY(-10px) rotate(0deg); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(30px) rotate(180deg); opacity: 0; } }
+      @keyframes confettiDrop2 { 0% { transform: translateY(-10px) rotate(0deg); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(40px) rotate(-200deg); opacity: 0; } }
+      .float { animation: float 4s ease-in-out infinite; }
+      .float-delay { animation: float 4s ease-in-out 1s infinite; }
+      .float-slow { animation: float 5s ease-in-out 0.5s infinite; }
+      .pulse { animation: pulse 2.5s ease-in-out infinite; }
+      .pop { animation: pop 3s ease-in-out infinite; }
+      .confetti1 { animation: confettiDrop1 3s ease-in-out infinite; }
+      .confetti2 { animation: confettiDrop2 3.5s ease-in-out 0.5s infinite; }
+      .confetti3 { animation: confettiDrop1 4s ease-in-out 1s infinite; }
+    </style>
+  </defs>
+
+  <!-- Ground shadow -->
+  <ellipse cx="200" cy="270" rx="140" ry="18" fill="#e4f0f8" opacity="0.6"/>
+
+  <!-- Central shield/badge -->
+  <g class="float" transform="translate(200, 145)">
+    <!-- Outer glow -->
+    <circle cx="0" cy="0" r="72" fill="#0ea5e9" opacity="0.06"/>
+    <circle cx="0" cy="0" r="62" fill="#0ea5e9" opacity="0.08"/>
+
+    <!-- Shield shape -->
+    <path d="M0 -55 L50 -35 L50 10 Q50 45 0 60 Q-50 45 -50 10 L-50 -35 Z" fill="url(#shieldGrad)" opacity="0.9"/>
+    <path d="M0 -48 L42 -30 L42 8 Q42 38 0 52 Q-42 38 -42 8 L-42 -30 Z" fill="white" opacity="0.15"/>
+
+    <!-- Inner checkmark circle -->
+    <circle cx="0" cy="0" r="28" fill="white" opacity="0.95"/>
+    <!-- Animated checkmark -->
+    <path d="M-12 2 L-4 10 L14 -10" stroke="#10b981" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Stars around shield -->
+    <g class="pulse">
+      <polygon points="55,-40 58,-36 62,-36 59,-33 60,-29 55,-31 50,-29 51,-33 48,-36 52,-36" fill="#f0d060"/>
+      <polygon points="-55,-40 -52,-36 -48,-36 -51,-33 -50,-29 -55,-31 -60,-29 -59,-33 -62,-36 -58,-36" fill="#f0d060"/>
+      <polygon points="0,-65 2,-62 5,-62 3,-60 4,-57 0,-59 -4,-57 -3,-60 -5,-62 -2,-62" fill="#f0d060"/>
+    </g>
+  </g>
+
+  <!-- Thumbs up - left side -->
+  <g class="float-delay" transform="translate(55, 110)">
+    <circle cx="25" cy="30" r="28" fill="#0ea5e9" opacity="0.1"/>
+    <!-- Thumb -->
+    <path d="M20 45 L20 25 Q20 15 28 12 L32 8 Q35 5 38 10 L38 22 L48 22 Q54 22 54 28 L52 42 Q51 48 45 48 L25 48 Q20 48 20 45 Z" fill="#f4c7a3"/>
+    <!-- Cuff -->
+    <rect x="12" y="35" width="14" height="18" rx="3" fill="#0ea5e9"/>
+  </g>
+
+  <!-- Certificate/ribbon - right side -->
+  <g class="float-slow" transform="translate(300, 100)">
+    <circle cx="25" cy="25" r="25" fill="url(#goldGrad)" opacity="0.2"/>
+    <circle cx="25" cy="25" r="18" fill="url(#goldGrad)" opacity="0.4"/>
+    <circle cx="25" cy="25" r="12" fill="url(#goldGrad)"/>
+    <!-- Star in center -->
+    <polygon points="25,17 27,22 32,22 28,26 29,31 25,28 21,31 22,26 18,22 23,22" fill="white" opacity="0.9"/>
+    <!-- Ribbons -->
+    <path d="M17 38 L13 55 L18 50 L23 55 L20 38" fill="#e74c3c" opacity="0.7"/>
+    <path d="M33 38 L37 55 L32 50 L27 55 L30 38" fill="#e74c3c" opacity="0.7"/>
+  </g>
+
+  <!-- Confetti pieces -->
+  <rect x="90" y="40" width="8" height="4" rx="2" fill="#0ea5e9" class="confetti1"/>
+  <rect x="150" y="30" width="6" height="6" rx="1" fill="#38bdf8" class="confetti2" transform="rotate(30, 153, 33)"/>
+  <rect x="250" y="35" width="8" height="4" rx="2" fill="#f0d060" class="confetti3"/>
+  <rect x="310" y="45" width="6" height="6" rx="1" fill="#0ea5e9" class="confetti1"/>
+  <circle cx="120" cy="50" r="3" fill="#10b981" class="confetti2"/>
+  <circle cx="280" cy="40" r="3" fill="#38bdf8" class="confetti3"/>
+  <rect x="340" y="30" width="5" height="8" rx="1" fill="#10b981" class="confetti2" transform="rotate(-20, 342, 34)"/>
+  <rect x="60" cy="50" width="7" height="3" rx="1.5" fill="#f0d060" class="confetti3"/>
+
+  <!-- Sparkle dots -->
+  <g class="pulse">
+    <circle cx="130" cy="80" r="3" fill="#f0d060" opacity="0.6"/>
+    <circle cx="270" cy="75" r="2.5" fill="#f0d060" opacity="0.5"/>
+    <circle cx="100" cy="200" r="2" fill="#38bdf8" opacity="0.4"/>
+    <circle cx="320" cy="210" r="3" fill="#0ea5e9" opacity="0.3"/>
+  </g>
+
+  <!-- APPROVED text banner -->
+  <g class="pop" transform="translate(200, 250)">
+    <rect x="-55" y="-12" width="110" height="24" rx="12" fill="url(#badgeGrad)"/>
+    <text x="0" y="4" font-family="sans-serif" font-size="11" fill="white" text-anchor="middle" letter-spacing="3" font-weight="bold">APPROVED</text>
+  </g>
+
+  <!-- Extra decorative elements -->
+  <circle cx="370" cy="260" r="4" fill="#38bdf8" opacity="0.2"/>
+  <circle cx="30" cy="260" r="3" fill="#0ea5e9" opacity="0.25"/>
+</svg>

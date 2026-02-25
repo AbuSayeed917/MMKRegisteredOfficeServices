@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: mmk-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mmk_user
+      POSTGRES_PASSWORD: mmk_local_password
+      POSTGRES_DB: mmk_registered_office
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

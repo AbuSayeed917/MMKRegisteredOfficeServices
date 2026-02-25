@@ -1,0 +1,265 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  CLIENT
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum CompanyType {
+  LTD
+  LLP
+  PLC
+  SOLE_TRADER
+  PARTNERSHIP
+}
+
+enum SubscriptionStatus {
+  DRAFT
+  PENDING_APPROVAL
+  ACTIVE
+  RENEWAL_PENDING
+  EXPIRED
+  SUSPENDED
+  WITHDRAWN
+  REJECTED
+  ABANDONED
+}
+
+enum AgreementStatus {
+  SIGNED
+  PENDING
+  VOIDED
+}
+
+enum PaymentStatus {
+  SUCCEEDED
+  PENDING
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethodType {
+  CARD
+  BACS_DIRECT_DEBIT
+}
+
+enum AdminActionType {
+  APPROVE
+  REJECT
+  SUSPEND
+  REACTIVATE
+  WITHDRAW
+  CANCEL
+  REFUND
+  NOTE
+}
+
+// ─── Users ──────────────────────────────────────────────────
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  passwordHash    String    @map("password_hash")
+  role            UserRole  @default(CLIENT)
+  emailVerified   DateTime? @map("email_verified")
+  isActive        Boolean   @default(true) @map("is_active")
+  failedAttempts  Int       @default(0) @map("failed_attempts")
+  lockedUntil     DateTime? @map("locked_until")
+  lastLogin       DateTime? @map("last_login")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  businessProfile BusinessProfile?
+  subscription    Subscription?
+  agreements      Agreement[]
+  payments        Payment[]
+  notifications   Notification[]
+  adminActions    AdminAction[]    @relation("AdminActions")
+  targetedActions AdminAction[]    @relation("TargetedActions")
+  passwordResets  PasswordReset[]
+  otpCodes        OtpCode[]
+
+  @@map("users")
+}
+
+// ─── OTP Codes ──────────────────────────────────────────────
+model OtpCode {
+  id        String   @id @default(cuid())
+  userId    String?  @map("user_id")
+  email     String
+  code      String
+  expiresAt DateTime @map("expires_at")
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("otp_codes")
+}
+
+// ─── Password Resets ────────────────────────────────────────
+model PasswordReset {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_resets")
+}
+
+// ─── Business Profiles ──────────────────────────────────────
+model BusinessProfile {
+  id                String      @id @default(cuid())
+  userId            String      @unique @map("user_id")
+  companyName       String      @map("company_name")
+  crn               String      @unique
+  companyType       CompanyType @map("company_type")
+  incorporationDate DateTime?   @map("incorporation_date")
+  sicCode           String?     @map("sic_code")
+  registeredAddress String      @map("registered_address")
+  tradingAddress    String?     @map("trading_address")
+  phone             String?
+  createdAt         DateTime    @default(now()) @map("created_at")
+  updatedAt         DateTime    @updatedAt @map("updated_at")
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  directors Director[]
+
+  @@map("business_profiles")
+}
+
+// ─── Directors ──────────────────────────────────────────────
+model Director {
+  id                String   @id @default(cuid())
+  businessProfileId String   @map("business_profile_id")
+  fullName          String   @map("full_name")
+  position          String
+  dateOfBirth       DateTime @map("date_of_birth")
+  residentialAddress String  @map("residential_address")
+  idDocumentUrl     String?  @map("id_document_url")
+  addressProofUrl   String?  @map("address_proof_url")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  businessProfile BusinessProfile @relation(fields: [businessProfileId], references: [id], onDelete: Cascade)
+
+  @@map("directors")
+}
+
+// ─── Agreement Templates ────────────────────────────────────
+model AgreementTemplate {
+  id          String   @id @default(cuid())
+  version     Int      @default(1)
+  contentHtml String   @map("content_html") @db.Text
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  agreements Agreement[]
+
+  @@map("agreement_templates")
+}
+
+// ─── Agreements ─────────────────────────────────────────────
+model Agreement {
+  id            String          @id @default(cuid())
+  userId        String          @map("user_id")
+  templateId    String          @map("template_id")
+  signatureType String          @map("signature_type") // "typed" or "drawn"
+  signatureData String?         @map("signature_data") @db.Text
+  ipAddress     String?         @map("ip_address")
+  pdfUrl        String?         @map("pdf_url")
+  status        AgreementStatus @default(PENDING)
+  signedAt      DateTime?       @map("signed_at")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+
+  user     User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template AgreementTemplate @relation(fields: [templateId], references: [id])
+
+  @@map("agreements")
+}
+
+// ─── Subscriptions ──────────────────────────────────────────
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String             @unique @map("user_id")
+  status               SubscriptionStatus @default(DRAFT)
+  startDate            DateTime?          @map("start_date")
+  endDate              DateTime?          @map("end_date")
+  nextPaymentDate      DateTime?          @map("next_payment_date")
+  paymentMethod        PaymentMethodType? @map("payment_method")
+  stripeCustomerId     String?            @map("stripe_customer_id")
+  stripeSubscriptionId String?            @map("stripe_subscription_id")
+  stripeMandateId      String?            @map("stripe_mandate_id")
+  retryCount           Int                @default(0) @map("retry_count")
+  createdAt            DateTime           @default(now()) @map("created_at")
+  updatedAt            DateTime           @updatedAt @map("updated_at")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payments Payment[]
+
+  @@map("subscriptions")
+}
+
+// ─── Payments ───────────────────────────────────────────────
+model Payment {
+  id                    String            @id @default(cuid())
+  subscriptionId        String            @map("subscription_id")
+  userId                String            @map("user_id")
+  amount                Int               // Amount in pence (£75.00 = 7500)
+  currency              String            @default("gbp")
+  status                PaymentStatus     @default(PENDING)
+  paymentMethod         PaymentMethodType @map("payment_method")
+  stripePaymentIntentId String?           @map("stripe_payment_intent_id")
+  invoiceUrl            String?           @map("invoice_url")
+  paidAt                DateTime?         @map("paid_at")
+  createdAt             DateTime          @default(now()) @map("created_at")
+  updatedAt             DateTime          @updatedAt @map("updated_at")
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+// ─── Admin Actions (Audit Log) ──────────────────────────────
+model AdminAction {
+  id           String          @id @default(cuid())
+  adminUserId  String          @map("admin_user_id")
+  targetUserId String          @map("target_user_id")
+  actionType   AdminActionType @map("action_type")
+  reason       String?
+  notes        String?         @db.Text
+  createdAt    DateTime        @default(now()) @map("created_at")
+
+  adminUser  User @relation("AdminActions", fields: [adminUserId], references: [id])
+  targetUser User @relation("TargetedActions", fields: [targetUserId], references: [id])
+
+  @@map("admin_actions")
+}
+
+// ─── Notifications ──────────────────────────────────────────
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  type      String
+  title     String
+  message   String   @db.Text
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}

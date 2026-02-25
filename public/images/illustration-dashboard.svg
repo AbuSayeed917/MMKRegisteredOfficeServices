@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <defs>
+    <linearGradient id="dashBg" x1="0" y1="0" x2="400" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f0f7fb"/>
+      <stop offset="100%" stop-color="#e4f0f8"/>
+    </linearGradient>
+    <linearGradient id="dashScreen" x1="50" y1="30" x2="350" y2="250" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fbfd"/>
+    </linearGradient>
+    <linearGradient id="barGrad1" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="barGrad2" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#0c2d42"/>
+      <stop offset="100%" stop-color="#164e6e"/>
+    </linearGradient>
+    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <style>
+      @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
+      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+      @keyframes growBar { 0% { transform: scaleY(0); } 100% { transform: scaleY(1); } }
+      .float { animation: float 4s ease-in-out infinite; }
+      .float-delay { animation: float 4.5s ease-in-out 0.8s infinite; }
+      .pulse { animation: pulse 3s ease-in-out infinite; }
+    </style>
+  </defs>
+
+  <!-- Ground shadow -->
+  <ellipse cx="200" cy="272" rx="155" ry="16" fill="#e4f0f8" opacity="0.6"/>
+
+  <!-- Main dashboard screen -->
+  <g class="float">
+    <!-- Monitor stand -->
+    <rect x="175" y="248" width="50" height="8" rx="4" fill="#c4d6e0"/>
+    <rect x="192" y="232" width="16" height="20" rx="4" fill="#c4d6e0"/>
+
+    <!-- Monitor body -->
+    <rect x="45" y="30" width="310" height="208" rx="12" fill="#0c2d42"/>
+    <rect x="52" y="37" width="296" height="188" rx="8" fill="url(#dashScreen)"/>
+
+    <!-- Top navigation bar -->
+    <rect x="52" y="37" width="296" height="22" rx="8" fill="#0c2d42" opacity="0.05"/>
+    <rect x="52" y="50" width="296" height="1" fill="#e4f0f8"/>
+    <!-- Nav dots -->
+    <circle cx="66" cy="44" r="3" fill="#ef4444" opacity="0.6"/>
+    <circle cx="76" cy="44" r="3" fill="#f59e0b" opacity="0.6"/>
+    <circle cx="86" cy="44" r="3" fill="#10b981" opacity="0.6"/>
+    <!-- Nav title -->
+    <rect x="160" y="41" width="80" height="6" rx="3" fill="#0c2d42" opacity="0.15"/>
+
+    <!-- Sidebar -->
+    <rect x="52" y="55" width="55" height="170" fill="#0c2d42" opacity="0.03"/>
+    <line x1="107" y1="55" x2="107" y2="225" stroke="#e4f0f8" stroke-width="1"/>
+    <!-- Sidebar items -->
+    <rect x="60" y="65" width="38" height="5" rx="2.5" fill="#0ea5e9" opacity="0.3"/>
+    <rect x="60" y="78" width="32" height="4" rx="2" fill="#0c2d42" opacity="0.12"/>
+    <rect x="60" y="88" width="36" height="4" rx="2" fill="#0c2d42" opacity="0.12"/>
+    <rect x="60" y="98" width="28" height="4" rx="2" fill="#0c2d42" opacity="0.12"/>
+    <rect x="60" y="108" width="34" height="4" rx="2" fill="#0c2d42" opacity="0.12"/>
+
+    <!-- KPI Cards Row -->
+    <!-- Card 1 -->
+    <rect x="115" y="58" width="55" height="35" rx="5" fill="white" stroke="#e4f0f8" stroke-width="1"/>
+    <rect x="121" y="64" width="25" height="4" rx="2" fill="#0c2d42" opacity="0.15"/>
+    <text x="121" y="82" font-family="sans-serif" font-size="10" fill="#0c2d42" font-weight="bold">2,847</text>
+    <rect x="155" y="78" width="10" height="5" rx="2" fill="#10b981" opacity="0.6"/>
+
+    <!-- Card 2 -->
+    <rect x="176" y="58" width="55" height="35" rx="5" fill="white" stroke="#e4f0f8" stroke-width="1"/>
+    <rect x="182" y="64" width="28" height="4" rx="2" fill="#0c2d42" opacity="0.15"/>
+    <text x="182" y="82" font-family="sans-serif" font-size="10" fill="#0ea5e9" font-weight="bold">98.5%</text>
+
+    <!-- Card 3 -->
+    <rect x="237" y="58" width="55" height="35" rx="5" fill="white" stroke="#e4f0f8" stroke-width="1"/>
+    <rect x="243" y="64" width="22" height="4" rx="2" fill="#0c2d42" opacity="0.15"/>
+    <text x="243" y="82" font-family="sans-serif" font-size="10" fill="#0c2d42" font-weight="bold">$12.4k</text>
+
+    <!-- Card 4 -->
+    <rect x="298" y="58" width="44" height="35" rx="5" fill="white" stroke="#e4f0f8" stroke-width="1"/>
+    <rect x="303" y="64" width="20" height="4" rx="2" fill="#0c2d42" opacity="0.15"/>
+    <text x="303" y="82" font-family="sans-serif" font-size="10" fill="#10b981" font-weight="bold">+24%</text>
+
+    <!-- Bar Chart Area -->
+    <rect x="115" y="100" width="115" height="80" rx="5" fill="white" stroke="#e4f0f8" stroke-width="1"/>
+    <rect x="121" y="106" width="40" height="4" rx="2" fill="#0c2d42" opacity="0.2"/>
+    <!-- Chart grid lines -->
+    <line x1="121" y1="125" x2="222" y2="125" stroke="#f0f7fb" stroke-width="0.5"/>
+    <line x1="121" y1="140" x2="222" y2="140" stroke="#f0f7fb" stroke-width="0.5"/>
+    <line x1="121" y1="155" x2="222" y2="155" stroke="#f0f7fb" stroke-width="0.5"/>
+    <line x1="121" y1="170" x2="222" y2="170" stroke="#f0f7fb" stroke-width="0.5"/>
+    <!-- Bars -->
+    <rect x="128" y="145" width="8" height="25" rx="2" fill="url(#barGrad1)"/>
+    <rect x="141" y="135" width="8" height="35" rx="2" fill="url(#barGrad2)"/>
+    <rect x="154" y="150" width="8" height="20" rx="2" fill="url(#barGrad1)"/>
+    <rect x="167" y="125" width="8" height="45" rx="2" fill="url(#barGrad2)"/>
+    <rect x="180" y="138" width="8" height="32" rx="2" fill="url(#barGrad1)"/>
+    <rect x="193" y="130" width="8" height="40" rx="2" fill="url(#barGrad2)"/>
+    <rect x="206" y="120" width="8" height="50" rx="2" fill="url(#barGrad1)" class="pulse"/>
+
+    <!-- Line Chart Area -->
+    <rect x="237" y="100" width="105" height="80" rx="5" fill="white" stroke="#e4f0f8" stroke-width="1"/>
+    <rect x="243" y="106" width="35" height="4" rx="2" fill="#0c2d42" opacity="0.2"/>
+    <!-- Chart grid -->
+    <line x1="243" y1="130" x2="334" y2="130" stroke="#f0f7fb" stroke-width="0.5"/>
+    <line x1="243" y1="145" x2="334" y2="145" stroke="#f0f7fb" stroke-width="0.5"/>
+    <line x1="243" y1="160" x2="334" y2="160" stroke="#f0f7fb" stroke-width="0.5"/>
+    <!-- Line chart path -->
+    <path d="M248 155 L260 148 L272 152 L284 138 L296 142 L308 125 L320 118" stroke="url(#lineGrad)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Area under line -->
+    <path d="M248 155 L260 148 L272 152 L284 138 L296 142 L308 125 L320 118 L320 170 L248 170 Z" fill="#0ea5e9" opacity="0.08"/>
+    <!-- Data points -->
+    <circle cx="284" cy="138" r="3" fill="#0ea5e9"/>
+    <circle cx="320" cy="118" r="3" fill="#0ea5e9" class="pulse"/>
+
+    <!-- Donut Chart -->
+    <rect x="115" y="186" width="55" height="38" rx="5" fill="white" stroke="#e4f0f8" stroke-width="1"/>
+    <circle cx="135" cy="207" r="12" fill="none" stroke="#e4f0f8" stroke-width="5"/>
+    <circle cx="135" cy="207" r="12" fill="none" stroke="#0ea5e9" stroke-width="5" stroke-dasharray="52 75" stroke-dashoffset="-10" stroke-linecap="round"/>
+    <circle cx="135" cy="207" r="12" fill="none" stroke="#0c2d42" stroke-width="5" stroke-dasharray="20 75" stroke-dashoffset="-62" stroke-linecap="round" opacity="0.6"/>
+    <text x="155" y="204" font-family="sans-serif" font-size="6" fill="#0c2d42" opacity="0.4">70%</text>
+    <text x="155" y="214" font-family="sans-serif" font-size="6" fill="#0c2d42" opacity="0.4">Done</text>
+
+    <!-- Recent activity list -->
+    <rect x="176" y="186" width="166" height="38" rx="5" fill="white" stroke="#e4f0f8" stroke-width="1"/>
+    <rect x="182" y="192" width="50" height="4" rx="2" fill="#0c2d42" opacity="0.2"/>
+    <!-- Activity items -->
+    <circle cx="186" cy="206" r="3" fill="#10b981"/>
+    <rect x="192" y="204" width="60" height="3" rx="1.5" fill="#0c2d42" opacity="0.12"/>
+    <circle cx="186" cy="215" r="3" fill="#0ea5e9"/>
+    <rect x="192" y="213" width="50" height="3" rx="1.5" fill="#0c2d42" opacity="0.12"/>
+  </g>
+
+  <!-- Floating notification badge -->
+  <g class="float-delay" transform="translate(355, 20)">
+    <rect x="0" y="0" width="30" height="22" rx="6" fill="white" stroke="#e4f0f8" stroke-width="1"/>
+    <circle cx="10" cy="8" r="3" fill="#0ea5e9"/>
+    <rect x="16" y="6" width="10" height="3" rx="1.5" fill="#0c2d42" opacity="0.2"/>
+    <rect x="6" y="14" width="18" height="3" rx="1.5" fill="#0c2d42" opacity="0.1"/>
+  </g>
+
+  <!-- Small analytics icon floating -->
+  <g class="float" opacity="0.6" transform="translate(10, 55)">
+    <rect x="0" y="0" width="26" height="26" rx="6" fill="#0ea5e9" opacity="0.15"/>
+    <rect x="5" y="14" width="4" height="8" rx="1" fill="#0ea5e9"/>
+    <rect x="11" y="10" width="4" height="12" rx="1" fill="#38bdf8"/>
+    <rect x="17" y="6" width="4" height="16" rx="1" fill="#0ea5e9"/>
+  </g>
+
+  <!-- Decorative elements -->
+  <circle cx="380" cy="260" r="4" fill="#38bdf8" opacity="0.25"/>
+  <circle cx="20" cy="250" r="3" fill="#0ea5e9" opacity="0.2" class="pulse"/>
+  <circle cx="390" cy="170" r="3" fill="#0ea5e9" opacity="0.15"/>
+</svg>
