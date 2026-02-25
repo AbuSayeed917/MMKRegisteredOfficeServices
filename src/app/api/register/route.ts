@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { mapCompanyType } from "@/lib/companies-house";
 import { generateAgreementPdf } from "@/lib/pdf-generator";
 import { uploadFile } from "@/lib/s3";
+import { sendWelcomeEmail, sendAdminNewRegistrationEmail } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -226,6 +227,17 @@ export async function POST(request: NextRequest) {
         console.warn("PDF generation failed (registration still complete):", pdfError);
       }
     }
+
+    // ─── Send emails (non-blocking) ────────────────────────────
+    sendWelcomeEmail(account.email, business.companyName).catch((e) =>
+      console.warn("Welcome email failed:", e)
+    );
+    sendAdminNewRegistrationEmail(
+      business.companyName,
+      account.email,
+      business.companyNumber,
+      result.userId
+    ).catch((e) => console.warn("Admin notification email failed:", e));
 
     return NextResponse.json(
       {

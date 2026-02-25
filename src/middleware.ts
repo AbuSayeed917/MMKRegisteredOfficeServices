@@ -11,6 +11,7 @@ function isPublicRoute(pathname: string): boolean {
     pathname.startsWith("/api/companies-house") ||
     pathname.startsWith("/api/register") ||
     pathname.startsWith("/api/agreements/template") ||
+    pathname.startsWith("/api/stripe/webhook") ||
     pathname.startsWith("/_next") ||
     pathname.startsWith("/favicon") ||
     pathname === "/public"

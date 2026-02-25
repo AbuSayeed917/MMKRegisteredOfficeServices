@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/layout/theme-provider";
+import { Providers } from "@/components/providers";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -38,17 +39,19 @@ export default function RootLayout({
           playfair.variable
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <TooltipProvider>
-            {children}
-            <Toaster />
-          </TooltipProvider>
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <TooltipProvider>
+              {children}
+              <Toaster />
+            </TooltipProvider>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
