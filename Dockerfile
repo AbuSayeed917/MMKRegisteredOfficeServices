@@ -6,6 +6,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY prisma ./prisma/
 COPY prisma.config.ts ./
+
+# Dummy DATABASE_URL so prisma generate (postinstall) can run during build
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 RUN npm ci
 
 # ─── Build the app ───────────────────────────────────────
@@ -14,11 +17,13 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Generate Prisma client
-RUN npx prisma generate
+# Dummy env vars for build step only (not used at runtime)
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+ENV NEXTAUTH_SECRET="build-secret"
+ENV NEXTAUTH_URL="http://localhost:3000"
 
-# Build Next.js
-RUN npm run build
+# Generate Prisma client & build Next.js
+RUN npx prisma generate && npm run build
 
 # ─── Production image ────────────────────────────────────
 FROM base AS runner
@@ -27,7 +32,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Create non-root user
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
