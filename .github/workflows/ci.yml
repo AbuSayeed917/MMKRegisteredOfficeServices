@@ -11,6 +11,12 @@ jobs:
     name: Lint, Type-check & Build
     runs-on: ubuntu-latest
 
+    env:
+      # Dummy values for build — no real DB/API connection needed
+      DATABASE_URL: "postgresql://user:pass@localhost:5432/dummy"
+      NEXTAUTH_SECRET: "ci-build-secret"
+      NEXTAUTH_URL: "http://localhost:3000"
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,6 +38,3 @@ jobs:
 
       - name: Build
         run: npx next build
-        env:
-          # Skip DB connection during build (static pages only)
-          SKIP_ENV_VALIDATION: "true"
