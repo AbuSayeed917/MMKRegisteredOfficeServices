@@ -54,6 +54,7 @@ export async function GET() {
         id: user.id,
         email: user.email,
         role: user.role,
+        emailVerified: user.emailVerified,
         createdAt: user.createdAt,
         lastLogin: user.lastLogin,
       },

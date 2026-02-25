@@ -249,6 +249,15 @@ model AdminAction {
   @@map("admin_actions")
 }
 
+// ─── System Settings (key-value) ─────────────────────────────
+model SystemSetting {
+  key       String   @id
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("system_settings")
+}
+
 // ─── Notifications ──────────────────────────────────────────
 model Notification {
   id        String   @id @default(cuid())

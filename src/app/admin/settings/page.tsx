@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,17 +13,45 @@ import {
   Shield,
   Save,
   Info,
+  CheckCircle2,
 } from "lucide-react";
 
 export default function AdminSettingsPage() {
-  const [feeAmount, setFeeAmount] = useState("75.00");
+  const [feeAmount, setFeeAmount] = useState("");
   const [saving, setSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/admin/settings")
+      .then((res) => res.json())
+      .then((data) => {
+        const pence = parseInt(data.annualFeePence, 10);
+        setFeeAmount((pence / 100).toFixed(2));
+      })
+      .catch(() => setFeeAmount("75.00"))
+      .finally(() => setLoading(false));
+  }, []);
 
   const handleSaveFee = async () => {
     setSaving(true);
-    // TODO: connect to API
-    await new Promise((r) => setTimeout(r, 500));
-    setSaving(false);
+    setSaveSuccess(false);
+    try {
+      const pence = Math.round(parseFloat(feeAmount) * 100);
+      const res = await fetch("/api/admin/settings", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ annualFeePence: pence }),
+      });
+      if (res.ok) {
+        setSaveSuccess(true);
+        setTimeout(() => setSaveSuccess(false), 3000);
+      }
+    } catch {
+      // silently fail
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -50,7 +78,7 @@ export default function AdminSettingsPage() {
           <CardContent className="space-y-4">
             <div>
               <label className="text-sm font-medium mb-1.5 block">
-                Annual Service Fee (£)
+                Annual Service Fee (&pound;)
               </label>
               <div className="flex gap-2">
                 <Input
@@ -60,15 +88,25 @@ export default function AdminSettingsPage() {
                   className="rounded-xl max-w-[160px]"
                   step="0.01"
                   min="0"
+                  disabled={loading}
                 />
                 <Button
                   onClick={handleSaveFee}
-                  disabled={saving}
+                  disabled={saving || loading}
                   size="sm"
                   className="rounded-xl"
                 >
-                  <Save className="size-3.5 mr-1.5" />
-                  {saving ? "Saving..." : "Save"}
+                  {saveSuccess ? (
+                    <>
+                      <CheckCircle2 className="size-3.5 mr-1.5 text-emerald-200" />
+                      Saved
+                    </>
+                  ) : (
+                    <>
+                      <Save className="size-3.5 mr-1.5" />
+                      {saving ? "Saving..." : "Save"}
+                    </>
+                  )}
                 </Button>
               </div>
               <p className="text-[11px] text-muted-foreground mt-1.5">
@@ -90,16 +128,10 @@ export default function AdminSettingsPage() {
           <CardContent className="space-y-3">
             <div className="p-3 rounded-xl bg-muted/30 flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium">
-                  Service Agreement Template
-                </p>
-                <p className="text-[11px] text-muted-foreground">
-                  Version 1 — Active
-                </p>
+                <p className="text-sm font-medium">Service Agreement Template</p>
+                <p className="text-[11px] text-muted-foreground">Version 1 — Active</p>
               </div>
-              <Badge variant="secondary" className="text-[10px]">
-                Active
-              </Badge>
+              <Badge variant="secondary" className="text-[10px]">Active</Badge>
             </div>
             <div className="flex items-start gap-2 p-3 rounded-xl bg-blue-50 dark:bg-blue-950/30">
               <Info className="size-4 text-[#0ea5e9] mt-0.5 flex-shrink-0" />
@@ -129,15 +161,9 @@ export default function AdminSettingsPage() {
                 { label: "Failed payment alerts", enabled: true },
                 { label: "Admin action notifications", enabled: true },
               ].map((item) => (
-                <div
-                  key={item.label}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-muted/20"
-                >
+                <div key={item.label} className="flex items-center justify-between p-2.5 rounded-xl bg-muted/20">
                   <span className="text-sm">{item.label}</span>
-                  <Badge
-                    variant={item.enabled ? "default" : "secondary"}
-                    className="text-[10px]"
-                  >
+                  <Badge variant={item.enabled ? "default" : "secondary"} className="text-[10px]">
                     {item.enabled ? "Enabled" : "Disabled"}
                   </Badge>
                 </div>
@@ -164,31 +190,14 @@ export default function AdminSettingsPage() {
           <CardContent className="space-y-3">
             <div className="space-y-2">
               {[
-                {
-                  label: "Account lockout",
-                  value: "After 5 failed attempts (15-min cooldown)",
-                },
-                {
-                  label: "Session timeout",
-                  value: "30 minutes of inactivity",
-                },
-                {
-                  label: "Password requirements",
-                  value: "Min 8 chars, uppercase, lowercase, number",
-                },
-                {
-                  label: "CSRF protection",
-                  value: "Enabled (NextAuth)",
-                },
+                { label: "Account lockout", value: "After 5 failed attempts (15-min cooldown)" },
+                { label: "Session timeout", value: "30 minutes of inactivity" },
+                { label: "Password requirements", value: "Min 8 chars, uppercase, lowercase, number" },
+                { label: "CSRF protection", value: "Enabled (NextAuth)" },
               ].map((item) => (
-                <div
-                  key={item.label}
-                  className="p-2.5 rounded-xl bg-muted/20"
-                >
+                <div key={item.label} className="p-2.5 rounded-xl bg-muted/20">
                   <p className="text-sm font-medium">{item.label}</p>
-                  <p className="text-[11px] text-muted-foreground">
-                    {item.value}
-                  </p>
+                  <p className="text-[11px] text-muted-foreground">{item.value}</p>
                 </div>
               ))}
             </div>
@@ -212,13 +221,8 @@ export default function AdminSettingsPage() {
                 { label: "Payments", value: "Stripe" },
                 { label: "Hosting", value: "Railway" },
               ].map((item) => (
-                <div
-                  key={item.label}
-                  className="p-3 rounded-xl bg-muted/20 text-center"
-                >
-                  <p className="text-[11px] text-muted-foreground">
-                    {item.label}
-                  </p>
+                <div key={item.label} className="p-3 rounded-xl bg-muted/20 text-center">
+                  <p className="text-[11px] text-muted-foreground">{item.label}</p>
                   <p className="text-sm font-medium mt-0.5">{item.value}</p>
                 </div>
               ))}

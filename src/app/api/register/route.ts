@@ -5,9 +5,16 @@ import { mapCompanyType } from "@/lib/companies-house";
 import { generateAgreementPdf } from "@/lib/pdf-generator";
 import { uploadFile } from "@/lib/s3";
 import { sendWelcomeEmail, sendAdminNewRegistrationEmail } from "@/lib/email";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    const { success } = rateLimit(`register:${ip}`, { maxRequests: 5, windowMs: 15 * 60 * 1000 });
+    if (!success) {
+      return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 });
+    }
+
     const body = await request.json();
     const { business, director, account, agreement } = body;
 
