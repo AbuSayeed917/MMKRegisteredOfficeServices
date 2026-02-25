@@ -21,7 +21,7 @@ function PaymentSuccessContent() {
       }, 2000);
       return () => clearTimeout(timer);
     } else {
-      setLoading(false);
+      setLoading((prev) => (prev ? false : prev));
     }
   }, [sessionId]);
 

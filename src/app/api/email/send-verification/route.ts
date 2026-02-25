@@ -7,7 +7,7 @@ import { sendEmail } from "@/lib/email";
  * POST /api/email/send-verification
  * Sends a verification code to the authenticated user's email.
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     const session = await auth();
     if (!session?.user?.id) {

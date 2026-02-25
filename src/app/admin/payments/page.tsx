@@ -74,7 +74,7 @@ export default function AdminPaymentsPage() {
   }, [fetchPayments]);
 
   useEffect(() => {
-    setPage(1);
+    setPage((prev) => (prev !== 1 ? 1 : prev));
   }, [search, statusFilter]);
 
   const summaryCards = [
