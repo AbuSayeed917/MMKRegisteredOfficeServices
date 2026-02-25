@@ -11,18 +11,15 @@ import { CheckCircle2, Loader2, ArrowRight } from "lucide-react";
 function PaymentSuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!!sessionId);
 
   useEffect(() => {
-    if (sessionId) {
-      // Brief delay to allow webhook to process
-      const timer = setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-      return () => clearTimeout(timer);
-    } else {
-      setLoading((prev) => (prev ? false : prev));
-    }
+    if (!sessionId) return;
+    // Brief delay to allow webhook to process
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
   }, [sessionId]);
 
   if (loading) {

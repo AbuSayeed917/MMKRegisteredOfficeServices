@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -54,28 +54,40 @@ export default function AdminPaymentsPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [page, setPage] = useState(1);
-
-  const fetchPayments = useCallback(() => {
+  const fetchPayments = useCallback((s: string, sf: string, p: number) => {
     setLoading(true);
     const params = new URLSearchParams();
-    if (search) params.set("search", search);
-    if (statusFilter) params.set("status", statusFilter);
-    params.set("page", String(page));
+    if (s) params.set("search", s);
+    if (sf) params.set("status", sf);
+    params.set("page", String(p));
 
     fetch(`/api/admin/payments?${params}`)
       .then((res) => res.json())
       .then(setData)
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [search, statusFilter, page]);
+  }, []);
 
-  useEffect(() => {
-    fetchPayments();
-  }, [fetchPayments]);
+  // Initial load only - fetchPayments is stable (no deps), so this runs once
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { fetchPayments("", "", 1); }, [fetchPayments]);
 
-  useEffect(() => {
-    setPage((prev) => (prev !== 1 ? 1 : prev));
-  }, [search, statusFilter]);
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    setPage(1);
+    fetchPayments(value, statusFilter, 1);
+  };
+
+  const handleFilterChange = (value: string) => {
+    setStatusFilter(value);
+    setPage(1);
+    fetchPayments(search, value, 1);
+  };
+
+  const handlePageChange = (p: number) => {
+    setPage(p);
+    fetchPayments(search, statusFilter, p);
+  };
 
   const summaryCards = [
     {
@@ -169,13 +181,13 @@ export default function AdminPaymentsPage() {
               <Input
                 placeholder="Search by company or email..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="pl-9 rounded-xl"
               />
             </div>
             <select
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+              onChange={(e) => handleFilterChange(e.target.value)}
               className="h-9 px-3 rounded-xl border border-input bg-background text-sm"
             >
               <option value="">All statuses</option>
@@ -263,7 +275,7 @@ export default function AdminPaymentsPage() {
                       variant="outline"
                       size="sm"
                       disabled={page <= 1}
-                      onClick={() => setPage(page - 1)}
+                      onClick={() => handlePageChange(page - 1)}
                       className="rounded-xl"
                     >
                       <ChevronLeft className="size-4" />
@@ -272,7 +284,7 @@ export default function AdminPaymentsPage() {
                       variant="outline"
                       size="sm"
                       disabled={page >= data.pagination.totalPages}
-                      onClick={() => setPage(page + 1)}
+                      onClick={() => handlePageChange(page + 1)}
                       className="rounded-xl"
                     >
                       <ChevronRight className="size-4" />
