@@ -20,6 +20,7 @@ import {
   CheckCircle2,
   Shield,
   User,
+  LifeBuoy,
 } from "lucide-react";
 
 interface DashboardData {
@@ -132,26 +133,26 @@ export default function DashboardPage() {
       </div>
 
       {/* Status cards */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 items-start">
         {/* Subscription Status */}
         <Link href="/dashboard/subscription">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0">
             <div className="h-1 bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]" />
-            <CardContent className="p-5">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-10 h-10 rounded-xl bg-[#0ea5e9]/10 flex items-center justify-center">
-                  <CreditCard className="size-5 text-[#0ea5e9]" />
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-[#0ea5e9]/10 flex items-center justify-center shrink-0">
+                  <CreditCard className="size-4 text-[#0ea5e9]" />
                 </div>
-                <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9] transition-colors" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-muted-foreground">Subscription</p>
+                  <Badge className={`${subStatus.bg} ${subStatus.color} text-[10px] mt-0.5`}>
+                    {subStatus.label}
+                  </Badge>
+                </div>
+                <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9] transition-colors shrink-0" />
               </div>
-              <p className="text-xs text-muted-foreground mb-1">
-                Subscription
-              </p>
-              <Badge className={`${subStatus.bg} ${subStatus.color} text-xs`}>
-                {subStatus.label}
-              </Badge>
               {data.subscription?.endDate && (
-                <p className="text-[11px] text-muted-foreground mt-2 flex items-center gap-1">
+                <p className="text-[11px] text-muted-foreground mt-2 ml-12 flex items-center gap-1">
                   <Calendar className="size-3" />
                   Expires{" "}
                   {new Date(data.subscription.endDate).toLocaleDateString(
@@ -166,44 +167,42 @@ export default function DashboardPage() {
 
         {/* Agreement Status */}
         <Link href="/dashboard/agreement">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0">
             <div className="h-1 bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]" />
-            <CardContent className="p-5">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-10 h-10 rounded-xl bg-[#0ea5e9]/10 flex items-center justify-center">
-                  <FileText className="size-5 text-[#0ea5e9]" />
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-[#0ea5e9]/10 flex items-center justify-center shrink-0">
+                  <FileText className="size-4 text-[#0ea5e9]" />
                 </div>
-                <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9] transition-colors" />
-              </div>
-              <p className="text-xs text-muted-foreground mb-1">Agreement</p>
-              {latestAgreement ? (
-                <>
-                  <Badge
-                    className={
-                      latestAgreement.status === "SIGNED"
-                        ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs"
-                        : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 text-xs"
-                    }
-                  >
-                    {latestAgreement.status === "SIGNED"
-                      ? "Signed"
-                      : "Pending"}
-                  </Badge>
-                  {latestAgreement.signedAt && (
-                    <p className="text-[11px] text-muted-foreground mt-2 flex items-center gap-1">
-                      <CheckCircle2 className="size-3" />
-                      Signed{" "}
-                      {new Date(latestAgreement.signedAt).toLocaleDateString(
-                        "en-GB",
-                        { day: "numeric", month: "short", year: "numeric" }
-                      )}
-                    </p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-muted-foreground">Agreement</p>
+                  {latestAgreement ? (
+                    <Badge
+                      className={`text-[10px] mt-0.5 ${
+                        latestAgreement.status === "SIGNED"
+                          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                          : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                      }`}
+                    >
+                      {latestAgreement.status === "SIGNED" ? "Signed" : "Pending"}
+                    </Badge>
+                  ) : (
+                    <Badge className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 text-[10px] mt-0.5">
+                      No Agreement
+                    </Badge>
                   )}
-                </>
-              ) : (
-                <Badge className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 text-xs">
-                  No Agreement
-                </Badge>
+                </div>
+                <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9] transition-colors shrink-0" />
+              </div>
+              {latestAgreement?.signedAt && (
+                <p className="text-[11px] text-muted-foreground mt-2 ml-12 flex items-center gap-1">
+                  <CheckCircle2 className="size-3" />
+                  Signed{" "}
+                  {new Date(latestAgreement.signedAt).toLocaleDateString(
+                    "en-GB",
+                    { day: "numeric", month: "short", year: "numeric" }
+                  )}
+                </p>
               )}
             </CardContent>
           </Card>
@@ -211,35 +210,54 @@ export default function DashboardPage() {
 
         {/* Notifications */}
         <Link href="/dashboard/notifications">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0">
             <div className="h-1 bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]" />
-            <CardContent className="p-5">
-              <div className="flex items-start justify-between mb-4">
-                <div className="relative w-10 h-10 rounded-xl bg-[#0ea5e9]/10 flex items-center justify-center">
-                  <Bell className="size-5 text-[#0ea5e9]" />
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="relative w-9 h-9 rounded-lg bg-[#0ea5e9]/10 flex items-center justify-center shrink-0">
+                  <Bell className="size-4 text-[#0ea5e9]" />
                   {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
                       {unreadCount > 9 ? "9+" : unreadCount}
                     </span>
                   )}
                 </div>
-                <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9] transition-colors" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-muted-foreground">Notifications</p>
+                  <p className="font-semibold text-sm">
+                    {unreadCount > 0 ? (
+                      <span>
+                        {unreadCount} unread{" "}
+                        <span className="text-muted-foreground font-normal text-xs">
+                          of {data.notifications.length}
+                        </span>
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground font-normal text-sm">All caught up</span>
+                    )}
+                  </p>
+                </div>
+                <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9] transition-colors shrink-0" />
               </div>
-              <p className="text-xs text-muted-foreground mb-1">
-                Notifications
-              </p>
-              <p className="font-semibold text-sm">
-                {unreadCount > 0 ? (
-                  <span>
-                    {unreadCount} unread{" "}
-                    <span className="text-muted-foreground font-normal">
-                      of {data.notifications.length}
-                    </span>
-                  </span>
-                ) : (
-                  <span className="text-muted-foreground">All caught up</span>
-                )}
-              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        {/* Support */}
+        <Link href="/dashboard/support">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0">
+            <div className="h-1 bg-gradient-to-r from-purple-400 to-purple-500" />
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-purple-500/10 flex items-center justify-center shrink-0">
+                  <LifeBuoy className="size-4 text-purple-500" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-muted-foreground">Support</p>
+                  <p className="font-semibold text-sm text-muted-foreground">Get help</p>
+                </div>
+                <ChevronRight className="size-4 text-muted-foreground group-hover:text-purple-500 transition-colors shrink-0" />
+              </div>
             </CardContent>
           </Card>
         </Link>
