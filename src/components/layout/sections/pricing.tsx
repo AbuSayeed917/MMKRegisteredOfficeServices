@@ -80,7 +80,7 @@ export const PricingSection = () => {
               </div>
 
               {/* Glow effect on hover */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ boxShadow: "0 0 40px rgba(14, 165, 233, 0.15)" }} />
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ boxShadow: "0 0 40px rgba(14, 165, 233, 0.15)" }} />
 
               <CardHeader>
                 <CardTitle className="text-lg">Direct Debit (BACS)</CardTitle>
