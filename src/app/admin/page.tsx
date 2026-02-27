@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -46,6 +47,7 @@ interface OverviewData {
 }
 
 export default function AdminOverviewPage() {
+  const router = useRouter();
   const [data, setData] = useState<OverviewData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -85,13 +87,14 @@ export default function AdminOverviewPage() {
 
   const { metrics } = data;
 
-  const metricCards: { label: string; value: string | number; icon: typeof Users; color: string; bg: string; href?: string }[] = [
+  const metricCards: { label: string; value: string | number; icon: typeof Users; color: string; bg: string; gradient: string; href: string }[] = [
     {
       label: "Total Clients",
       value: metrics.totalClients,
       icon: Users,
       color: "text-[#0ea5e9]",
       bg: "bg-[#0ea5e9]/10",
+      gradient: "from-[#0ea5e9] to-[#38bdf8]",
       href: "/admin/clients",
     },
     {
@@ -100,6 +103,7 @@ export default function AdminOverviewPage() {
       icon: CheckCircle2,
       color: "text-emerald-500",
       bg: "bg-emerald-500/10",
+      gradient: "from-emerald-400 to-emerald-500",
       href: "/admin/clients",
     },
     {
@@ -108,6 +112,7 @@ export default function AdminOverviewPage() {
       icon: Clock,
       color: "text-amber-500",
       bg: "bg-amber-500/10",
+      gradient: "from-amber-400 to-amber-500",
       href: "/admin/clients",
     },
     {
@@ -116,6 +121,7 @@ export default function AdminOverviewPage() {
       icon: AlertTriangle,
       color: "text-red-500",
       bg: "bg-red-500/10",
+      gradient: "from-red-400 to-red-500",
       href: "/admin/clients",
     },
     {
@@ -124,6 +130,7 @@ export default function AdminOverviewPage() {
       icon: Calendar,
       color: "text-orange-500",
       bg: "bg-orange-500/10",
+      gradient: "from-orange-400 to-orange-500",
       href: "/admin/clients",
     },
     {
@@ -132,6 +139,7 @@ export default function AdminOverviewPage() {
       icon: LifeBuoy,
       color: "text-purple-500",
       bg: "bg-purple-500/10",
+      gradient: "from-purple-400 to-purple-500",
       href: "/admin/support-tickets",
     },
     {
@@ -140,6 +148,7 @@ export default function AdminOverviewPage() {
       icon: TrendingUp,
       color: "text-emerald-500",
       bg: "bg-emerald-500/10",
+      gradient: "from-emerald-400 to-emerald-500",
       href: "/admin/payments",
     },
   ];
@@ -156,29 +165,31 @@ export default function AdminOverviewPage() {
       </div>
 
       {/* Metric cards */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
         {metricCards.map((card) => {
           const Icon = card.icon;
           return (
-            <Link key={card.label} href={card.href!}>
-              <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer">
-                <CardContent className="p-5">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`w-10 h-10 rounded-xl ${card.bg} flex items-center justify-center`}
-                    >
-                      <Icon className={`size-5 ${card.color}`} />
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">
-                        {card.label}
-                      </p>
-                      <p className="text-xl font-bold">{card.value}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
+            <Card
+              key={card.label}
+              role="link"
+              tabIndex={0}
+              onClick={() => router.push(card.href)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") router.push(card.href); }}
+              className="border-[var(--mmk-border-light)] rounded-xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0"
+            >
+              <CardContent className="px-3 py-2.5 flex items-center gap-2.5">
+                <div
+                  className={`w-7 h-7 rounded-md ${card.bg} flex items-center justify-center shrink-0`}
+                >
+                  <Icon className={`size-3.5 ${card.color}`} />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] text-muted-foreground truncate">{card.label}</p>
+                  <p className="text-sm font-bold leading-tight">{card.value}</p>
+                </div>
+                <ChevronRight className="size-3 text-muted-foreground group-hover:text-[#0ea5e9] transition-colors shrink-0" />
+              </CardContent>
+            </Card>
           );
         })}
       </div>
