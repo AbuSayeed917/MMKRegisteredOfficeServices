@@ -22,7 +22,12 @@ import {
   Loader2,
   Briefcase,
   Users,
+  FileText,
+  Download,
+  Pen,
+  Type,
 } from "lucide-react";
+import { toast } from "sonner";
 
 interface ClientDetail {
   user: {
@@ -62,6 +67,7 @@ interface ClientDetail {
     status: string;
     signatureType: string;
     signedAt?: string;
+    pdfUrl?: string;
     templateVersion: number;
   }[];
   payments: {
@@ -97,6 +103,7 @@ export default function ClientDetailPage() {
   const [data, setData] = useState<ClientDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [downloading, setDownloading] = useState<string | null>(null);
 
   const clientId = params.id as string;
 
@@ -133,6 +140,25 @@ export default function ClientDetailPage() {
       // silently fail
     } finally {
       setActionLoading(null);
+    }
+  };
+
+  const handleDownload = async (agreementId: string) => {
+    setDownloading(agreementId);
+    try {
+      const res = await fetch(`/api/agreements/download?id=${agreementId}`);
+      if (!res.ok) {
+        const d = await res.json();
+        throw new Error(d.error || "Failed to get download link");
+      }
+      const { url } = await res.json();
+      window.open(url, "_blank");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to download PDF"
+      );
+    } finally {
+      setDownloading(null);
     }
   };
 
@@ -405,6 +431,70 @@ export default function ClientDetailPage() {
                   </div>
                 </div>
               ))}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Agreements */}
+        {data.agreements.length > 0 && (
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl overflow-hidden">
+            <div className="h-1 bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]" />
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-base">
+                <FileText className="size-4 text-[#0ea5e9]" />
+                Agreements ({data.agreements.length})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {data.agreements.map((a) => (
+                  <div
+                    key={a.id}
+                    className="flex items-center gap-3 bg-muted/20 rounded-xl p-3"
+                  >
+                    {a.signatureType === "typed" ? (
+                      <Type className="size-4 text-[#0ea5e9] shrink-0" />
+                    ) : (
+                      <Pen className="size-4 text-[#0ea5e9] shrink-0" />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium">
+                        v{a.templateVersion} — {a.signatureType === "typed" ? "Typed" : "Hand-drawn"} signature
+                      </p>
+                      <p className="text-[11px] text-muted-foreground">
+                        {a.signedAt
+                          ? `Signed ${new Date(a.signedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}`
+                          : "Pending signature"}
+                      </p>
+                    </div>
+                    <Badge
+                      className={`text-[10px] ${
+                        a.status === "SIGNED"
+                          ? "bg-emerald-100 text-emerald-700"
+                          : "bg-amber-100 text-amber-700"
+                      }`}
+                    >
+                      {a.status}
+                    </Badge>
+                    {a.status === "SIGNED" && a.pdfUrl && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 gap-1 text-xs"
+                        onClick={() => handleDownload(a.id)}
+                        disabled={downloading === a.id}
+                      >
+                        {downloading === a.id ? (
+                          <Loader2 className="size-3 animate-spin" />
+                        ) : (
+                          <Download className="size-3" />
+                        )}
+                        PDF
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </Card>
         )}
