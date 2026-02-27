@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -107,27 +107,27 @@ export default function AdminSupportTicketDetailPage() {
   const [isInternal, setIsInternal] = useState(false);
   const [sending, setSending] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  const fetchTicket = useCallback(() => {
+  useEffect(() => {
+    if (!ticketId) return;
+    let cancelled = false;
     fetch(`/api/support-tickets/${ticketId}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load ticket");
         return res.json();
       })
       .then((data) => {
-        setTicket(data);
+        if (!cancelled) setTicket(data);
       })
       .catch(() => {
-        toast.error("Failed to load ticket details");
+        if (!cancelled) toast.error("Failed to load ticket details");
       })
-      .finally(() => setLoading(false));
-  }, [ticketId]);
-
-  useEffect(() => {
-    if (ticketId) {
-      fetchTicket();
-    }
-  }, [ticketId, fetchTicket]);
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [ticketId, refreshKey]);
 
   const handleAction = async (
     action: string,
@@ -160,7 +160,7 @@ export default function AdminSupportTicketDetailPage() {
                   ? "Priority updated"
                   : "Action completed"
       );
-      fetchTicket();
+      setRefreshKey((k) => k + 1);
     } catch (err) {
       toast.error(
         err instanceof Error ? err.message : "Failed to perform action"
@@ -191,7 +191,7 @@ export default function AdminSupportTicketDetailPage() {
       );
       setReplyMessage("");
       setIsInternal(false);
-      fetchTicket();
+      setRefreshKey((k) => k + 1);
     } catch (err) {
       toast.error(
         err instanceof Error ? err.message : "Failed to send reply"

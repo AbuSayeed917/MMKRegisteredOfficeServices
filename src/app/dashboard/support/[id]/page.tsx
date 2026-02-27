@@ -82,27 +82,28 @@ export default function TicketDetailPage() {
   const [loading, setLoading] = useState(true);
   const [replyMessage, setReplyMessage] = useState("");
   const [sending, setSending] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const fetchTicket = () => {
+  useEffect(() => {
+    if (!ticketId) return;
+    let cancelled = false;
     fetch(`/api/support-tickets/${ticketId}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load ticket");
         return res.json();
       })
-      .then((data) => setTicket(data))
-      .catch(() => {
-        toast.error("Failed to load ticket");
+      .then((data) => {
+        if (!cancelled) setTicket(data);
       })
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    if (ticketId) {
-      fetchTicket();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ticketId]);
+      .catch(() => {
+        if (!cancelled) toast.error("Failed to load ticket");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [ticketId, refreshKey]);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -134,7 +135,7 @@ export default function TicketDetailPage() {
 
       toast.success("Reply sent successfully");
       setReplyMessage("");
-      fetchTicket();
+      setRefreshKey((k) => k + 1);
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to send reply"
