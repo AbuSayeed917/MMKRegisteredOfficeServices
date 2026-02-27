@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getUser } from "@/lib/get-user";
 import { db } from "@/lib/db";
 
 /**
@@ -8,8 +8,8 @@ import { db } from "@/lib/db";
  */
 export async function PATCH(request: NextRequest) {
   try {
-    const session = await auth();
-    if (!session?.user?.id) {
+    const user = await getUser();
+    if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -17,7 +17,7 @@ export async function PATCH(request: NextRequest) {
     const { tradingAddress, phone } = body;
 
     const profile = await db.businessProfile.findUnique({
-      where: { userId: session.user.id },
+      where: { userId: user.id },
     });
 
     if (!profile) {

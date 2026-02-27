@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getUser } from "@/lib/get-user";
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 
@@ -10,10 +10,10 @@ import bcrypt from "bcryptjs";
  */
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth();
+    const authUser = await getUser();
     if (
-      !session?.user?.id ||
-      !["ADMIN", "SUPER_ADMIN"].includes(session.user.role as string)
+      !authUser ||
+      !["ADMIN", "SUPER_ADMIN"].includes(authUser.role)
     ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }

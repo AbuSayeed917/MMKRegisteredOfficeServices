@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getUser } from "@/lib/get-user";
 import { db } from "@/lib/db";
 import {
   sendApprovedEmail,
@@ -17,10 +17,10 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await auth();
+    const authUser = await getUser();
     if (
-      !session?.user?.id ||
-      !["ADMIN", "SUPER_ADMIN"].includes(session.user.role as string)
+      !authUser ||
+      !["ADMIN", "SUPER_ADMIN"].includes(authUser.role)
     ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
@@ -112,7 +112,7 @@ export async function POST(
       // Log admin action
       await tx.adminAction.create({
         data: {
-          adminUserId: session.user!.id!,
+          adminUserId: authUser.id,
           targetUserId: id,
           actionType: action,
           reason: reason || null,

@@ -468,6 +468,11 @@ input:focus, textarea:focus {
   transform: scale(1.05);
 }
 
+/* Safe area for bottom nav on notched iPhones */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .reveal { transition: none; }

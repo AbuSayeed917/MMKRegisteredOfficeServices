@@ -17,6 +17,9 @@ import {
   Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AdminBottomNav } from "@/components/pwa/bottom-nav-admin";
+import { InstallPromptBanner } from "@/components/pwa/install-prompt-banner";
+import { OfflineIndicator } from "@/components/pwa/offline-indicator";
 
 const navItems = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
@@ -163,10 +166,14 @@ export default function AdminLayout({
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-20 lg:pb-8 overflow-auto">
           {children}
         </main>
       </div>
+
+      <AdminBottomNav />
+      <InstallPromptBanner />
+      <OfflineIndicator />
     </div>
   );
 }

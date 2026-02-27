@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getUser } from "@/lib/get-user";
 import { db } from "@/lib/db";
 
 /**
@@ -8,12 +8,12 @@ import { db } from "@/lib/db";
  */
 export async function GET() {
   try {
-    const session = await auth();
-    if (!session?.user?.id) {
+    const authUser = await getUser();
+    if (!authUser) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const userId = session.user.id;
+    const userId = authUser.id;
 
     const [user, subscription, agreements, notifications, payments] =
       await Promise.all([

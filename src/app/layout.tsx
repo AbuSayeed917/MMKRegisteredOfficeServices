@@ -23,6 +23,16 @@ export const metadata: Metadata = {
   title: "MMK Accountants - Registered Office Service",
   description:
     "Professional registered office address service for your business. Use our Luton office as your Companies House registered address for just £75/year.",
+  manifest: "/manifest.json",
+  themeColor: "#0c2d42",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "MMK Office",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
 };
 
 export default function RootLayout({
@@ -32,6 +42,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",

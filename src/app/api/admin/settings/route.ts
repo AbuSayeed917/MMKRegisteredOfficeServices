@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getUser } from "@/lib/get-user";
 import { db } from "@/lib/db";
 
 /**
@@ -8,10 +8,10 @@ import { db } from "@/lib/db";
  */
 export async function GET() {
   try {
-    const session = await auth();
+    const user = await getUser();
     if (
-      !session?.user?.id ||
-      !["ADMIN", "SUPER_ADMIN"].includes(session.user.role as string)
+      !user ||
+      !["ADMIN", "SUPER_ADMIN"].includes(user.role)
     ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
@@ -37,10 +37,10 @@ export async function GET() {
  */
 export async function PATCH(request: NextRequest) {
   try {
-    const session = await auth();
+    const user = await getUser();
     if (
-      !session?.user?.id ||
-      !["ADMIN", "SUPER_ADMIN"].includes(session.user.role as string)
+      !user ||
+      !["ADMIN", "SUPER_ADMIN"].includes(user.role)
     ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }

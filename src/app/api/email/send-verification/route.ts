@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getUser } from "@/lib/get-user";
 import { db } from "@/lib/db";
 import { sendEmail } from "@/lib/email";
 
@@ -9,13 +9,13 @@ import { sendEmail } from "@/lib/email";
  */
 export async function POST() {
   try {
-    const session = await auth();
-    if (!session?.user?.id) {
+    const authUser = await getUser();
+    if (!authUser) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const user = await db.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: authUser.id },
     });
 
     if (!user) {

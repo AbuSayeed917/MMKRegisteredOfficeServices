@@ -14,7 +14,11 @@ function isPublicRoute(pathname: string): boolean {
     pathname.startsWith("/api/stripe/webhook") ||
     pathname.startsWith("/_next") ||
     pathname.startsWith("/favicon") ||
-    pathname === "/public"
+    pathname === "/public" ||
+    pathname === "/sw.js" ||
+    pathname === "/manifest.json" ||
+    pathname === "/offline.html" ||
+    pathname.startsWith("/icons")
   );
 }
 
@@ -30,7 +34,15 @@ export function middleware(request: NextRequest) {
     request.cookies.get("authjs.session-token")?.value ||
     request.cookies.get("__Secure-authjs.session-token")?.value;
 
-  if (!sessionToken) {
+  // Also accept Bearer token from mobile app
+  const authHeader = request.headers.get("authorization");
+  const bearerToken = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+
+  if (!sessionToken && !bearerToken) {
+    // API routes get 401, pages get redirected
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
@@ -40,5 +52,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|public|images|animations|.*\\.svg$|.*\\.jpg$|.*\\.jpeg$|.*\\.png$|.*\\.gif$|.*\\.mp4$|.*\\.webp$|.*\\.ico$).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|public|images|animations|icons|sw\\.js|manifest\\.json|offline\\.html|.*\\.svg$|.*\\.jpg$|.*\\.jpeg$|.*\\.png$|.*\\.gif$|.*\\.mp4$|.*\\.webp$|.*\\.ico$).*)"],
 };

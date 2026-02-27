@@ -17,6 +17,9 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DashboardBottomNav } from "@/components/pwa/bottom-nav-dashboard";
+import { InstallPromptBanner } from "@/components/pwa/install-prompt-banner";
+import { OfflineIndicator } from "@/components/pwa/offline-indicator";
 
 const navItems = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
@@ -144,8 +147,14 @@ export default function DashboardLayout({
 
       {/* Main content */}
       <main className="lg:ml-64 min-h-screen pt-14 lg:pt-0">
-        <div className="p-4 sm:p-6 lg:p-8 max-w-6xl">{children}</div>
+        <div className="p-4 sm:p-6 lg:p-8 pb-20 lg:pb-8 max-w-6xl">
+          {children}
+        </div>
       </main>
+
+      <DashboardBottomNav />
+      <InstallPromptBanner />
+      <OfflineIndicator />
     </div>
   );
 }
