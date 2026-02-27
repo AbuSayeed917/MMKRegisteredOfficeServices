@@ -50,7 +50,10 @@ export const HeroSection = () => {
             {/* Heading */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] text-white mb-6">
               Your Professional{" "}
-              <span className="font-display italic bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] bg-clip-text text-transparent pr-[0.15em]">
+              <span
+                className="font-display italic bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] bg-clip-text"
+                style={{ WebkitTextFillColor: "transparent", WebkitBackgroundClip: "text", padding: "0.15em", margin: "-0.15em" }}
+              >
                 Registered Office
               </span>{" "}
               Address

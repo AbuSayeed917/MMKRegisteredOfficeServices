@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { Providers } from "@/components/providers";
+import { ScrollToTop } from "@/components/scroll-to-top";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -61,6 +62,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <TooltipProvider>
+              <ScrollToTop />
               {children}
               <Toaster />
             </TooltipProvider>

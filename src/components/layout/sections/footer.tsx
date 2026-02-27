@@ -43,7 +43,7 @@ export const FooterSection = () => {
             <Link href="/" className="text-sm hover:text-[#38bdf8] transition-colors">Home</Link>
             <Link href="/pricing" className="text-sm hover:text-[#38bdf8] transition-colors">Pricing</Link>
             <Link href="/register" className="text-sm hover:text-[#38bdf8] transition-colors">Register</Link>
-            <Link href="#services" className="text-sm hover:text-[#38bdf8] transition-colors">Our Services</Link>
+            <Link href="/#services" className="text-sm hover:text-[#38bdf8] transition-colors">Our Services</Link>
           </div>
 
           {/* Account */}
@@ -57,10 +57,10 @@ export const FooterSection = () => {
           {/* Quick Links */}
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-white text-sm mb-1">Quick Links</h3>
-            <Link href="#benefits" className="text-sm hover:text-[#38bdf8] transition-colors">Why Choose Us</Link>
-            <Link href="#how-it-works" className="text-sm hover:text-[#38bdf8] transition-colors">How It Works</Link>
-            <Link href="#faq" className="text-sm hover:text-[#38bdf8] transition-colors">FAQ</Link>
-            <Link href="#contact" className="text-sm hover:text-[#38bdf8] transition-colors">Contact</Link>
+            <Link href="/#benefits" className="text-sm hover:text-[#38bdf8] transition-colors">Why Choose Us</Link>
+            <Link href="/#how-it-works" className="text-sm hover:text-[#38bdf8] transition-colors">How It Works</Link>
+            <Link href="/#faq" className="text-sm hover:text-[#38bdf8] transition-colors">FAQ</Link>
+            <Link href="/#contact" className="text-sm hover:text-[#38bdf8] transition-colors">Contact</Link>
           </div>
 
           {/* Legal */}
