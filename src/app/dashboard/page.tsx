@@ -133,7 +133,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Status cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 items-start">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {/* Subscription Status */}
         <Link href="/dashboard/subscription">
           <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0">
