@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
       ipAddress: agreement.ipAddress || "unknown",
     });
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(new Uint8Array(pdfBuffer), {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
