@@ -25,7 +25,7 @@ export function BaseLayout({ preview, children }: BaseLayoutProps) {
           {/* Header */}
           <Section style={header}>
             <Text style={logoText}>
-              <span style={logoIcon}>M</span> MMK Accountants
+              <span style={logoIcon}>MMK</span> MMK Accountants
             </Text>
             <Text style={tagline}>Registered Office Service</Text>
           </Section>
@@ -79,7 +79,7 @@ const logoText = {
 
 const logoIcon = {
   display: "inline-block",
-  width: "32px",
+  width: "44px",
   height: "32px",
   backgroundColor: "#0ea5e9",
   color: "#0c2d42",
@@ -87,7 +87,8 @@ const logoIcon = {
   textAlign: "center" as const,
   lineHeight: "32px",
   fontWeight: "800" as const,
-  fontSize: "18px",
+  fontSize: "14px",
+  letterSpacing: "1px",
   marginRight: "8px",
   verticalAlign: "middle",
 };
