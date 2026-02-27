@@ -25,6 +25,8 @@ export async function GET() {
       recentPayments,
       recentRegistrations,
       expiringSubscriptions,
+      openTickets,
+      inProgressTickets,
     ] = await Promise.all([
       db.user.count({ where: { role: "CLIENT" } }),
       db.subscription.count({ where: { status: "ACTIVE" } }),
@@ -67,6 +69,8 @@ export async function GET() {
           },
         },
       }),
+      db.supportTicket.count({ where: { status: "OPEN" } }),
+      db.supportTicket.count({ where: { status: "IN_PROGRESS" } }),
     ]);
 
     return NextResponse.json({
@@ -76,6 +80,8 @@ export async function GET() {
         pendingApprovals,
         suspendedClients,
         expiringSubscriptions,
+        openTickets,
+        inProgressTickets,
         totalRevenue: (totalRevenue._sum.amount || 0) / 100,
       },
       recentPayments: recentPayments.map((p) => ({

@@ -91,6 +91,16 @@ const priorityLabels: Record<string, string> = {
   URGENT: "Urgent",
 };
 
+const categoryLabels: Record<string, string> = {
+  GENERAL: "General",
+  BILLING: "Billing",
+  MAIL_FORWARDING: "Mail Forwarding",
+  ACCOUNT: "Account",
+  TECHNICAL: "Technical",
+  COMPANIES_HOUSE: "Companies House",
+  OTHER: "Other",
+};
+
 const roleColors: Record<string, string> = {
   CLIENT: "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400",
   ADMIN: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
@@ -108,6 +118,14 @@ export default function AdminSupportTicketDetailPage() {
   const [sending, setSending] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [adminUsers, setAdminUsers] = useState<{ id: string; email: string }[]>([]);
+
+  useEffect(() => {
+    fetch("/api/admin/users")
+      .then((res) => res.json())
+      .then((data) => setAdminUsers(data.admins || []))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!ticketId) return;
@@ -293,6 +311,9 @@ export default function AdminSupportTicketDetailPage() {
             >
               {priorityLabels[ticket.priority] || ticket.priority}
             </Badge>
+            <Badge variant="outline" className="text-xs">
+              {categoryLabels[ticket.category] || ticket.category}
+            </Badge>
           </div>
         </div>
       </div>
@@ -413,25 +434,49 @@ export default function AdminSupportTicketDetailPage() {
                 </Button>
               )}
             </div>
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <span className="text-xs text-muted-foreground">Priority:</span>
-              <Select
-                value={ticket.priority}
-                onValueChange={(val) =>
-                  handleAction("set_priority", { priority: val })
-                }
-                disabled={actionLoading !== null}
-              >
-                <SelectTrigger className="w-[120px] h-8 rounded-xl text-xs">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="LOW">Low</SelectItem>
-                  <SelectItem value="MEDIUM">Medium</SelectItem>
-                  <SelectItem value="HIGH">High</SelectItem>
-                  <SelectItem value="URGENT">Urgent</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="flex items-center gap-4 flex-shrink-0 flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">Assign:</span>
+                <Select
+                  value={ticket.assignedTo?.id || "UNASSIGNED"}
+                  onValueChange={(val) =>
+                    handleAction("assign", { assignedToId: val === "UNASSIGNED" ? undefined : val })
+                  }
+                  disabled={actionLoading !== null}
+                >
+                  <SelectTrigger className="w-[180px] h-8 rounded-xl text-xs">
+                    <SelectValue placeholder="Unassigned" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="UNASSIGNED">Unassigned</SelectItem>
+                    {adminUsers.map((admin) => (
+                      <SelectItem key={admin.id} value={admin.id}>
+                        {admin.email}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">Priority:</span>
+                <Select
+                  value={ticket.priority}
+                  onValueChange={(val) =>
+                    handleAction("set_priority", { priority: val })
+                  }
+                  disabled={actionLoading !== null}
+                >
+                  <SelectTrigger className="w-[120px] h-8 rounded-xl text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="LOW">Low</SelectItem>
+                    <SelectItem value="MEDIUM">Medium</SelectItem>
+                    <SelectItem value="HIGH">High</SelectItem>
+                    <SelectItem value="URGENT">Urgent</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </CardContent>

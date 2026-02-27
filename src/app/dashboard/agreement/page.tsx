@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   FileText,
@@ -13,7 +14,10 @@ import {
   Pen,
   Type,
   Globe,
+  Download,
+  Loader2,
 } from "lucide-react";
+import { toast } from "sonner";
 
 interface AgreementData {
   id: string;
@@ -27,6 +31,26 @@ interface AgreementData {
 export default function AgreementPage() {
   const [agreements, setAgreements] = useState<AgreementData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [downloading, setDownloading] = useState<string | null>(null);
+
+  const handleDownload = async (agreementId: string) => {
+    setDownloading(agreementId);
+    try {
+      const res = await fetch(`/api/agreements/download?id=${agreementId}`);
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to get download link");
+      }
+      const { url } = await res.json();
+      window.open(url, "_blank");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to download PDF"
+      );
+    } finally {
+      setDownloading(null);
+    }
+  };
 
   useEffect(() => {
     fetch("/api/dashboard")
@@ -168,12 +192,27 @@ export default function AgreementPage() {
                 </ul>
               </div>
 
-              {/* Legal note */}
+              {/* Download + Legal note */}
+              {agreement.status === "SIGNED" && agreement.pdfUrl && (
+                <Button
+                  variant="outline"
+                  className="rounded-xl gap-2 w-full sm:w-auto"
+                  onClick={() => handleDownload(agreement.id)}
+                  disabled={downloading === agreement.id}
+                >
+                  {downloading === agreement.id ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <Download className="size-4" />
+                  )}
+                  Download Signed Agreement (PDF)
+                </Button>
+              )}
+
               <p className="text-[10px] text-muted-foreground">
                 This agreement was signed electronically under the Electronic
                 Communications Act 2000. Your signature, timestamp, and IP
-                address have been recorded. A PDF copy will be available for
-                download once your subscription is active.
+                address have been recorded.
               </p>
             </CardContent>
           </Card>

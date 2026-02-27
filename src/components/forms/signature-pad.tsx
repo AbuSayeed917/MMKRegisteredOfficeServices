@@ -27,27 +27,34 @@ export function SignaturePad({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
-  // Initialize canvas
+  // Initialize canvas when draw mode is active
   useEffect(() => {
+    if (mode !== "drawn") return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
+    // Use requestAnimationFrame to ensure TabsContent is visible and has layout
+    const frameId = requestAnimationFrame(() => {
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width === 0) return;
 
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
-    ctx.scale(dpr, dpr);
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.strokeStyle = "#0c2d42";
-    ctx.lineWidth = 2.5;
-    contextRef.current = ctx;
-  }, []);
+      ctx.scale(dpr, dpr);
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#0c2d42";
+      ctx.lineWidth = 2.5;
+      contextRef.current = ctx;
+    });
+
+    return () => cancelAnimationFrame(frameId);
+  }, [mode]);
 
   // Emit signature on change
   useEffect(() => {

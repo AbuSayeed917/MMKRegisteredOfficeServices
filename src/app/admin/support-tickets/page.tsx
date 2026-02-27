@@ -20,6 +20,7 @@ import {
   ChevronRight,
   ChevronLeft,
   MessageSquare,
+  UserCheck,
 } from "lucide-react";
 
 interface Ticket {
@@ -80,6 +81,7 @@ export default function AdminSupportTicketsPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
   const [page, setPage] = useState(1);
 
   const fetchCountRef = useRef(0);
@@ -93,6 +95,7 @@ export default function AdminSupportTicketsPage() {
     if (search) params.set("search", search);
     if (statusFilter) params.set("status", statusFilter);
     if (priorityFilter) params.set("priority", priorityFilter);
+    if (categoryFilter) params.set("category", categoryFilter);
 
     fetch(`/api/admin/support-tickets?${params}`)
       .then((res) => res.json())
@@ -107,7 +110,7 @@ export default function AdminSupportTicketsPage() {
         if (!cancelled) setLoading(false);
       });
     return () => { cancelled = true; };
-  }, [page, search, statusFilter, priorityFilter]);
+  }, [page, search, statusFilter, priorityFilter, categoryFilter]);
 
   const handleSearch = () => {
     setPage(1);
@@ -181,6 +184,27 @@ export default function AdminSupportTicketsPage() {
                 <SelectItem value="MEDIUM">Medium</SelectItem>
                 <SelectItem value="HIGH">High</SelectItem>
                 <SelectItem value="URGENT">Urgent</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select
+              value={categoryFilter || "ALL"}
+              onValueChange={(val) => {
+                setCategoryFilter(val === "ALL" ? "" : val);
+                setPage(1);
+              }}
+            >
+              <SelectTrigger className="w-full sm:w-[160px] rounded-xl">
+                <SelectValue placeholder="All Categories" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">All Categories</SelectItem>
+                <SelectItem value="GENERAL">General</SelectItem>
+                <SelectItem value="BILLING">Billing</SelectItem>
+                <SelectItem value="MAIL_FORWARDING">Mail Forwarding</SelectItem>
+                <SelectItem value="ACCOUNT">Account</SelectItem>
+                <SelectItem value="TECHNICAL">Technical</SelectItem>
+                <SelectItem value="COMPANIES_HOUSE">Companies House</SelectItem>
+                <SelectItem value="OTHER">Other</SelectItem>
               </SelectContent>
             </Select>
             <Button
@@ -261,6 +285,12 @@ export default function AdminSupportTicketsPage() {
                       <span className="text-[10px] text-muted-foreground">
                         Updated {formatDate(ticket.updatedAt)}
                       </span>
+                      {ticket.assignedTo && (
+                        <span className="flex items-center gap-1 text-[10px] text-purple-600 dark:text-purple-400">
+                          <UserCheck className="size-3" />
+                          {ticket.assignedTo.email.split("@")[0]}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9] flex-shrink-0" />

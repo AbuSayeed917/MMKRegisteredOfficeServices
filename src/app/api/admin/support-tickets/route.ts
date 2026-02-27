@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get("search") || "";
     const status = searchParams.get("status") || "";
     const priority = searchParams.get("priority") || "";
+    const category = searchParams.get("category") || "";
     const skip = (page - 1) * limit;
 
     const where: Prisma.SupportTicketWhereInput = {};
@@ -37,6 +38,7 @@ export async function GET(request: NextRequest) {
 
     if (status) where.status = status as Prisma.EnumTicketStatusFilter;
     if (priority) where.priority = priority as Prisma.EnumTicketPriorityFilter;
+    if (category) where.category = category as Prisma.EnumTicketCategoryFilter;
 
     const [tickets, total] = await Promise.all([
       db.supportTicket.findMany({

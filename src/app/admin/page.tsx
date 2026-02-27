@@ -14,6 +14,7 @@ import {
   CreditCard,
   ChevronRight,
   Calendar,
+  LifeBuoy,
 } from "lucide-react";
 
 interface OverviewData {
@@ -23,6 +24,8 @@ interface OverviewData {
     pendingApprovals: number;
     suspendedClients: number;
     expiringSubscriptions: number;
+    openTickets: number;
+    inProgressTickets: number;
     totalRevenue: number;
   };
   recentPayments: {
@@ -82,7 +85,7 @@ export default function AdminOverviewPage() {
 
   const { metrics } = data;
 
-  const metricCards = [
+  const metricCards: { label: string; value: string | number; icon: typeof Users; color: string; bg: string; href?: string }[] = [
     {
       label: "Total Clients",
       value: metrics.totalClients,
@@ -119,6 +122,14 @@ export default function AdminOverviewPage() {
       bg: "bg-orange-500/10",
     },
     {
+      label: "Open Tickets",
+      value: metrics.openTickets + metrics.inProgressTickets,
+      icon: LifeBuoy,
+      color: "text-purple-500",
+      bg: "bg-purple-500/10",
+      href: "/admin/support-tickets",
+    },
+    {
       label: "Total Revenue",
       value: `£${metrics.totalRevenue.toLocaleString("en-GB", { minimumFractionDigits: 2 })}`,
       icon: TrendingUp,
@@ -142,10 +153,10 @@ export default function AdminOverviewPage() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {metricCards.map((card) => {
           const Icon = card.icon;
-          return (
+          const cardEl = (
             <Card
               key={card.label}
-              className="border-[var(--mmk-border-light)] rounded-2xl"
+              className={`border-[var(--mmk-border-light)] rounded-2xl${card.href ? " hover:shadow-md transition-shadow cursor-pointer" : ""}`}
             >
               <CardContent className="p-5">
                 <div className="flex items-center gap-3">
@@ -163,6 +174,11 @@ export default function AdminOverviewPage() {
                 </div>
               </CardContent>
             </Card>
+          );
+          return card.href ? (
+            <Link key={card.label} href={card.href}>{cardEl}</Link>
+          ) : (
+            <div key={card.label}>{cardEl}</div>
           );
         })}
       </div>
