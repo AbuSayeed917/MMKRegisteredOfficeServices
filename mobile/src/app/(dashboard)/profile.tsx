@@ -393,6 +393,21 @@ export default function ProfileScreen() {
                 </>
               )}
 
+              {/* Need Help? */}
+              <Text style={styles.sectionTitle}>SUPPORT</Text>
+              <View style={styles.card}>
+                <Pressable
+                  style={({ pressed }) => [styles.actionRow, pressed && styles.actionRowPressed]}
+                  onPress={() => router.push("/(dashboard)/support")}
+                >
+                  <View style={styles.helpRow}>
+                    <MaterialCommunityIcons name="lifebuoy" size={22} color={Colors.accent} />
+                    <Text style={styles.helpLabel}>Need Help?</Text>
+                  </View>
+                  <MaterialCommunityIcons name="chevron-right" size={20} color={Colors.textLight} />
+                </Pressable>
+              </View>
+
               {/* Sign Out */}
               <View style={styles.signOutContainer}>
                 <Pressable
@@ -561,6 +576,15 @@ const styles = StyleSheet.create({
     ...Typography.footnote,
     color: Colors.textLight,
     marginTop: Spacing.xs,
+  },
+  helpRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.md,
+  },
+  helpLabel: {
+    ...Typography.body,
+    color: Colors.textPrimary,
   },
   signOutContainer: {
     marginTop: Spacing["3xl"],

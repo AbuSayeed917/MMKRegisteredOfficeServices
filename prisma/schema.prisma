@@ -61,6 +61,30 @@ enum AdminActionType {
   NOTE
 }
 
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TicketCategory {
+  GENERAL
+  BILLING
+  MAIL_FORWARDING
+  ACCOUNT
+  TECHNICAL
+  COMPANIES_HOUSE
+  OTHER
+}
+
 // ─── Users ──────────────────────────────────────────────────
 model User {
   id              String    @id @default(cuid())
@@ -84,6 +108,9 @@ model User {
   targetedActions AdminAction[]    @relation("TargetedActions")
   passwordResets  PasswordReset[]
   otpCodes        OtpCode[]
+  supportTickets  SupportTicket[]
+  assignedTickets SupportTicket[]  @relation("AssignedTickets")
+  ticketMessages  TicketMessage[]  @relation("TicketMessages")
 
   @@map("users")
 }
@@ -271,4 +298,40 @@ model Notification {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("notifications")
+}
+
+// ─── Support Tickets ────────────────────────────────────────
+model SupportTicket {
+  id           String         @id @default(cuid())
+  userId       String         @map("user_id")
+  subject      String
+  category     TicketCategory @default(GENERAL)
+  status       TicketStatus   @default(OPEN)
+  priority     TicketPriority @default(MEDIUM)
+  assignedToId String?        @map("assigned_to_id")
+  closedAt     DateTime?      @map("closed_at")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignedTo User?           @relation("AssignedTickets", fields: [assignedToId], references: [id])
+  messages   TicketMessage[]
+
+  @@map("support_tickets")
+}
+
+// ─── Ticket Messages ────────────────────────────────────────
+model TicketMessage {
+  id            String   @id @default(cuid())
+  ticketId      String   @map("ticket_id")
+  senderId      String   @map("sender_id")
+  message       String   @db.Text
+  isInternal    Boolean  @default(false) @map("is_internal")
+  attachmentUrl String?  @map("attachment_url")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  sender User          @relation("TicketMessages", fields: [senderId], references: [id])
+
+  @@map("ticket_messages")
 }

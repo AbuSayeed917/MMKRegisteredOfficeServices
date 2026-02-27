@@ -15,6 +15,7 @@ import {
   Shield,
   Loader2,
   Upload,
+  LifeBuoy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AdminBottomNav } from "@/components/pwa/bottom-nav-admin";
@@ -26,6 +27,7 @@ const navItems = [
   { href: "/admin/clients", label: "Clients", icon: Users },
   { href: "/admin/payments", label: "Payments", icon: CreditCard },
   { href: "/admin/migration", label: "Migration", icon: Upload },
+  { href: "/admin/support-tickets", label: "Support", icon: LifeBuoy },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 

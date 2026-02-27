@@ -113,6 +113,9 @@ export default function DashboardLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen name="support" options={{ href: null }} />
+      <Tabs.Screen name="support-new" options={{ href: null }} />
+      <Tabs.Screen name="support-detail" options={{ href: null }} />
     </Tabs>
   );
 }

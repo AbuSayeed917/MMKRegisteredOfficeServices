@@ -10,6 +10,7 @@ import {
   FileText,
   Bell,
   User,
+  LifeBuoy,
   LogOut,
   Menu,
   X,
@@ -26,6 +27,7 @@ const navItems = [
   { href: "/dashboard/subscription", label: "Subscription", icon: CreditCard },
   { href: "/dashboard/agreement", label: "Agreement", icon: FileText },
   { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
+  { href: "/dashboard/support", label: "Support", icon: LifeBuoy },
   { href: "/dashboard/profile", label: "Profile", icon: User },
 ];
 
