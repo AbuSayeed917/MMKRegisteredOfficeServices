@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import { statusColor, Colors } from "@/theme/colors";
+import { statusColor } from "@/theme/colors";
 
 interface StatusBadgeProps {
   status: string;

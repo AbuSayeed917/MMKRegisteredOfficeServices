@@ -32,8 +32,6 @@ export default function SubscriptionScreen() {
   const sub = data?.subscription;
   const payments = data?.payments ?? [];
   const status = sub?.status ?? "DRAFT";
-  const isActive = status === "ACTIVE";
-
   const handlePay = async () => {
     setPayLoading(true);
     try {
@@ -137,7 +135,7 @@ export default function SubscriptionScreen() {
           </View>
 
           {/* What's Included Section */}
-          <Text style={styles.sectionTitle}>WHAT'S INCLUDED</Text>
+          <Text style={styles.sectionTitle}>WHAT&apos;S INCLUDED</Text>
           <View style={styles.card}>
             {[
               { icon: "office-building-marker", text: "Registered office address service" },

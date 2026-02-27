@@ -1,5 +1,5 @@
 import { ScrollView, View, Text, StyleSheet, RefreshControl, Animated } from "react-native";
-import { useRef, useEffect } from "react";
+import { useMemo, useEffect } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Colors } from "@/theme/colors";
@@ -14,8 +14,8 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 export default function DashboardHome() {
   const { data, isLoading, refetch, isRefetching } = useDashboard();
   const insets = useSafeAreaInsets();
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(20)).current;
+  const fadeAnim = useMemo(() => new Animated.Value(0), []);
+  const slideAnim = useMemo(() => new Animated.Value(20), []);
 
   useEffect(() => {
     if (data) {

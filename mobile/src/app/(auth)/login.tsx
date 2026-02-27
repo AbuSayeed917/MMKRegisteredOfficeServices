@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   View,
   Text,
@@ -35,9 +35,9 @@ export default function LoginScreen() {
   const [biometricLabel, setBiometricLabel] = useState("Biometric");
   const [biometricLoading, setBiometricLoading] = useState(false);
 
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(24)).current;
-  const shakeAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useMemo(() => new Animated.Value(0), []);
+  const slideAnim = useMemo(() => new Animated.Value(24), []);
+  const shakeAnim = useMemo(() => new Animated.Value(0), []);
 
   useEffect(() => {
     Animated.parallel([

@@ -45,7 +45,7 @@ export default function ForgotPasswordScreen() {
               </View>
               <Text style={styles.successTitle}>Check your email</Text>
               <Text style={styles.successMessage}>
-                If an account exists for {email}, we've sent a password reset link.
+                If an account exists for {email}, we&apos;ve sent a password reset link.
               </Text>
               <GradientButton
                 label="Back to Sign In"
@@ -64,7 +64,7 @@ export default function ForgotPasswordScreen() {
               />
               <Text style={styles.title}>Forgot Password</Text>
               <Text style={styles.description}>
-                Enter your email address and we'll send you a link to reset your password.
+                Enter your email address and we&apos;ll send you a link to reset your password.
               </Text>
 
               {error ? (

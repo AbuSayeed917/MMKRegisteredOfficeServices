@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Animated, Text, TextStyle } from "react-native";
 
 type AnimatedNumberProps = {
@@ -19,7 +19,7 @@ export function AnimatedNumber({
   decimals = 0,
 }: AnimatedNumberProps) {
   const [display, setDisplay] = useState("0");
-  const animValue = useRef(new Animated.Value(0)).current;
+  const animValue = useMemo(() => new Animated.Value(0), []);
 
   useEffect(() => {
     animValue.setValue(0);

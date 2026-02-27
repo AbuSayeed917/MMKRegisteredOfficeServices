@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { View, StyleSheet, Animated, ViewStyle } from "react-native";
 import { Radius, Spacing } from "@/theme/spacing";
 import { Colors } from "@/theme/colors";
@@ -11,7 +11,7 @@ type SkeletonProps = {
 };
 
 function SkeletonItem({ width = "100%", height = 16, borderRadius = Radius.sm, style }: SkeletonProps) {
-  const opacity = useRef(new Animated.Value(0.3)).current;
+  const opacity = useMemo(() => new Animated.Value(0.3), []);
 
   useEffect(() => {
     const animation = Animated.loop(

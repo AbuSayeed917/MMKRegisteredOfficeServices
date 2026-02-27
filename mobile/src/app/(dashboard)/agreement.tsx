@@ -44,7 +44,7 @@ export default function AgreementScreen() {
                 <MaterialCommunityIcons name="file-document-outline" size={48} color={Colors.textLight} />
               </View>
               <Text style={styles.emptyTitle}>No Agreement</Text>
-              <Text style={styles.emptyMessage}>You don't have an agreement on file yet.</Text>
+              <Text style={styles.emptyMessage}>You don&apos;t have an agreement on file yet.</Text>
             </View>
           ) : (
             <>
@@ -96,7 +96,7 @@ export default function AgreementScreen() {
               </View>
 
               {/* What's Covered */}
-              <Text style={styles.sectionTitle}>WHAT'S COVERED</Text>
+              <Text style={styles.sectionTitle}>WHAT&apos;S COVERED</Text>
               <View style={styles.card}>
                 {[
                   { icon: "office-building-marker", text: "Registered office address for your company", color: Colors.accent },

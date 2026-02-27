@@ -3,7 +3,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import { Colors } from "@/theme/colors";
-import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
+import { Spacing, Radius, Typography } from "@/theme/spacing";
 import { useDashboard } from "@/hooks/useDashboard";
 import { useMarkNotificationsRead } from "@/hooks/useNotifications";
 import { NotificationItem } from "@/components/dashboard/NotificationItem";
