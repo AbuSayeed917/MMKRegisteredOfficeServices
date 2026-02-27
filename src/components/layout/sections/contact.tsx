@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Building2, Clock, Mail, Phone } from "lucide-react";
+import { Building2, Clock, Mail, Phone, CheckCircle2, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,16 +25,19 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { useState } from "react";
 
 const formSchema = z.object({
   firstName: z.string().min(2).max(255),
   lastName: z.string().min(2).max(255),
   email: z.string().email(),
   subject: z.string().min(2).max(255),
-  message: z.string(),
+  message: z.string().min(1, "Please enter a message"),
 });
 
 export const ContactSection = () => {
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,10 +49,22 @@ export const ContactSection = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const { firstName, lastName, email, subject, message } = values;
-    const mailToLink = `mailto:info@mmkaccountants.co.uk?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Hello, I am ${firstName} ${lastName}. My email is ${email}.\n\n${message}`)}`;
-    window.open(mailToLink, "_self");
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+
+      if (!res.ok) throw new Error("Failed to send");
+
+      setStatus("sent");
+      form.reset();
+    } catch {
+      setStatus("error");
+    }
   }
 
   return (
@@ -141,6 +156,24 @@ export const ContactSection = () => {
             <Card className="bg-card border-[var(--mmk-border-light)] rounded-2xl shadow-md">
               <CardContent className="p-8">
                 <h3 className="font-semibold text-lg mb-6">Send us a message</h3>
+
+                {status === "sent" ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <CheckCircle2 className="size-12 text-green-500 mb-4" />
+                    <h4 className="text-lg font-semibold mb-2">Message Sent!</h4>
+                    <p className="text-sm text-[var(--mmk-text-secondary)] mb-6">
+                      Thank you for reaching out. We&apos;ll get back to you within 1 business day.
+                      A confirmation has been sent to your email.
+                    </p>
+                    <Button
+                      variant="outline"
+                      className="rounded-full"
+                      onClick={() => setStatus("idle")}
+                    >
+                      Send Another Message
+                    </Button>
+                  </div>
+                ) : (
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                     <div className="grid grid-cols-2 gap-4">
@@ -224,14 +257,29 @@ export const ContactSection = () => {
                       )}
                     />
 
+                    {status === "error" && (
+                      <p className="text-sm text-red-500 text-center">
+                        Failed to send message. Please try again or email us directly at info@mmkaccountants.co.uk
+                      </p>
+                    )}
+
                     <Button
                       type="submit"
-                      className="w-full rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold py-3 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                      disabled={status === "sending"}
+                      className="w-full rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold py-3 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60"
                     >
-                      Send Message
+                      {status === "sending" ? (
+                        <>
+                          <Loader2 className="size-4 mr-2 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        "Send Message"
+                      )}
                     </Button>
                   </form>
                 </Form>
+                )}
               </CardContent>
             </Card>
           </ScrollReveal>

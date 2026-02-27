@@ -9,6 +9,8 @@ import { RenewalReminderEmail } from "./emails/renewal-reminder";
 import { AccountSuspendedEmail } from "./emails/account-suspended";
 import { AccountReactivatedEmail } from "./emails/account-reactivated";
 import { AdminNewRegistrationEmail } from "./emails/admin-new-registration";
+import { ContactFormEmail } from "./emails/contact-form";
+import { ContactConfirmationEmail } from "./emails/contact-confirmation";
 
 // Lazy initialization to avoid throwing during build when RESEND_API_KEY is absent
 let _resend: Resend | null = null;
@@ -173,6 +175,38 @@ export async function sendAdminNewRegistrationEmail(
   return sendEmail({
     to: ADMIN_EMAIL,
     subject: `New Registration: ${companyName} (${crn})`,
+    html,
+  });
+}
+
+export async function sendContactFormEmail(
+  firstName: string,
+  lastName: string,
+  email: string,
+  subject: string,
+  message: string
+) {
+  const html = await render(
+    ContactFormEmail({ firstName, lastName, email, subject, message })
+  );
+  return resend.emails.send({
+    from: FROM_EMAIL,
+    to: ADMIN_EMAIL,
+    replyTo: email,
+    subject: `Contact Form: ${subject}`,
+    html,
+  });
+}
+
+export async function sendContactConfirmationEmail(
+  to: string,
+  firstName: string,
+  subject: string
+) {
+  const html = await render(ContactConfirmationEmail({ firstName, subject }));
+  return sendEmail({
+    to,
+    subject: `We received your message — ${subject}`,
     html,
   });
 }
