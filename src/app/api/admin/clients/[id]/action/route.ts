@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUser } from "@/lib/get-user";
 import { db } from "@/lib/db";
+import { stripe } from "@/lib/stripe";
 import {
   sendApprovedEmail,
   sendRejectedEmail,
@@ -71,19 +72,45 @@ export async function POST(
     const newStatus = statusMap[action];
     const now = new Date();
 
+    // ─── Auto-refund on REJECT ──────────────────────────────
+    let refundInitiated = false;
+    if (action === "REJECT") {
+      try {
+        // Find the latest SUCCEEDED payment for this user
+        const payment = await db.payment.findFirst({
+          where: { userId: id, status: "SUCCEEDED" },
+          orderBy: { createdAt: "desc" },
+        });
+
+        if (payment?.stripePaymentIntentId) {
+          await stripe.refunds.create({
+            payment_intent: payment.stripePaymentIntentId,
+          });
+          refundInitiated = true;
+          // Payment status will be updated to REFUNDED via the charge.refunded webhook
+        }
+      } catch (refundError) {
+        console.error("Auto-refund failed:", refundError);
+        // Continue with rejection even if refund fails — admin can handle manually
+      }
+    }
+
     await db.$transaction(async (tx) => {
       // Update subscription status
       if (user.subscription) {
         const updateData: Record<string, unknown> = { status: newStatus };
 
         if (action === "APPROVE") {
-          updateData.startDate = now;
-          updateData.endDate = new Date(
-            now.getFullYear() + 1,
-            now.getMonth(),
-            now.getDate()
-          );
-          updateData.nextPaymentDate = updateData.endDate;
+          // If dates were already set during checkout, keep them
+          if (!user.subscription.startDate) {
+            updateData.startDate = now;
+            updateData.endDate = new Date(
+              now.getFullYear() + 1,
+              now.getMonth(),
+              now.getDate()
+            );
+            updateData.nextPaymentDate = updateData.endDate;
+          }
         }
 
         if (action === "REACTIVATE") {
@@ -124,11 +151,11 @@ export async function POST(
       const notificationMessages: Record<string, { title: string; message: string }> = {
         APPROVE: {
           title: "Application Approved",
-          message: `Your registered office service application has been approved. You can now proceed with payment in your dashboard.`,
+          message: `Your registered office service application has been approved. Your service is now active.`,
         },
         REJECT: {
           title: "Application Rejected",
-          message: `Your application has been rejected. ${reason ? `Reason: ${reason}` : "Please contact us for more details."}`,
+          message: `Your application has been rejected.${refundInitiated ? " Your payment of £75 will be refunded automatically within 5–10 business days." : ""} ${reason ? `Reason: ${reason}` : "Please contact us for more details."}`,
         },
         SUSPEND: {
           title: "Account Suspended",
@@ -187,6 +214,7 @@ export async function POST(
       success: true,
       message: `Client ${action.toLowerCase()}d successfully`,
       newStatus,
+      refundInitiated,
     });
   } catch (error) {
     console.error("Admin action error:", error);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,6 +17,7 @@ import {
   Shield,
   CheckCircle2,
   XCircle,
+  Loader2,
 } from "lucide-react";
 
 interface AccountFormData {
@@ -107,6 +108,9 @@ export function AccountCreationStep({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [emailChecking, setEmailChecking] = useState(false);
+  const [emailAvailable, setEmailAvailable] = useState<boolean | null>(null);
+  const checkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Pre-fill email from director details
   const email = data.email || directorEmail;
@@ -116,6 +120,65 @@ export function AccountCreationStep({
     [data.password]
   );
 
+  // Debounced email availability check
+  const checkEmailAvailability = useCallback(async (emailToCheck: string) => {
+    const normalized = emailToCheck.toLowerCase().trim();
+    if (!normalized || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized)) {
+      setEmailAvailable(null);
+      return;
+    }
+
+    setEmailChecking(true);
+    try {
+      const res = await fetch("/api/register/check-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: normalized }),
+      });
+      const result = await res.json();
+      setEmailAvailable(result.available);
+      if (!result.available) {
+        setErrors((prev) => ({
+          ...prev,
+          email: "An account with this email already exists",
+        }));
+      } else {
+        setErrors((prev) => {
+          const next = { ...prev };
+          if (next.email === "An account with this email already exists") {
+            delete next.email;
+          }
+          return next;
+        });
+      }
+    } catch {
+      setEmailAvailable(null);
+    } finally {
+      setEmailChecking(false);
+    }
+  }, []);
+
+  // Check email when it changes (debounced)
+  useEffect(() => {
+    if (checkTimeoutRef.current) {
+      clearTimeout(checkTimeoutRef.current);
+    }
+
+    setEmailAvailable(null);
+
+    if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      checkTimeoutRef.current = setTimeout(() => {
+        checkEmailAvailability(email);
+      }, 600);
+    }
+
+    return () => {
+      if (checkTimeoutRef.current) {
+        clearTimeout(checkTimeoutRef.current);
+      }
+    };
+  }, [email, checkEmailAvailability]);
+
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
@@ -123,6 +186,8 @@ export function AccountCreationStep({
       newErrors.email = "Email address is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       newErrors.email = "Please enter a valid email address";
+    } else if (emailAvailable === false) {
+      newErrors.email = "An account with this email already exists";
     }
 
     if (!data.password) {
@@ -150,12 +215,47 @@ export function AccountCreationStep({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Make sure email is stored
     if (!data.email && directorEmail) {
       onUpdate({ ...data, email: directorEmail });
     }
+
+    // If email hasn't been checked yet, check it now before proceeding
+    if (emailAvailable === null && email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setEmailChecking(true);
+      try {
+        const res = await fetch("/api/register/check-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email.toLowerCase().trim() }),
+        });
+        const result = await res.json();
+        setEmailAvailable(result.available);
+        if (!result.available) {
+          setErrors((prev) => ({
+            ...prev,
+            email: "An account with this email already exists",
+          }));
+          setEmailChecking(false);
+          return;
+        }
+      } catch {
+        // If check fails, let the backend handle it
+      } finally {
+        setEmailChecking(false);
+      }
+    }
+
+    if (emailAvailable === false) {
+      setErrors((prev) => ({
+        ...prev,
+        email: "An account with this email already exists",
+      }));
+      return;
+    }
+
     if (validate()) {
       onNext();
     }
@@ -203,23 +303,48 @@ export function AccountCreationStep({
               <Mail className="size-3.5 text-[#0ea5e9]" />
               Email Address <span className="text-destructive">*</span>
             </Label>
-            <Input
-              id="accountEmail"
-              type="email"
-              placeholder="you@company.com"
-              value={email}
-              onChange={(e) => updateField("email", e.target.value)}
-              className={`rounded-xl border-[var(--mmk-border)] ${
-                errors.email ? "border-destructive" : ""
-              }`}
-            />
+            <div className="relative">
+              <Input
+                id="accountEmail"
+                type="email"
+                placeholder="you@company.com"
+                value={email}
+                onChange={(e) => updateField("email", e.target.value)}
+                className={`rounded-xl border-[var(--mmk-border)] pr-10 ${
+                  errors.email
+                    ? "border-destructive"
+                    : emailAvailable === true
+                    ? "border-emerald-400"
+                    : ""
+                }`}
+              />
+              <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                {emailChecking && (
+                  <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                )}
+                {!emailChecking && emailAvailable === true && (
+                  <CheckCircle2 className="size-4 text-emerald-500" />
+                )}
+                {!emailChecking && emailAvailable === false && (
+                  <XCircle className="size-4 text-destructive" />
+                )}
+              </div>
+            </div>
             {errors.email && (
               <p className="text-xs text-destructive">{errors.email}</p>
             )}
-            <p className="text-xs text-muted-foreground">
-              This will be your login email. A verification code will be sent
-              after registration.
-            </p>
+            {!errors.email && emailAvailable === true && (
+              <p className="text-xs text-emerald-600 flex items-center gap-1">
+                <CheckCircle2 className="size-3" />
+                Email is available
+              </p>
+            )}
+            {!errors.email && !emailChecking && emailAvailable === null && email && (
+              <p className="text-xs text-muted-foreground">
+                This will be your login email. A verification code will be sent
+                after registration.
+              </p>
+            )}
           </div>
 
           {/* Password */}
@@ -447,10 +572,20 @@ export function AccountCreationStep({
             </Button>
             <Button
               type="submit"
+              disabled={emailChecking || emailAvailable === false}
               className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2"
             >
-              Continue
-              <ArrowRight className="size-4" />
+              {emailChecking ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Checking...
+                </>
+              ) : (
+                <>
+                  Continue
+                  <ArrowRight className="size-4" />
+                </>
+              )}
             </Button>
           </div>
         </CardContent>

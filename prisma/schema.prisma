@@ -175,6 +175,12 @@ model Director {
   residentialAddress String  @map("residential_address")
   idDocumentUrl     String?  @map("id_document_url")
   addressProofUrl   String?  @map("address_proof_url")
+  idDocumentData    String?  @map("id_document_data") @db.Text
+  idDocumentName    String?  @map("id_document_name")
+  idDocumentType    String?  @map("id_document_type")
+  addressProofData  String?  @map("address_proof_data") @db.Text
+  addressProofName  String?  @map("address_proof_name")
+  addressProofType  String?  @map("address_proof_type")
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
 

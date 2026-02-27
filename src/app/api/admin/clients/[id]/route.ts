@@ -84,6 +84,12 @@ export async function GET(
               position: d.position,
               dateOfBirth: d.dateOfBirth,
               residentialAddress: d.residentialAddress,
+              idDocumentName: d.idDocumentName,
+              idDocumentType: d.idDocumentType,
+              hasIdDocument: !!d.idDocumentData,
+              addressProofName: d.addressProofName,
+              addressProofType: d.addressProofType,
+              hasAddressProof: !!d.addressProofData,
             })),
           }
         : null,

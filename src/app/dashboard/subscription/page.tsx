@@ -15,6 +15,7 @@ import {
   RefreshCw,
   Banknote,
   Loader2,
+  ShieldCheck,
 } from "lucide-react";
 
 interface SubscriptionData {
@@ -38,11 +39,11 @@ interface SubscriptionData {
 
 const statusConfig: Record<string, { label: string; color: string; bg: string; icon: React.ElementType }> = {
   ACTIVE: { label: "Active", color: "text-emerald-700 dark:text-emerald-400", bg: "bg-emerald-100 dark:bg-emerald-900/30", icon: CheckCircle2 },
-  PENDING_APPROVAL: { label: "Pending Approval", color: "text-amber-700 dark:text-amber-400", bg: "bg-amber-100 dark:bg-amber-900/30", icon: Clock },
+  PENDING_APPROVAL: { label: "Under Review", color: "text-amber-700 dark:text-amber-400", bg: "bg-amber-100 dark:bg-amber-900/30", icon: Clock },
   EXPIRED: { label: "Expired", color: "text-red-700 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/30", icon: XCircle },
   SUSPENDED: { label: "Suspended", color: "text-red-700 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/30", icon: AlertTriangle },
   RENEWAL_PENDING: { label: "Renewal Pending", color: "text-amber-700 dark:text-amber-400", bg: "bg-amber-100 dark:bg-amber-900/30", icon: RefreshCw },
-  DRAFT: { label: "Draft", color: "text-gray-700 dark:text-gray-400", bg: "bg-gray-100 dark:bg-gray-800", icon: Clock },
+  DRAFT: { label: "Payment Required", color: "text-gray-700 dark:text-gray-400", bg: "bg-gray-100 dark:bg-gray-800", icon: Clock },
   REJECTED: { label: "Rejected", color: "text-red-700 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/30", icon: XCircle },
 };
 
@@ -79,8 +80,9 @@ export default function SubscriptionPage() {
   const status = statusConfig[sub?.status || "DRAFT"] || statusConfig.DRAFT;
   const StatusIcon = status.icon;
 
+  // Only allow payment for DRAFT (initial), RENEWAL_PENDING, EXPIRED, or SUSPENDED
   const canPay =
-    sub?.status === "PENDING_APPROVAL" ||
+    sub?.status === "DRAFT" ||
     sub?.status === "RENEWAL_PENDING" ||
     sub?.status === "EXPIRED" ||
     sub?.status === "SUSPENDED";
@@ -178,16 +180,52 @@ export default function SubscriptionPage() {
             )}
           </div>
 
+          {/* PENDING_APPROVAL: paid, awaiting admin review */}
           {sub?.status === "PENDING_APPROVAL" && (
             <div className="mt-6 bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/30 rounded-xl p-4 flex items-start gap-3">
-              <Clock className="size-5 text-amber-500 mt-0.5 flex-shrink-0" />
+              <ShieldCheck className="size-5 text-amber-500 mt-0.5 flex-shrink-0" />
               <div>
                 <p className="text-sm font-medium text-amber-800 dark:text-amber-400">
-                  Awaiting Admin Approval
+                  Application Under Review
                 </p>
                 <p className="text-xs text-amber-700 dark:text-amber-500 mt-0.5">
-                  Your registration is being reviewed. You will be notified
-                  once approved and guided through the payment process.
+                  Your payment has been received. Our admin team is reviewing
+                  your application and documents. You will be notified once a
+                  decision is made. If your application is not approved, your
+                  payment will be automatically refunded.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* DRAFT: registration done but payment not yet completed */}
+          {sub?.status === "DRAFT" && (
+            <div className="mt-6 bg-[#0ea5e9]/5 border border-[#0ea5e9]/20 rounded-xl p-4 flex items-start gap-3">
+              <CreditCard className="size-5 text-[#0ea5e9] mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="text-sm font-medium text-[#0c2d42] dark:text-white">
+                  Complete Your Payment
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Please complete the £75 annual payment to submit your
+                  application for review.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* REJECTED status */}
+          {sub?.status === "REJECTED" && (
+            <div className="mt-6 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800/30 rounded-xl p-4 flex items-start gap-3">
+              <XCircle className="size-5 text-red-500 mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="text-sm font-medium text-red-800 dark:text-red-400">
+                  Application Rejected
+                </p>
+                <p className="text-xs text-red-700 dark:text-red-500 mt-0.5">
+                  Your application was not approved. If a payment was made, it
+                  has been automatically refunded. Please check your
+                  notifications for more details or contact us.
                 </p>
               </div>
             </div>
@@ -270,7 +308,7 @@ export default function SubscriptionPage() {
                 No payments yet
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Payments will appear here once your subscription is active
+                Payments will appear here once processed
               </p>
             </div>
           )}

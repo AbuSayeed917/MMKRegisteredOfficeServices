@@ -44,6 +44,14 @@ export async function POST() {
       );
     }
 
+    // Don't allow checkout if already pending approval (already paid)
+    if (user.subscription.status === "PENDING_APPROVAL") {
+      return NextResponse.json(
+        { error: "Payment already received. Your application is under review." },
+        { status: 400 }
+      );
+    }
+
     // Create or retrieve Stripe customer
     let stripeCustomerId = user.subscription.stripeCustomerId;
 
@@ -70,7 +78,7 @@ export async function POST() {
     const checkoutSession = await stripe.checkout.sessions.create({
       customer: stripeCustomerId,
       mode: "payment",
-      payment_method_types: ["card", "bacs_debit"],
+      payment_method_types: ["card"],
       line_items: [
         {
           price_data: {

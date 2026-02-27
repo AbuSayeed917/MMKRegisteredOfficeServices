@@ -26,6 +26,15 @@ export function ApplicationRejectedEmail({
         </Section>
       )}
 
+      <Section style={refundBox}>
+        <Text style={refundTitle}>Automatic Refund</Text>
+        <Text style={boxText}>
+          Your payment of £75.00 has been automatically refunded to your
+          original payment method. Please allow 5–10 business days for the
+          refund to appear on your statement.
+        </Text>
+      </Section>
+
       <Text style={text}>
         If you believe this was made in error, or would like to discuss this
         further, please contact our team.
@@ -74,6 +83,21 @@ const boxText = {
   fontSize: "13px",
   lineHeight: "22px",
   margin: "0",
+};
+
+const refundBox = {
+  backgroundColor: "#f0f7fb",
+  borderRadius: "12px",
+  padding: "20px 24px",
+  margin: "20px 0",
+  borderLeft: "4px solid #0ea5e9",
+};
+
+const refundTitle = {
+  color: "#0c2d42",
+  fontSize: "14px",
+  fontWeight: "600" as const,
+  margin: "0 0 8px",
 };
 
 const buttonContainer = {

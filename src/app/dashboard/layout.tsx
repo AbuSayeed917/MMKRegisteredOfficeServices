@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   CreditCard,
   FileText,
+  ShieldCheck,
   Bell,
   User,
   LifeBuoy,
@@ -25,6 +26,7 @@ import { OfflineIndicator } from "@/components/pwa/offline-indicator";
 const navItems = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/dashboard/subscription", label: "Subscription", icon: CreditCard },
+  { href: "/dashboard/documents", label: "Documents", icon: ShieldCheck },
   { href: "/dashboard/agreement", label: "Agreement", icon: FileText },
   { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
   { href: "/dashboard/support", label: "Support", icon: LifeBuoy },

@@ -15,16 +15,17 @@ export function WelcomeEmail({ companyName }: WelcomeEmailProps) {
         Registered Office Service.
       </Text>
       <Text style={text}>
-        Your application has been received and is now pending admin review. We
-        typically process applications within 1–2 business days.
+        Your payment has been received and your application is now under review
+        by our admin team. We typically process applications within 1–2 business
+        days.
       </Text>
 
       <Section style={box}>
         <Text style={boxTitle}>What happens next?</Text>
-        <Text style={boxText}>1. Our team reviews your application</Text>
+        <Text style={boxText}>1. Our team reviews your application and documents</Text>
         <Text style={boxText}>2. You receive an approval notification</Text>
-        <Text style={boxText}>3. Complete your £75 annual payment</Text>
-        <Text style={boxText}>4. Your registered office address is activated</Text>
+        <Text style={boxText}>3. Your registered office address is activated</Text>
+        <Text style={boxText}>4. If not approved, your payment is automatically refunded</Text>
       </Section>
 
       <Section style={buttonContainer}>

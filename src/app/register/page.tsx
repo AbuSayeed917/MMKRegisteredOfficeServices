@@ -6,12 +6,14 @@ import { Navbar } from "@/components/layout/navbar";
 import { FooterSection } from "@/components/layout/sections/footer";
 import { BusinessDetailsStep } from "@/components/forms/registration/business-details-step";
 import { DirectorDetailsStep } from "@/components/forms/registration/director-details-step";
+import { DocumentUploadStep } from "@/components/forms/registration/document-upload-step";
 import { AccountCreationStep } from "@/components/forms/registration/account-creation-step";
 import { AgreementStep } from "@/components/forms/registration/agreement-step";
 import { ReviewStep } from "@/components/forms/registration/review-step";
 import {
   Building2,
   UserCircle,
+  ShieldCheck,
   KeyRound,
   FileText,
   Eye,
@@ -19,6 +21,7 @@ import {
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import type { BusinessDetailsFormData, CompanyOfficer } from "@/types/companies-house";
+import type { DocumentUploadData } from "@/components/forms/registration/document-upload-step";
 
 interface DirectorFormData {
   fullName: string;
@@ -47,6 +50,7 @@ interface AgreementFormData {
 export interface RegistrationData {
   business: BusinessDetailsFormData;
   director: DirectorFormData;
+  documents: DocumentUploadData;
   account: AccountFormData;
   agreement: AgreementFormData;
 }
@@ -54,9 +58,10 @@ export interface RegistrationData {
 const steps = [
   { label: "Business Details", icon: Building2 },
   { label: "Director Details", icon: UserCircle },
+  { label: "Upload Documents", icon: ShieldCheck },
   { label: "Create Account", icon: KeyRound },
   { label: "Agreement", icon: FileText },
-  { label: "Review & Submit", icon: Eye },
+  { label: "Review & Pay", icon: Eye },
 ];
 
 export default function RegisterPage() {
@@ -80,6 +85,10 @@ export default function RegisterPage() {
       email: "",
       phone: "",
       residentialAddress: "",
+    },
+    documents: {
+      idDocument: null,
+      addressProof: null,
     },
     account: {
       email: "",
@@ -158,6 +167,10 @@ export default function RegisterPage() {
 
   const updateDirectorData = (data: DirectorFormData) => {
     setFormData((prev) => ({ ...prev, director: data }));
+  };
+
+  const updateDocumentData = (data: DocumentUploadData) => {
+    setFormData((prev) => ({ ...prev, documents: data }));
   };
 
   const updateAccountData = (data: AccountFormData) => {
@@ -244,7 +257,7 @@ export default function RegisterPage() {
 
                     {/* Connector line */}
                     {index < steps.length - 1 && (
-                      <div className="w-8 sm:w-14 md:w-20 h-[2px] mx-1 sm:mx-2">
+                      <div className="w-6 sm:w-10 md:w-14 h-[2px] mx-1 sm:mx-2">
                         <div
                           className={`h-full rounded-full transition-all duration-500 ${
                             index < currentStep
@@ -278,6 +291,15 @@ export default function RegisterPage() {
               />
             )}
             {currentStep === 2 && (
+              <DocumentUploadStep
+                data={formData.documents}
+                directorName={formData.director.fullName}
+                onUpdate={updateDocumentData}
+                onNext={goNext}
+                onBack={goBack}
+              />
+            )}
+            {currentStep === 3 && (
               <AccountCreationStep
                 data={formData.account}
                 directorEmail={formData.director.email}
@@ -286,7 +308,7 @@ export default function RegisterPage() {
                 onBack={goBack}
               />
             )}
-            {currentStep === 3 && (
+            {currentStep === 4 && (
               <AgreementStep
                 data={formData.agreement}
                 companyName={formData.business.companyName}
@@ -297,7 +319,7 @@ export default function RegisterPage() {
                 onBack={goBack}
               />
             )}
-            {currentStep === 4 && (
+            {currentStep === 5 && (
               <ReviewStep
                 data={formData}
                 onBack={goBack}

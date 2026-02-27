@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,10 +19,11 @@ import {
   FileText,
   CheckCircle2,
   Loader2,
-  Send,
+  CreditCard,
   AlertTriangle,
   Pen,
   Type,
+  ShieldCheck,
 } from "lucide-react";
 import type { RegistrationData } from "@/app/register/page";
 
@@ -45,7 +45,6 @@ function humanizeType(type: string): string {
 }
 
 export function ReviewStep({ data, onBack }: ReviewStepProps) {
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -77,6 +76,10 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
             phone: data.director.phone,
             residentialAddress: data.director.residentialAddress,
           },
+          documents: {
+            idDocument: data.documents.idDocument,
+            addressProof: data.documents.addressProof,
+          },
           account: {
             email: data.account.email,
             password: data.account.password,
@@ -90,16 +93,35 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
       });
 
       if (!response.ok) {
-        const result = await response.json();
-        throw new Error(result.error || "Registration failed");
+        let errorMsg = "Registration failed. Please try again.";
+        try {
+          const result = await response.json();
+          errorMsg = result.error || errorMsg;
+        } catch {
+          // Response body may not be valid JSON (e.g., truncated or too large)
+          errorMsg = response.status === 409
+            ? "An account with this email already exists."
+            : response.status === 429
+            ? "Too many attempts. Please wait a moment and try again."
+            : "Registration failed. Please try again.";
+        }
+        throw new Error(errorMsg);
+      }
+
+      let result;
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error("Unexpected server response. Please try again.");
+      }
+
+      // If we get a checkout URL, redirect to Stripe
+      if (result.checkoutUrl) {
+        window.location.href = result.checkoutUrl;
+        return;
       }
 
       setSuccess(true);
-
-      // Redirect to login after a brief delay
-      setTimeout(() => {
-        router.push("/login?registered=true");
-      }, 3000);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Registration failed. Please try again."
@@ -109,7 +131,7 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
     }
   };
 
-  // Success state
+  // Success state (fallback — normally user is redirected to Stripe)
   if (success) {
     return (
       <Card className="border-[var(--mmk-border-light)] rounded-2xl shadow-lg overflow-hidden">
@@ -120,16 +142,10 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
           </div>
           <h2 className="text-2xl font-bold mb-2">Registration Complete!</h2>
           <p className="text-[var(--mmk-text-secondary)] mb-4 max-w-md mx-auto">
-            Your application has been submitted successfully. Your signed
-            agreement has been recorded. Our admin team will review your details
-            and you will receive an email once approved.
+            Your registration has been submitted successfully. You will be
+            redirected to complete payment shortly.
           </p>
-          <Badge className="bg-[#0ea5e9]/10 text-[#0ea5e9] text-sm px-4 py-1">
-            Pending Admin Approval
-          </Badge>
-          <p className="text-xs text-muted-foreground mt-6">
-            Redirecting to login page...
-          </p>
+          <Loader2 className="size-5 animate-spin text-[#0ea5e9] mx-auto" />
         </CardContent>
       </Card>
     );
@@ -144,11 +160,11 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
           <div className="w-10 h-10 rounded-xl bg-[#0ea5e9]/10 flex items-center justify-center">
             <Eye className="size-5 text-[#0ea5e9]" />
           </div>
-          Review Your Application
+          Review & Pay
         </CardTitle>
         <p className="text-sm text-[var(--mmk-text-secondary)]">
-          Please review all your details below before submitting your
-          registration.
+          Review all your details below. After submitting, you will be redirected
+          to our secure payment page.
         </p>
       </CardHeader>
 
@@ -291,6 +307,39 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
           </div>
         </div>
 
+        {/* Documents */}
+        <div className="bg-muted/30 rounded-xl p-5 space-y-3">
+          <div className="flex items-center gap-2 mb-3">
+            <ShieldCheck className="size-4 text-[#0ea5e9]" />
+            <h3 className="font-semibold text-sm">KYC Documents</h3>
+          </div>
+
+          <div className="space-y-2 text-sm">
+            {data.documents.idDocument && (
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="size-3.5 text-emerald-500" />
+                <span className="text-xs text-muted-foreground">
+                  Photo ID:{" "}
+                  <strong className="text-foreground">
+                    {data.documents.idDocument.name}
+                  </strong>
+                </span>
+              </div>
+            )}
+            {data.documents.addressProof && (
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="size-3.5 text-emerald-500" />
+                <span className="text-xs text-muted-foreground">
+                  Proof of Address:{" "}
+                  <strong className="text-foreground">
+                    {data.documents.addressProof.name}
+                  </strong>
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Account Details */}
         <div className="bg-muted/30 rounded-xl p-5 space-y-3">
           <div className="flex items-center gap-2 mb-3">
@@ -374,19 +423,20 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
           </div>
         </div>
 
-        {/* Service fee info */}
-        <div className="bg-[#0ea5e9]/5 border border-[#0ea5e9]/20 rounded-xl p-4 flex items-start gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#0ea5e9]/10 flex items-center justify-center flex-shrink-0">
-            <span className="font-bold text-[#0ea5e9] text-sm">£75</span>
+        {/* Payment info */}
+        <div className="bg-gradient-to-r from-[#0ea5e9]/10 to-[#38bdf8]/10 border border-[#0ea5e9]/20 rounded-xl p-4 flex items-start gap-3">
+          <div className="w-10 h-10 rounded-xl bg-[#0ea5e9]/15 flex items-center justify-center flex-shrink-0">
+            <CreditCard className="size-5 text-[#0ea5e9]" />
           </div>
           <div>
             <p className="font-semibold text-sm">
-              Annual Service Fee — £75/year
+              Pay £75 — Annual Service Fee
             </p>
             <p className="text-xs text-[var(--mmk-text-secondary)] mt-0.5">
-              Payment will be collected after your application is approved by our
-              admin team. You will be guided through the payment process in your
-              dashboard.
+              After submitting, you will be securely redirected to Stripe to
+              complete payment. Your application will be reviewed by our admin
+              team once payment is confirmed. If your application is not
+              approved, you will receive a full automatic refund.
             </p>
           </div>
         </div>
@@ -420,12 +470,12 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
             {isSubmitting ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                Submitting...
+                Processing...
               </>
             ) : (
               <>
-                <Send className="size-4" />
-                Submit Registration
+                <CreditCard className="size-4" />
+                Submit & Pay £75
               </>
             )}
           </Button>

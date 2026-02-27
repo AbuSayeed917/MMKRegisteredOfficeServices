@@ -92,11 +92,11 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
       ? "BACS_DIRECT_DEBIT"
       : "CARD";
 
-  // Update subscription to ACTIVE
+  // Update subscription to PENDING_APPROVAL (payment received, awaiting admin review)
   await db.subscription.update({
     where: { id: subscriptionId },
     data: {
-      status: "ACTIVE",
+      status: "PENDING_APPROVAL",
       startDate: now,
       endDate,
       nextPaymentDate,
@@ -126,7 +126,7 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
       type: "PAYMENT_RECEIVED",
       title: "Payment Confirmed",
       message:
-        "Your payment of £75.00 has been received. Your registered office service is now active.",
+        "Your payment of £75.00 has been received. Your application is now under review by our admin team.",
     },
   });
 
@@ -144,9 +144,9 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
     await db.notification.create({
       data: {
         userId: admin.id,
-        type: "PAYMENT_RECEIVED",
-        title: "Payment Received",
-        message: `Payment of £75.00 received from ${user?.businessProfile?.companyName || user?.email}. Subscription is now active.`,
+        type: "NEW_APPLICATION",
+        title: "New Application — Payment Received",
+        message: `${user?.businessProfile?.companyName || user?.email} has paid £75.00 and submitted their application with KYC documents. Please review and approve or reject.`,
       },
     });
   }

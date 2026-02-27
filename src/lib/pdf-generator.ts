@@ -40,6 +40,11 @@ Font.register({
       fontWeight: 400,
     },
     {
+      src: "https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfMZhrib2Bg-4.ttf",
+      fontWeight: 400,
+      fontStyle: "italic",
+    },
+    {
       src: "https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuGKYMZhrib2Bg-4.ttf",
       fontWeight: 700,
     },

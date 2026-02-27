@@ -73,6 +73,10 @@ export async function GET() {
               id: d.id,
               fullName: d.fullName,
               position: d.position,
+              idDocumentName: d.idDocumentName,
+              hasIdDocument: !!d.idDocumentData,
+              addressProofName: d.addressProofName,
+              hasAddressProof: !!d.addressProofData,
             })),
           }
         : null,

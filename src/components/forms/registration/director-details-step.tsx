@@ -266,12 +266,12 @@ export function DirectorDetailsStep({
           </div>
 
           {/* Info note */}
-          <div className="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/30 rounded-xl p-3 text-sm flex items-start gap-2">
-            <AlertTriangle className="size-4 text-amber-500 mt-0.5 flex-shrink-0" />
-            <p className="text-amber-800 dark:text-amber-400 text-xs">
-              You will be asked to upload identification documents (passport or
-              driving licence) and proof of address in a later step after your
-              application is reviewed.
+          <div className="bg-[#0ea5e9]/5 border border-[#0ea5e9]/20 rounded-xl p-3 text-sm flex items-start gap-2">
+            <AlertTriangle className="size-4 text-[#0ea5e9] mt-0.5 flex-shrink-0" />
+            <p className="text-[#0c2d42] dark:text-[#7a9eb5] text-xs">
+              In the next step, you will upload identification documents
+              (passport or driving licence) and proof of address for identity
+              verification.
             </p>
           </div>
 

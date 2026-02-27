@@ -6,6 +6,7 @@ import { generateAgreementPdf } from "@/lib/pdf-generator";
 import { uploadFile } from "@/lib/s3";
 import { sendWelcomeEmail, sendAdminNewRegistrationEmail } from "@/lib/email";
 import { rateLimit } from "@/lib/rate-limit";
+import { stripe } from "@/lib/stripe";
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,7 +17,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { business, director, account, agreement } = body;
+    const { business, director, documents, account, agreement } = body;
 
     // ─── Validate required fields ─────────────────────────────
     if (!business?.companyName || !business?.companyNumber) {
@@ -56,9 +57,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate documents
+    if (!documents?.idDocument?.data || !documents?.addressProof?.data) {
+      return NextResponse.json(
+        { error: "Both Photo ID and Proof of Address documents are required" },
+        { status: 400 }
+      );
+    }
+
+    // Validate document sizes (max ~2.7MB base64 ≈ 2MB file)
+    const MAX_DOC_BASE64_SIZE = 3 * 1024 * 1024; // 3MB base64 string
+    if (documents.idDocument.data.length > MAX_DOC_BASE64_SIZE) {
+      return NextResponse.json(
+        { error: "Photo ID file is too large. Maximum 2MB allowed." },
+        { status: 400 }
+      );
+    }
+    if (documents.addressProof.data.length > MAX_DOC_BASE64_SIZE) {
+      return NextResponse.json(
+        { error: "Proof of Address file is too large. Maximum 2MB allowed." },
+        { status: 400 }
+      );
+    }
+
+    // ─── Normalize email ──────────────────────────────────────
+    const normalizedEmail = account.email.toLowerCase().trim();
+
     // ─── Check for existing user ──────────────────────────────
     const existingUser = await db.user.findUnique({
-      where: { email: account.email },
+      where: { email: normalizedEmail },
     });
 
     if (existingUser) {
@@ -103,7 +130,7 @@ export async function POST(request: NextRequest) {
       // Create user
       const user = await tx.user.create({
         data: {
-          email: account.email,
+          email: normalizedEmail,
           passwordHash,
           role: "CLIENT",
           isActive: true,
@@ -127,16 +154,35 @@ export async function POST(request: NextRequest) {
         },
       });
 
-      // Create director
-      await tx.director.create({
-        data: {
-          businessProfileId: businessProfile.id,
-          fullName: director.fullName,
-          position: director.position || "Director",
-          dateOfBirth: new Date(director.dateOfBirth),
-          residentialAddress: director.residentialAddress || "",
-        },
-      });
+      // Create director with KYC documents
+      try {
+        await tx.director.create({
+          data: {
+            businessProfileId: businessProfile.id,
+            fullName: director.fullName,
+            position: director.position || "Director",
+            dateOfBirth: new Date(director.dateOfBirth),
+            residentialAddress: director.residentialAddress || "",
+            idDocumentData: documents.idDocument.data,
+            idDocumentName: documents.idDocument.name,
+            idDocumentType: documents.idDocument.type,
+            addressProofData: documents.addressProof.data,
+            addressProofName: documents.addressProof.name,
+            addressProofType: documents.addressProof.type,
+          },
+        });
+      } catch (directorError) {
+        const err = directorError as { code?: string; message?: string };
+        console.error("Director create failed:", {
+          code: err.code,
+          message: err.message?.slice(-300),
+          docDataLengths: {
+            id: documents.idDocument.data?.length,
+            proof: documents.addressProof.data?.length,
+          },
+        });
+        throw directorError;
+      }
 
       // Create signed agreement (if template exists)
       let agreementRecord = null;
@@ -154,34 +200,15 @@ export async function POST(request: NextRequest) {
             signedAt,
           },
         });
-
-        // Generate and upload PDF (non-blocking for the transaction)
-        // We'll do this outside the transaction to avoid long locks
       }
 
-      // Create subscription (PENDING_APPROVAL status)
-      await tx.subscription.create({
+      // Create subscription (DRAFT — will become PENDING_APPROVAL after payment)
+      const subscription = await tx.subscription.create({
         data: {
           userId: user.id,
-          status: "PENDING_APPROVAL",
+          status: "DRAFT",
         },
       });
-
-      // Create notification for admin
-      const admins = await tx.user.findMany({
-        where: { role: { in: ["ADMIN", "SUPER_ADMIN"] } },
-      });
-
-      for (const admin of admins) {
-        await tx.notification.create({
-          data: {
-            userId: admin.id,
-            type: "REGISTRATION_COMPLETE",
-            title: "New Registration",
-            message: `${business.companyName} (CRN: ${business.companyNumber}) has submitted a registration with a signed agreement. Director: ${director.fullName}. Review and approve at your earliest convenience.`,
-          },
-        });
-      }
 
       // Create notification for the new user
       await tx.notification.create({
@@ -189,7 +216,7 @@ export async function POST(request: NextRequest) {
           userId: user.id,
           type: "REGISTRATION_COMPLETE",
           title: "Registration Submitted",
-          message: `Thank you for registering ${business.companyName}. Your signed agreement has been recorded. Your application is pending admin approval. You will receive an email once it has been reviewed.`,
+          message: `Thank you for registering ${business.companyName}. Please complete payment to finalise your application.`,
         },
       });
 
@@ -197,11 +224,13 @@ export async function POST(request: NextRequest) {
         userId: user.id,
         businessProfileId: businessProfile.id,
         agreementId: agreementRecord?.id || null,
+        subscriptionId: subscription.id,
+        companyName: business.companyName,
+        crn: business.companyNumber,
       };
     });
 
     // ─── Post-transaction: Generate PDF and upload to S3 ──────
-    // This happens outside the transaction so it doesn't block
     if (result.agreementId && template) {
       try {
         const signedAt = new Date();
@@ -216,13 +245,10 @@ export async function POST(request: NextRequest) {
           ipAddress,
         });
 
-        // Upload to S3
         const s3Key = `agreements/${result.userId}/${signedAt.getTime()}-agreement.pdf`;
 
         try {
           await uploadFile(s3Key, pdfBuffer, "application/pdf");
-
-          // Update the agreement record with the PDF URL
           await db.agreement.update({
             where: { id: result.agreementId },
             data: { pdfUrl: s3Key },
@@ -235,13 +261,63 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // ─── Create Stripe Checkout Session ──────────────────────
+    let checkoutUrl: string | null = null;
+    try {
+      const customer = await stripe.customers.create({
+        email: normalizedEmail,
+        metadata: {
+          userId: result.userId,
+          companyName: result.companyName,
+          crn: result.crn,
+        },
+      });
+
+      await db.subscription.update({
+        where: { id: result.subscriptionId },
+        data: { stripeCustomerId: customer.id },
+      });
+
+      const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+
+      const checkoutSession = await stripe.checkout.sessions.create({
+        customer: customer.id,
+        mode: "payment",
+        payment_method_types: ["card"],
+        line_items: [
+          {
+            price_data: {
+              currency: "gbp",
+              product_data: {
+                name: "Registered Office Service",
+                description:
+                  "Annual registered office address service at MMK Accountants, Luton",
+              },
+              unit_amount: 7500,
+            },
+            quantity: 1,
+          },
+        ],
+        metadata: {
+          userId: result.userId,
+          subscriptionId: result.subscriptionId,
+        },
+        success_url: `${baseUrl}/dashboard/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${baseUrl}/dashboard/payment/cancel`,
+      });
+
+      checkoutUrl = checkoutSession.url;
+    } catch (stripeError) {
+      console.warn("Stripe checkout creation failed:", stripeError);
+    }
+
     // ─── Send emails (non-blocking) ────────────────────────────
-    sendWelcomeEmail(account.email, business.companyName).catch((e) =>
+    sendWelcomeEmail(normalizedEmail, business.companyName).catch((e) =>
       console.warn("Welcome email failed:", e)
     );
     sendAdminNewRegistrationEmail(
       business.companyName,
-      account.email,
+      normalizedEmail,
       business.companyNumber,
       result.userId
     ).catch((e) => console.warn("Admin notification email failed:", e));
@@ -251,18 +327,28 @@ export async function POST(request: NextRequest) {
         success: true,
         message: "Registration submitted successfully",
         userId: result.userId,
+        checkoutUrl,
       },
       { status: 201 }
     );
-  } catch (error) {
-    console.error("Registration error:", error);
+  } catch (error: unknown) {
+    const err = error as { code?: string; meta?: { target?: string[] }; message?: string };
+    // Log the full error server-side for debugging
+    console.error("Registration error — code:", err.code, "meta:", JSON.stringify(err.meta));
+    console.error("Registration error — message tail:", err.message?.slice(-500));
+
+    let errorMessage = "Registration failed. Please try again.";
+
+    if (err.code === "P2002") {
+      const field = err.meta?.target?.[0] || "field";
+      errorMessage = `A record with this ${field} already exists.`;
+    } else if (err.code) {
+      errorMessage = `Database error (${err.code}). Please try again or contact support.`;
+    }
+    // Never return raw Prisma error messages to the client (they can be huge)
+
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Registration failed. Please try again.",
-      },
+      { error: errorMessage },
       { status: 500 }
     );
   }

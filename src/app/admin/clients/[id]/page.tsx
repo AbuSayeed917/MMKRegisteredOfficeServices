@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +26,8 @@ import {
   Download,
   Pen,
   Type,
+  ShieldCheck,
+  Eye,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -52,6 +54,12 @@ interface ClientDetail {
       position: string;
       dateOfBirth: string;
       residentialAddress: string;
+      idDocumentName?: string;
+      idDocumentType?: string;
+      hasIdDocument?: boolean;
+      addressProofName?: string;
+      addressProofType?: string;
+      hasAddressProof?: boolean;
     }[];
   } | null;
   subscription: {
@@ -88,6 +96,12 @@ interface ClientDetail {
   }[];
 }
 
+interface DocumentData {
+  data: string;
+  name: string;
+  type: string;
+}
+
 const statusColors: Record<string, string> = {
   ACTIVE: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
   PENDING_APPROVAL: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
@@ -104,19 +118,20 @@ export default function ClientDetailPage() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [downloading, setDownloading] = useState<string | null>(null);
+  const [viewingDoc, setViewingDoc] = useState<{ directorId: string; docType: string } | null>(null);
+  const [docData, setDocData] = useState<DocumentData | null>(null);
 
   const clientId = params.id as string;
 
-  const fetchData = () => {
+  const fetchData = useCallback(() => {
     fetch(`/api/admin/clients/${clientId}`)
       .then((res) => res.json())
       .then(setData)
       .catch(() => {})
       .finally(() => setLoading(false));
-  };
+  }, [clientId]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { fetchData(); }, [clientId]);
+  useEffect(() => { fetchData(); }, [fetchData]);
 
   const performAction = async (action: string) => {
     const reason =
@@ -133,7 +148,11 @@ export default function ClientDetailPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action, reason }),
       });
+      const result = await res.json();
       if (res.ok) {
+        if (result.refundInitiated) {
+          toast.success("Client rejected and refund initiated automatically");
+        }
         fetchData();
       }
     } catch {
@@ -170,6 +189,23 @@ export default function ClientDetailPage() {
       );
     } finally {
       setDownloading(null);
+    }
+  };
+
+  const viewDocument = async (directorId: string, docType: string) => {
+    setViewingDoc({ directorId, docType });
+    setDocData(null);
+    try {
+      const res = await fetch(
+        `/api/admin/clients/${clientId}/documents?directorId=${directorId}`
+      );
+      if (!res.ok) throw new Error("Failed to load document");
+      const result = await res.json();
+      const doc = docType === "id" ? result.idDocument : result.addressProof;
+      setDocData(doc);
+    } catch {
+      toast.error("Failed to load document");
+      setViewingDoc(null);
     }
   };
 
@@ -225,6 +261,57 @@ export default function ClientDetailPage() {
 
   return (
     <div className="space-y-6">
+      {/* Document Viewer Modal */}
+      {viewingDoc && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-auto shadow-2xl">
+            <div className="flex items-center justify-between p-4 border-b">
+              <h3 className="font-semibold text-sm flex items-center gap-2">
+                <ShieldCheck className="size-4 text-[#0ea5e9]" />
+                {viewingDoc.docType === "id" ? "Photo ID" : "Proof of Address"}
+              </h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => { setViewingDoc(null); setDocData(null); }}
+                className="rounded-full"
+              >
+                Close
+              </Button>
+            </div>
+            <div className="p-4">
+              {!docData ? (
+                <div className="flex items-center justify-center py-12">
+                  <Loader2 className="size-6 animate-spin text-[#0ea5e9]" />
+                </div>
+              ) : docData.type?.startsWith("image/") ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={docData.data}
+                  alt={docData.name}
+                  className="max-w-full h-auto rounded-lg mx-auto"
+                />
+              ) : docData.type === "application/pdf" ? (
+                <iframe
+                  src={docData.data}
+                  title={docData.name}
+                  className="w-full h-[60vh] rounded-lg border"
+                />
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-8">
+                  Unable to preview this file type
+                </p>
+              )}
+              {docData && (
+                <p className="text-xs text-muted-foreground text-center mt-3">
+                  {docData.name}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-start gap-4">
         <Link href="/admin/clients">
@@ -439,6 +526,99 @@ export default function ClientDetailPage() {
                       {d.position} · DOB:{" "}
                       {new Date(d.dateOfBirth).toLocaleDateString("en-GB")}
                     </p>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* KYC Documents */}
+        {data.business?.directors && data.business.directors.some(d => d.hasIdDocument || d.hasAddressProof) && (
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl overflow-hidden">
+            <div className="h-1 bg-gradient-to-r from-amber-400 to-amber-500" />
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-base">
+                <ShieldCheck className="size-4 text-amber-500" />
+                KYC Documents
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {data.business.directors.map((d) => (
+                <div key={d.id} className="space-y-2">
+                  <p className="text-xs font-medium text-muted-foreground">
+                    {d.fullName}
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {/* Photo ID */}
+                    <div
+                      className={`rounded-xl p-3 text-xs ${
+                        d.hasIdDocument
+                          ? "bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-200 dark:border-emerald-800/30"
+                          : "bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800/30"
+                      }`}
+                    >
+                      <p className="font-medium flex items-center gap-1 mb-1">
+                        {d.hasIdDocument ? (
+                          <CheckCircle2 className="size-3 text-emerald-500" />
+                        ) : (
+                          <XCircle className="size-3 text-red-500" />
+                        )}
+                        Photo ID
+                      </p>
+                      {d.hasIdDocument ? (
+                        <>
+                          <p className="text-muted-foreground truncate">
+                            {d.idDocumentName}
+                          </p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 text-[10px] gap-1 mt-1 p-0 text-[#0ea5e9]"
+                            onClick={() => viewDocument(d.id, "id")}
+                          >
+                            <Eye className="size-3" /> View
+                          </Button>
+                        </>
+                      ) : (
+                        <p className="text-muted-foreground">Not uploaded</p>
+                      )}
+                    </div>
+
+                    {/* Address Proof */}
+                    <div
+                      className={`rounded-xl p-3 text-xs ${
+                        d.hasAddressProof
+                          ? "bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-200 dark:border-emerald-800/30"
+                          : "bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800/30"
+                      }`}
+                    >
+                      <p className="font-medium flex items-center gap-1 mb-1">
+                        {d.hasAddressProof ? (
+                          <CheckCircle2 className="size-3 text-emerald-500" />
+                        ) : (
+                          <XCircle className="size-3 text-red-500" />
+                        )}
+                        Address Proof
+                      </p>
+                      {d.hasAddressProof ? (
+                        <>
+                          <p className="text-muted-foreground truncate">
+                            {d.addressProofName}
+                          </p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 text-[10px] gap-1 mt-1 p-0 text-[#0ea5e9]"
+                            onClick={() => viewDocument(d.id, "address")}
+                          >
+                            <Eye className="size-3" /> View
+                          </Button>
+                        </>
+                      ) : (
+                        <p className="text-muted-foreground">Not uploaded</p>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
