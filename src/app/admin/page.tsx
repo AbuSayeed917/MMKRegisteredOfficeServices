@@ -92,6 +92,7 @@ export default function AdminOverviewPage() {
       icon: Users,
       color: "text-[#0ea5e9]",
       bg: "bg-[#0ea5e9]/10",
+      href: "/admin/clients",
     },
     {
       label: "Active Subscriptions",
@@ -99,6 +100,7 @@ export default function AdminOverviewPage() {
       icon: CheckCircle2,
       color: "text-emerald-500",
       bg: "bg-emerald-500/10",
+      href: "/admin/clients",
     },
     {
       label: "Pending Approvals",
@@ -106,6 +108,7 @@ export default function AdminOverviewPage() {
       icon: Clock,
       color: "text-amber-500",
       bg: "bg-amber-500/10",
+      href: "/admin/clients",
     },
     {
       label: "Suspended",
@@ -113,6 +116,7 @@ export default function AdminOverviewPage() {
       icon: AlertTriangle,
       color: "text-red-500",
       bg: "bg-red-500/10",
+      href: "/admin/clients",
     },
     {
       label: "Expiring (30 days)",
@@ -120,6 +124,7 @@ export default function AdminOverviewPage() {
       icon: Calendar,
       color: "text-orange-500",
       bg: "bg-orange-500/10",
+      href: "/admin/clients",
     },
     {
       label: "Open Tickets",
@@ -135,6 +140,7 @@ export default function AdminOverviewPage() {
       icon: TrendingUp,
       color: "text-emerald-500",
       bg: "bg-emerald-500/10",
+      href: "/admin/payments",
     },
   ];
 
@@ -153,32 +159,26 @@ export default function AdminOverviewPage() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {metricCards.map((card) => {
           const Icon = card.icon;
-          const cardEl = (
-            <Card
-              key={card.label}
-              className={`border-[var(--mmk-border-light)] rounded-2xl${card.href ? " hover:shadow-md transition-shadow cursor-pointer" : ""}`}
-            >
-              <CardContent className="p-5">
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`w-10 h-10 rounded-xl ${card.bg} flex items-center justify-center`}
-                  >
-                    <Icon className={`size-5 ${card.color}`} />
+          return (
+            <Link key={card.label} href={card.href!}>
+              <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-5">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`w-10 h-10 rounded-xl ${card.bg} flex items-center justify-center`}
+                    >
+                      <Icon className={`size-5 ${card.color}`} />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">
+                        {card.label}
+                      </p>
+                      <p className="text-xl font-bold">{card.value}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">
-                      {card.label}
-                    </p>
-                    <p className="text-xl font-bold">{card.value}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          );
-          return card.href ? (
-            <Link key={card.label} href={card.href}>{cardEl}</Link>
-          ) : (
-            <div key={card.label}>{cardEl}</div>
+                </CardContent>
+              </Card>
+            </Link>
           );
         })}
       </div>
