@@ -135,8 +135,8 @@ export default function DashboardPage() {
       {/* Status cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {/* Subscription Status */}
-        <Link href="/dashboard/subscription">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0">
+        <Link href="/dashboard/subscription" className="h-full">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0 h-full">
             <div className="h-1 bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]" />
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -166,8 +166,8 @@ export default function DashboardPage() {
         </Link>
 
         {/* Agreement Status */}
-        <Link href="/dashboard/agreement">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0">
+        <Link href="/dashboard/agreement" className="h-full">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0 h-full">
             <div className="h-1 bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]" />
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -209,8 +209,8 @@ export default function DashboardPage() {
         </Link>
 
         {/* Notifications */}
-        <Link href="/dashboard/notifications">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0">
+        <Link href="/dashboard/notifications" className="h-full">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0 h-full">
             <div className="h-1 bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]" />
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -244,8 +244,8 @@ export default function DashboardPage() {
         </Link>
 
         {/* Support */}
-        <Link href="/dashboard/support">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0">
+        <Link href="/dashboard/support" className="h-full">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0 h-full">
             <div className="h-1 bg-gradient-to-r from-purple-400 to-purple-500" />
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
