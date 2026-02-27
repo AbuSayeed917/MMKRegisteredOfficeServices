@@ -148,11 +148,22 @@ export default function ClientDetailPage() {
     try {
       const res = await fetch(`/api/agreements/download?id=${agreementId}`);
       if (!res.ok) {
-        const d = await res.json();
-        throw new Error(d.error || "Failed to get download link");
+        const d = await res.json().catch(() => ({}));
+        throw new Error(d.error || "Failed to download PDF");
       }
-      const { url } = await res.json();
-      window.open(url, "_blank");
+      const contentType = res.headers.get("content-type") || "";
+      if (contentType.includes("application/pdf")) {
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "agreement.pdf";
+        a.click();
+        URL.revokeObjectURL(url);
+      } else {
+        const { url } = await res.json();
+        window.open(url, "_blank");
+      }
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to download PDF"
@@ -476,7 +487,7 @@ export default function ClientDetailPage() {
                     >
                       {a.status}
                     </Badge>
-                    {a.status === "SIGNED" && a.pdfUrl && (
+                    {a.status === "SIGNED" && (
                       <Button
                         variant="ghost"
                         size="sm"

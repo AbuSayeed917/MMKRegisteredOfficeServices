@@ -2,8 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { getUser } from "@/lib/get-user";
 import { db } from "@/lib/db";
 import { getSignedDownloadUrl } from "@/lib/s3";
+import { generateAgreementPdf } from "@/lib/pdf-generator";
 
-// GET — Get a presigned download URL for a signed agreement PDF
+// GET — Download a signed agreement PDF
+// Primary: generate on-the-fly from DB data
+// Fallback: presigned S3 URL if pdfUrl exists
 export async function GET(request: NextRequest) {
   try {
     const user = await getUser();
@@ -23,7 +26,12 @@ export async function GET(request: NextRequest) {
 
     const agreement = await db.agreement.findUnique({
       where: { id: agreementId },
-      select: { userId: true, pdfUrl: true, status: true },
+      include: {
+        user: {
+          include: { businessProfile: true },
+        },
+        template: true,
+      },
     });
 
     if (!agreement) {
@@ -38,20 +46,60 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
-    if (agreement.status !== "SIGNED" || !agreement.pdfUrl) {
+    if (agreement.status !== "SIGNED") {
       return NextResponse.json(
-        { error: "PDF not available for this agreement" },
+        { error: "Agreement has not been signed" },
         { status: 400 }
       );
     }
 
-    const url = await getSignedDownloadUrl(agreement.pdfUrl);
+    // Fallback: if pdfUrl exists, try S3 presigned URL
+    if (agreement.pdfUrl) {
+      try {
+        const url = await getSignedDownloadUrl(agreement.pdfUrl);
+        return NextResponse.json({ url });
+      } catch {
+        // S3 failed — fall through to on-the-fly generation
+      }
+    }
 
-    return NextResponse.json({ url });
+    // Primary: generate PDF on-the-fly from stored agreement data
+    if (!agreement.template) {
+      return NextResponse.json(
+        { error: "Agreement template not found" },
+        { status: 400 }
+      );
+    }
+
+    const companyName =
+      agreement.user.businessProfile?.companyName || "";
+    const companyNumber =
+      agreement.user.businessProfile?.crn || "";
+
+    const pdfBuffer = await generateAgreementPdf({
+      contentHtml: agreement.template.contentHtml,
+      companyName,
+      companyNumber,
+      signerName: agreement.signatureData?.includes("data:")
+        ? companyName
+        : agreement.signatureData || "",
+      signatureType: agreement.signatureType as "typed" | "drawn",
+      signatureData: agreement.signatureData || "",
+      signedAt: agreement.signedAt || new Date(),
+      ipAddress: agreement.ipAddress || "unknown",
+    });
+
+    return new NextResponse(pdfBuffer, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="agreement-${companyName.replace(/[^a-zA-Z0-9]/g, "-")}.pdf"`,
+      },
+    });
   } catch (error) {
-    console.error("Failed to generate download URL:", error);
+    console.error("Failed to generate/download PDF:", error);
     return NextResponse.json(
-      { error: "Failed to generate download link" },
+      { error: "Failed to generate PDF" },
       { status: 500 }
     );
   }

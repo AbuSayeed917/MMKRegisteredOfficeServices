@@ -38,11 +38,24 @@ export default function AgreementPage() {
     try {
       const res = await fetch(`/api/agreements/download?id=${agreementId}`);
       if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Failed to get download link");
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "Failed to download PDF");
       }
-      const { url } = await res.json();
-      window.open(url, "_blank");
+      const contentType = res.headers.get("content-type") || "";
+      if (contentType.includes("application/pdf")) {
+        // On-the-fly generated PDF — download as blob
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "agreement.pdf";
+        a.click();
+        URL.revokeObjectURL(url);
+      } else {
+        // S3 presigned URL fallback
+        const { url } = await res.json();
+        window.open(url, "_blank");
+      }
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to download PDF"
@@ -193,7 +206,7 @@ export default function AgreementPage() {
               </div>
 
               {/* Download + Legal note */}
-              {agreement.status === "SIGNED" && agreement.pdfUrl && (
+              {agreement.status === "SIGNED" && (
                 <Button
                   variant="outline"
                   className="rounded-xl gap-2 w-full sm:w-auto"
