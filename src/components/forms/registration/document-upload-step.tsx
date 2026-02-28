@@ -146,7 +146,7 @@ function FileDropZone({
     <div className="space-y-2">
       <p className="text-sm font-medium">{label} <span className="text-destructive">*</span></p>
       <label
-        className={`relative flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-6 cursor-pointer transition-all ${
+        className={`relative flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-4 sm:p-6 cursor-pointer transition-all ${
           dragActive
             ? "border-[#0ea5e9] bg-[#0ea5e9]/5"
             : displayError
@@ -294,7 +294,7 @@ export function DocumentUploadStep({
             </Button>
             <Button
               type="submit"
-              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2"
+              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-6 sm:px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2"
             >
               Continue
               <ArrowRight className="size-4" />

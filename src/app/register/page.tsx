@@ -184,8 +184,8 @@ export default function RegisterPage() {
   return (
     <>
       <Navbar />
-      <section className="py-16 md:py-24 min-h-[80vh]">
-        <div className="container max-w-4xl">
+      <section className="py-16 md:py-24 min-h-[80vh] px-4 sm:px-6">
+        <div className="w-full max-w-4xl mx-auto">
           <ScrollReveal>
             {/* Header */}
             <div className="text-center mb-10">
@@ -205,9 +205,44 @@ export default function RegisterPage() {
             </div>
           </ScrollReveal>
 
-          {/* Step Progress */}
+          {/* Step Progress - Mobile: compact bar */}
           <div className="mb-10">
-            <div className="flex items-center justify-between max-w-3xl mx-auto">
+            {/* Mobile: compact step indicator */}
+            <div className="sm:hidden">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  {(() => {
+                    const Icon = steps[currentStep].icon;
+                    return (
+                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center text-[#0c2d42] shadow-md">
+                        <Icon className="size-4" />
+                      </div>
+                    );
+                  })()}
+                  <div>
+                    <p className="text-sm font-semibold">{steps[currentStep].label}</p>
+                    <p className="text-xs text-muted-foreground">Step {currentStep + 1} of {steps.length}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-1.5">
+                {steps.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
+                      index < currentStep
+                        ? "bg-emerald-500"
+                        : index === currentStep
+                        ? "bg-[#0ea5e9]"
+                        : "bg-muted"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop: full step indicators */}
+            <div className="hidden sm:flex items-center justify-between max-w-3xl mx-auto">
               {steps.map((step, index) => {
                 const Icon = step.icon;
                 const isCompleted = index < currentStep;
@@ -217,7 +252,7 @@ export default function RegisterPage() {
                   <div key={step.label} className="flex items-center">
                     <div className="flex flex-col items-center">
                       <div
-                        className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-all duration-500 ${
+                        className={`relative w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 ${
                           isCompleted
                             ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20"
                             : isCurrent
@@ -226,9 +261,9 @@ export default function RegisterPage() {
                         }`}
                       >
                         {isCompleted ? (
-                          <Check className="size-4 sm:size-5" />
+                          <Check className="size-5" />
                         ) : (
-                          <Icon className="size-4 sm:size-5" />
+                          <Icon className="size-5" />
                         )}
                         <span
                           className={`absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center ${
@@ -243,7 +278,7 @@ export default function RegisterPage() {
                         </span>
                       </div>
                       <span
-                        className={`mt-2 text-[10px] sm:text-[11px] font-medium text-center leading-tight hidden sm:block ${
+                        className={`mt-2 text-[11px] font-medium text-center leading-tight ${
                           isCurrent
                             ? "text-[#0ea5e9]"
                             : isCompleted
@@ -257,7 +292,7 @@ export default function RegisterPage() {
 
                     {/* Connector line */}
                     {index < steps.length - 1 && (
-                      <div className="w-6 sm:w-10 md:w-14 h-[2px] mx-1 sm:mx-2">
+                      <div className="w-10 md:w-14 h-[2px] mx-2">
                         <div
                           className={`h-full rounded-full transition-all duration-500 ${
                             index < currentStep

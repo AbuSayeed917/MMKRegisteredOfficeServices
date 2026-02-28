@@ -170,7 +170,7 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
 
       <CardContent className="space-y-6 pt-4">
         {/* Business Details */}
-        <div className="bg-muted/30 rounded-xl p-5 space-y-3">
+        <div className="bg-muted/30 rounded-xl p-4 sm:p-5 space-y-3">
           <div className="flex items-center gap-2 mb-3">
             <Building2 className="size-4 text-[#0ea5e9]" />
             <h3 className="font-semibold text-sm">Business Details</h3>
@@ -258,7 +258,7 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
         </div>
 
         {/* Director Details */}
-        <div className="bg-muted/30 rounded-xl p-5 space-y-3">
+        <div className="bg-muted/30 rounded-xl p-4 sm:p-5 space-y-3">
           <div className="flex items-center gap-2 mb-3">
             <UserCircle className="size-4 text-[#0ea5e9]" />
             <h3 className="font-semibold text-sm">Director / Officer</h3>
@@ -308,7 +308,7 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
         </div>
 
         {/* Documents */}
-        <div className="bg-muted/30 rounded-xl p-5 space-y-3">
+        <div className="bg-muted/30 rounded-xl p-4 sm:p-5 space-y-3">
           <div className="flex items-center gap-2 mb-3">
             <ShieldCheck className="size-4 text-[#0ea5e9]" />
             <h3 className="font-semibold text-sm">KYC Documents</h3>
@@ -316,9 +316,9 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
 
           <div className="space-y-2 text-sm">
             {data.documents.idDocument && (
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 text-emerald-500" />
-                <span className="text-xs text-muted-foreground">
+              <div className="flex items-center gap-2 min-w-0">
+                <CheckCircle2 className="size-3.5 text-emerald-500 flex-shrink-0" />
+                <span className="text-xs text-muted-foreground truncate">
                   Photo ID:{" "}
                   <strong className="text-foreground">
                     {data.documents.idDocument.name}
@@ -327,9 +327,9 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
               </div>
             )}
             {data.documents.addressProof && (
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 text-emerald-500" />
-                <span className="text-xs text-muted-foreground">
+              <div className="flex items-center gap-2 min-w-0">
+                <CheckCircle2 className="size-3.5 text-emerald-500 flex-shrink-0" />
+                <span className="text-xs text-muted-foreground truncate">
                   Proof of Address:{" "}
                   <strong className="text-foreground">
                     {data.documents.addressProof.name}
@@ -341,7 +341,7 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
         </div>
 
         {/* Account Details */}
-        <div className="bg-muted/30 rounded-xl p-5 space-y-3">
+        <div className="bg-muted/30 rounded-xl p-4 sm:p-5 space-y-3">
           <div className="flex items-center gap-2 mb-3">
             <Shield className="size-4 text-[#0ea5e9]" />
             <h3 className="font-semibold text-sm">Account</h3>
@@ -368,7 +368,7 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
         </div>
 
         {/* Agreement Details */}
-        <div className="bg-muted/30 rounded-xl p-5 space-y-3">
+        <div className="bg-muted/30 rounded-xl p-4 sm:p-5 space-y-3">
           <div className="flex items-center gap-2 mb-3">
             <FileText className="size-4 text-[#0ea5e9]" />
             <h3 className="font-semibold text-sm">Service Agreement</h3>
@@ -465,7 +465,7 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
             type="button"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2"
+            className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-5 sm:px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2"
           >
             {isSubmitting ? (
               <>
