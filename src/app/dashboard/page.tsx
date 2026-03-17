@@ -371,7 +371,7 @@ export default function DashboardPage() {
             <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9]" />
           </Card>
         </Link>
-        <Link href="/">
+        <Link href="/dashboard/support">
           <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group p-4 flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-[#0ea5e9]/10 flex items-center justify-center">
               <Shield className="size-4 text-[#0ea5e9]" />
