@@ -27,7 +27,7 @@ function SummaryCard({
       <View style={[styles.iconBg, { backgroundColor: color + "12" }]}>
         <MaterialCommunityIcons
           name={icon as keyof typeof MaterialCommunityIcons.glyphMap}
-          size={18}
+          size={14}
           color={color}
         />
       </View>
@@ -92,37 +92,35 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     backgroundColor: Colors.white,
-    borderRadius: Radius.xl,
-    padding: Spacing.lg,
+    borderRadius: Radius.lg,
+    padding: Spacing.md,
     ...Shadows.sm,
   },
   iconBg: {
-    width: 36,
-    height: 36,
-    borderRadius: Radius.sm,
+    width: 28,
+    height: 28,
+    borderRadius: Radius.xs,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.xs,
   },
   amount: {
-    ...Typography.tabular,
-    fontSize: 18,
-    fontWeight: "700",
+    ...Typography.headline,
     color: Colors.textPrimary,
   },
   labelRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 4,
+    marginTop: 2,
   },
   label: {
-    ...Typography.footnote,
+    ...Typography.caption2,
     color: Colors.textLight,
   },
   countBadge: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
     borderRadius: Radius.xs,
   },
   countText: {

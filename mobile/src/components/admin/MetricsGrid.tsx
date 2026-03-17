@@ -1,5 +1,7 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import * as Haptics from "expo-haptics";
 import { Colors } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
 import { formatCurrency } from "@/lib/format";
@@ -14,24 +16,37 @@ function MetricItem({
   label,
   value,
   color,
+  href,
 }: {
   icon: string;
   label: string;
   value: string | number;
   color: string;
+  href: string;
 }) {
   return (
-    <View style={styles.metricCard}>
-      <View style={[styles.metricIconBg, { backgroundColor: color + "12" }]}>
-        <MaterialCommunityIcons
-          name={icon as keyof typeof MaterialCommunityIcons.glyphMap}
-          size={20}
-          color={color}
-        />
+    <Pressable
+      onPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        router.push(href as never);
+      }}
+      style={({ pressed }) => [
+        styles.metricCard,
+        pressed && styles.metricPressed,
+      ]}
+    >
+      <View style={styles.metricTop}>
+        <View style={[styles.metricIconBg, { backgroundColor: color + "12" }]}>
+          <MaterialCommunityIcons
+            name={icon as keyof typeof MaterialCommunityIcons.glyphMap}
+            size={16}
+            color={color}
+          />
+        </View>
       </View>
       <Text style={styles.metricValue}>{value}</Text>
       <Text style={styles.metricLabel}>{label}</Text>
-    </View>
+    </Pressable>
   );
 }
 
@@ -44,12 +59,14 @@ export function MetricsGrid({ metrics }: MetricsGridProps) {
           label="Total Clients"
           value={metrics.totalClients}
           color={Colors.accent}
+          href="/(admin)/clients"
         />
         <MetricItem
           icon="check-circle"
           label="Active"
           value={metrics.activeClients}
           color={Colors.success}
+          href="/(admin)/clients"
         />
       </View>
       <View style={styles.row}>
@@ -58,12 +75,14 @@ export function MetricsGrid({ metrics }: MetricsGridProps) {
           label="Pending"
           value={metrics.pendingApprovals}
           color={Colors.warning}
+          href="/(admin)/clients"
         />
         <MetricItem
           icon="alert-circle"
           label="Suspended"
           value={metrics.suspendedClients}
           color={Colors.error}
+          href="/(admin)/clients"
         />
       </View>
       <View style={styles.row}>
@@ -72,12 +91,14 @@ export function MetricsGrid({ metrics }: MetricsGridProps) {
           label="Expiring (30d)"
           value={metrics.expiringSubscriptions}
           color={Colors.warning}
+          href="/(admin)/clients"
         />
         <MetricItem
           icon="trending-up"
           label="Revenue"
           value={formatCurrency(metrics.totalRevenue)}
           color={Colors.success}
+          href="/(admin)/payments"
         />
       </View>
     </View>
@@ -95,25 +116,34 @@ const styles = StyleSheet.create({
   metricCard: {
     flex: 1,
     backgroundColor: Colors.white,
-    borderRadius: Radius.xl,
-    padding: Spacing.lg,
+    borderRadius: Radius.lg,
+    padding: Spacing.md,
     ...Shadows.sm,
   },
+  metricPressed: {
+    opacity: 0.85,
+    transform: [{ scale: 0.98 }],
+  },
+  metricTop: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: Spacing.xs,
+  },
   metricIconBg: {
-    width: 36,
-    height: 36,
-    borderRadius: Radius.sm,
+    width: 28,
+    height: 28,
+    borderRadius: Radius.xs,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: Spacing.sm,
   },
   metricValue: {
-    ...Typography.tabular,
+    ...Typography.title3,
     color: Colors.textPrimary,
   },
   metricLabel: {
-    ...Typography.footnote,
+    ...Typography.caption2,
     color: Colors.textLight,
-    marginTop: 2,
+    marginTop: 1,
   },
 });

@@ -1,10 +1,8 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/auth-store";
 
-// Simulator uses localhost, production uses the deployed URL
-const API_BASE_URL = __DEV__
-  ? "http://localhost:3000"
-  : "https://mmkregisteredofficeservices.co.uk";
+// Always use the production Railway API (has the actual database)
+const API_BASE_URL = "https://mmkregisteredofficeservices-production.up.railway.app";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,

@@ -11,11 +11,12 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { TextInput } from "react-native-paper";
+import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { Colors } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
-import { GradientButton } from "@/components/ui/GradientButton";
+import { ActionButton } from "@/components/ui/ActionButton";
 import { loginWithCredentials, restoreSession } from "@/lib/auth";
 import { useAuthStore } from "@/stores/auth-store";
 import {
@@ -138,9 +139,14 @@ export default function LoginScreen() {
               { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
             ]}
           >
-            <View style={styles.appIcon}>
+            <LinearGradient
+              colors={["#0ea5e9", "#38bdf8"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.appIcon}
+            >
               <Text style={styles.appIconText}>MMK</Text>
-            </View>
+            </LinearGradient>
             <Text style={styles.appName}>MMK Office</Text>
             <Text style={styles.tagline}>Registered Office Services</Text>
           </Animated.View>
@@ -217,7 +223,7 @@ export default function LoginScreen() {
               <Text style={styles.forgotText}>Forgot Password?</Text>
             </Pressable>
 
-            <GradientButton
+            <ActionButton
               label="Sign In"
               onPress={handleLogin}
               loading={loading}
@@ -225,7 +231,7 @@ export default function LoginScreen() {
             />
 
             {biometricAvailable && (
-              <GradientButton
+              <ActionButton
                 label={`Sign in with ${biometricLabel}`}
                 onPress={handleBiometricLogin}
                 loading={biometricLoading}
@@ -272,18 +278,17 @@ const styles = StyleSheet.create({
     marginBottom: Spacing["4xl"],
   },
   appIcon: {
-    width: 68,
-    height: 68,
-    borderRadius: 18,
-    backgroundColor: Colors.accent,
+    width: 52,
+    height: 52,
+    borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: Spacing.lg,
     ...Shadows.glow,
   },
   appIconText: {
-    color: "#fff",
-    fontSize: 22,
+    color: Colors.white,
+    fontSize: 17,
     fontWeight: "800",
     letterSpacing: -0.5,
   },
@@ -313,7 +318,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: Colors.white,
-    fontSize: 17,
+    fontSize: 14,
   },
   inputOutline: {
     borderRadius: Radius.sm,
@@ -323,7 +328,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: Spacing.sm,
-    backgroundColor: "rgba(255, 59, 48, 0.08)",
+    backgroundColor: Colors.error + "14",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
     borderRadius: Radius.sm,

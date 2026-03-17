@@ -78,7 +78,11 @@ export default function ClientsListScreen() {
                   setStatus(f.value);
                   setPage(1);
                 }}
-                style={[styles.filterChip, isActive && styles.filterChipActive]}
+                style={({ pressed }) => [
+                  styles.filterChip,
+                  isActive && styles.filterChipActive,
+                  pressed && styles.filterChipPressed,
+                ]}
               >
                 <MaterialCommunityIcons
                   name={f.icon as keyof typeof MaterialCommunityIcons.glyphMap}
@@ -105,6 +109,7 @@ export default function ClientsListScreen() {
           onRefresh={refetch}
           contentContainerStyle={clients.length === 0 ? styles.centered : styles.listContent}
           showsVerticalScrollIndicator={false}
+          ListHeaderComponent={clients.length > 0 ? <View style={styles.listCardTop} /> : null}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
               <MaterialCommunityIcons name="account-search-outline" size={48} color={Colors.textLight} />
@@ -113,23 +118,39 @@ export default function ClientsListScreen() {
             </View>
           }
           ListFooterComponent={
-            pagination && pagination.totalPages > 1 ? (
+            <>
+            {clients.length > 0 && <View style={styles.listCardBottom} />}
+            {pagination && pagination.totalPages > 1 ? (
               <View style={styles.pagination}>
                 <Text style={styles.pageText}>
                   Page {page} of {pagination.totalPages}
                 </Text>
                 <View style={styles.pageButtons}>
                   <Pressable
-                    style={[styles.pageBtn, page <= 1 && styles.pageBtnDisabled]}
-                    onPress={() => setPage((p) => Math.max(1, p - 1))}
+                    style={({ pressed }) => [
+                      styles.pageBtn,
+                      page <= 1 && styles.pageBtnDisabled,
+                      pressed && !(page <= 1) && styles.pageBtnPressed,
+                    ]}
+                    onPress={() => {
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      setPage((p) => Math.max(1, p - 1));
+                    }}
                     disabled={page <= 1}
                   >
                     <MaterialCommunityIcons name="chevron-left" size={18} color={page <= 1 ? Colors.textLight : Colors.accent} />
                     <Text style={[styles.pageBtnText, page <= 1 && styles.pageBtnTextDisabled]}>Previous</Text>
                   </Pressable>
                   <Pressable
-                    style={[styles.pageBtn, page >= pagination.totalPages && styles.pageBtnDisabled]}
-                    onPress={() => setPage((p) => p + 1)}
+                    style={({ pressed }) => [
+                      styles.pageBtn,
+                      page >= pagination.totalPages && styles.pageBtnDisabled,
+                      pressed && !(page >= pagination.totalPages) && styles.pageBtnPressed,
+                    ]}
+                    onPress={() => {
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      setPage((p) => p + 1);
+                    }}
                     disabled={page >= pagination.totalPages}
                   >
                     <Text style={[styles.pageBtnText, page >= pagination.totalPages && styles.pageBtnTextDisabled]}>Next</Text>
@@ -137,7 +158,8 @@ export default function ClientsListScreen() {
                   </Pressable>
                 </View>
               </View>
-            ) : null
+            ) : null}
+            </>
           }
         />
       )}
@@ -152,13 +174,13 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: Spacing.xl,
-    paddingBottom: Spacing.md,
+    paddingBottom: Spacing.sm,
     backgroundColor: Colors.bgPrimary,
   },
   headerTitle: {
     ...Typography.largeTitle,
     color: Colors.textPrimary,
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.sm,
   },
   searchContainer: {
     flexDirection: "row",
@@ -166,13 +188,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.fill,
     borderRadius: Radius.sm,
     paddingHorizontal: Spacing.sm,
-    height: 36,
-    gap: 6,
+    height: 32,
+    gap: 4,
   },
   searchInput: {
     flex: 1,
     ...Typography.body,
-    fontSize: 15,
     color: Colors.textPrimary,
     paddingVertical: 0,
   },
@@ -196,6 +217,10 @@ const styles = StyleSheet.create({
   filterChipActive: {
     backgroundColor: Colors.accent,
   },
+  filterChipPressed: {
+    opacity: 0.7,
+    transform: [{ scale: 0.95 }],
+  },
   filterText: {
     ...Typography.captionBold,
     color: Colors.textSecondary,
@@ -203,8 +228,23 @@ const styles = StyleSheet.create({
   filterTextActive: {
     color: Colors.white,
   },
+  listCardTop: {
+    backgroundColor: Colors.white,
+    borderTopLeftRadius: Radius.xl,
+    borderTopRightRadius: Radius.xl,
+    height: Spacing.sm,
+    ...Shadows.sm,
+  },
+  listCardBottom: {
+    backgroundColor: Colors.white,
+    borderBottomLeftRadius: Radius.xl,
+    borderBottomRightRadius: Radius.xl,
+    height: Spacing.sm,
+    ...Shadows.sm,
+  },
   listContent: {
     paddingBottom: 100,
+    paddingHorizontal: Spacing.lg,
   },
   skeletonContainer: {
     padding: Spacing.lg,
@@ -251,6 +291,10 @@ const styles = StyleSheet.create({
   },
   pageBtnDisabled: {
     opacity: 0.5,
+  },
+  pageBtnPressed: {
+    opacity: 0.8,
+    transform: [{ scale: 0.97 }],
   },
   pageBtnText: {
     ...Typography.subheadline,

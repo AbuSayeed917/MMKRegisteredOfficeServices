@@ -5,7 +5,7 @@ import { TextInput } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
-import { GradientButton } from "@/components/ui/GradientButton";
+import { ActionButton } from "@/components/ui/ActionButton";
 import { api } from "@/lib/api";
 
 export default function ResetPasswordScreen() {
@@ -51,7 +51,7 @@ export default function ResetPasswordScreen() {
               <Text style={styles.description}>
                 Your password has been updated. You can now sign in.
               </Text>
-              <GradientButton
+              <ActionButton
                 label="Sign In"
                 onPress={() => router.replace("/(auth)/login")}
                 style={{ marginTop: Spacing["2xl"] }}
@@ -97,7 +97,7 @@ export default function ResetPasswordScreen() {
                 theme={{ roundness: Radius.sm }}
               />
 
-              <GradientButton
+              <ActionButton
                 label="Reset Password"
                 onPress={handleReset}
                 loading={loading}
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: Colors.white,
-    fontSize: 17,
+    fontSize: 14,
     marginBottom: Spacing.md,
   },
   inputOutline: {
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: Spacing.sm,
-    backgroundColor: "rgba(255, 59, 48, 0.08)",
+    backgroundColor: Colors.error + "14",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
     borderRadius: Radius.sm,

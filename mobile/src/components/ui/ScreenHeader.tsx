@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Colors } from "@/theme/colors";
 import { Typography, Spacing } from "@/theme/spacing";
 
-type GradientHeaderProps = {
+type ScreenHeaderProps = {
   title: string;
   subtitle?: string;
   rightAction?: React.ReactNode;
@@ -15,7 +15,7 @@ type GradientHeaderProps = {
   compact?: boolean;
 };
 
-export function GradientHeader({ title, subtitle, rightAction, children, compact }: GradientHeaderProps) {
+export function ScreenHeader({ title, subtitle, rightAction, children, compact }: ScreenHeaderProps) {
   const insets = useSafeAreaInsets();
 
   return (

@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { View, FlatList, Text, StyleSheet, Pressable, TextInput } from "react-native";
+import * as Haptics from "expo-haptics";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Colors, statusColor } from "@/theme/colors";
@@ -52,23 +53,29 @@ export default function AdminPaymentsScreen() {
         </View>
       </View>
 
+      {/* Summary cards — always tight below header */}
+      {!isLoading && data?.summary && (
+        <View style={styles.summaryWrap}>
+          <PaymentSummary summary={data.summary} />
+        </View>
+      )}
+
       {isLoading && !data ? (
         <View style={styles.skeletonContainer}><SkeletonList count={5} /></View>
       ) : (
         <FlatList<AdminPaymentItem>
           data={payments}
           keyExtractor={(item) => item.id}
-          ListHeaderComponent={
-            data?.summary ? (
-              <View style={styles.summaryWrap}>
-                <PaymentSummary summary={data.summary} />
-              </View>
-            ) : null
-          }
+          ListHeaderComponent={payments.length > 0 ? <View style={styles.listCardTop} /> : null}
           renderItem={({ item }) => {
             const color = statusColor(item.status);
             return (
-              <View style={styles.row}>
+              <Pressable
+                style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                }}
+              >
                 <View style={[styles.rowIcon, { backgroundColor: color + "12" }]}>
                   <MaterialCommunityIcons
                     name={item.status === "SUCCEEDED" ? "check-circle" : item.status === "FAILED" ? "close-circle" : "clock-outline"}
@@ -86,7 +93,7 @@ export default function AdminPaymentsScreen() {
                     <Text style={[styles.rowStatusText, { color }]}>{item.status.toLowerCase()}</Text>
                   </View>
                 </View>
-              </View>
+              </Pressable>
             );
           }}
           refreshing={isRefetching}
@@ -106,23 +113,39 @@ export default function AdminPaymentsScreen() {
             </View>
           }
           ListFooterComponent={
-            pagination && pagination.totalPages > 1 ? (
+            <>
+            {payments.length > 0 && <View style={styles.listCardBottom} />}
+            {pagination && pagination.totalPages > 1 ? (
               <View style={styles.pagination}>
                 <Text style={styles.pageText}>
                   Page {page} of {pagination.totalPages}
                 </Text>
                 <View style={styles.pageButtons}>
                   <Pressable
-                    style={[styles.pageBtn, page <= 1 && styles.pageBtnDisabled]}
-                    onPress={() => setPage((p) => Math.max(1, p - 1))}
+                    style={({ pressed }) => [
+                      styles.pageBtn,
+                      page <= 1 && styles.pageBtnDisabled,
+                      pressed && !(page <= 1) && styles.pageBtnPressed,
+                    ]}
+                    onPress={() => {
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      setPage((p) => Math.max(1, p - 1));
+                    }}
                     disabled={page <= 1}
                   >
                     <MaterialCommunityIcons name="chevron-left" size={18} color={page <= 1 ? Colors.textLight : Colors.accent} />
                     <Text style={[styles.pageBtnText, page <= 1 && styles.pageBtnTextDisabled]}>Previous</Text>
                   </Pressable>
                   <Pressable
-                    style={[styles.pageBtn, page >= pagination.totalPages && styles.pageBtnDisabled]}
-                    onPress={() => setPage((p) => p + 1)}
+                    style={({ pressed }) => [
+                      styles.pageBtn,
+                      page >= pagination.totalPages && styles.pageBtnDisabled,
+                      pressed && !(page >= pagination.totalPages) && styles.pageBtnPressed,
+                    ]}
+                    onPress={() => {
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      setPage((p) => p + 1);
+                    }}
                     disabled={page >= pagination.totalPages}
                   >
                     <Text style={[styles.pageBtnText, page >= pagination.totalPages && styles.pageBtnTextDisabled]}>Next</Text>
@@ -130,7 +153,8 @@ export default function AdminPaymentsScreen() {
                   </Pressable>
                 </View>
               </View>
-            ) : null
+            ) : null}
+            </>
           }
         />
       )}
@@ -145,13 +169,13 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: Spacing.xl,
-    paddingBottom: Spacing.md,
+    paddingBottom: Spacing.sm,
     backgroundColor: Colors.bgPrimary,
   },
   headerTitle: {
     ...Typography.largeTitle,
     color: Colors.textPrimary,
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.sm,
   },
   searchContainer: {
     flexDirection: "row",
@@ -159,24 +183,40 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.fill,
     borderRadius: Radius.sm,
     paddingHorizontal: Spacing.sm,
-    height: 36,
-    gap: 6,
+    height: 32,
+    gap: 4,
   },
   searchInput: {
     flex: 1,
     ...Typography.body,
-    fontSize: 15,
     color: Colors.textPrimary,
     paddingVertical: 0,
   },
   summaryWrap: {
-    padding: Spacing.lg,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.sm,
+    paddingBottom: Spacing.md,
   },
   listContent: {
     paddingBottom: 100,
+    paddingHorizontal: Spacing.lg,
   },
   skeletonContainer: {
     padding: Spacing.lg,
+  },
+  listCardTop: {
+    backgroundColor: Colors.white,
+    borderTopLeftRadius: Radius.xl,
+    borderTopRightRadius: Radius.xl,
+    height: Spacing.sm,
+    ...Shadows.sm,
+  },
+  listCardBottom: {
+    backgroundColor: Colors.white,
+    borderBottomLeftRadius: Radius.xl,
+    borderBottomRightRadius: Radius.xl,
+    height: Spacing.sm,
+    ...Shadows.sm,
   },
   row: {
     flexDirection: "row",
@@ -185,6 +225,9 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.md,
     paddingHorizontal: Spacing.lg,
     backgroundColor: Colors.white,
+  },
+  rowPressed: {
+    backgroundColor: Colors.fill,
   },
   separatorWrap: {
     backgroundColor: Colors.white,
@@ -195,8 +238,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.separator,
   },
   rowIcon: {
-    width: 40,
-    height: 40,
+    width: 34,
+    height: 34,
     borderRadius: Radius.md,
     alignItems: "center",
     justifyContent: "center",
@@ -227,7 +270,7 @@ const styles = StyleSheet.create({
     borderRadius: Radius.full,
   },
   rowStatusText: {
-    fontSize: 10,
+    ...Typography.caption2,
     fontWeight: "600",
     textTransform: "capitalize",
   },
@@ -273,6 +316,10 @@ const styles = StyleSheet.create({
   },
   pageBtnDisabled: {
     opacity: 0.5,
+  },
+  pageBtnPressed: {
+    opacity: 0.8,
+    transform: [{ scale: 0.97 }],
   },
   pageBtnText: {
     ...Typography.subheadline,

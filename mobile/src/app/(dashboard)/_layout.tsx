@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Platform } from "react-native";
 import { BlurView } from "expo-blur";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors } from "@/theme/colors";
+import { Typography } from "@/theme/spacing";
 import { useDashboard } from "@/hooks/useDashboard";
 
 function AlertsBadge({ color, size }: { color: string; size: number }) {
@@ -101,27 +102,15 @@ export default function DashboardLayout() {
         }}
       />
       {/* Hidden screens — accessible via router.push but not shown in tab bar */}
-      <Tabs.Screen
-        name="verify-email"
-        options={{
-          href: null,
-        }}
-      />
-      <Tabs.Screen
-        name="agreement-view"
-        options={{
-          href: null,
-        }}
-      />
+      <Tabs.Screen name="documents" options={{ href: null }} />
+      <Tabs.Screen name="verify-email" options={{ href: null }} />
+      <Tabs.Screen name="agreement-view" options={{ href: null }} />
       <Tabs.Screen name="support" options={{ href: null }} />
       <Tabs.Screen name="support-new" options={{ href: null }} />
       <Tabs.Screen name="support-detail" options={{ href: null }} />
     </Tabs>
   );
 }
-
-// Import Typography for tab labels
-import { Typography } from "@/theme/spacing";
 
 const styles = StyleSheet.create({
   badge: {

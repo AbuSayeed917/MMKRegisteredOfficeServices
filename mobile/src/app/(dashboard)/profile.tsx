@@ -1,26 +1,19 @@
-import { useState, useEffect, useCallback } from "react";
-import { ScrollView, View, Text, StyleSheet, RefreshControl, Alert, Pressable, Switch } from "react-native";
-import { TextInput } from "react-native-paper";
+import { useState } from "react";
+import { ScrollView, View, Text, StyleSheet, RefreshControl, Alert, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import { Colors } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
 import { useDashboard } from "@/hooks/useDashboard";
-import { api } from "@/lib/api";
 import { logout } from "@/lib/auth";
 import { router } from "expo-router";
 import { Avatar } from "@/components/ui/Avatar";
-import { GradientButton } from "@/components/ui/GradientButton";
 import { SkeletonCard } from "@/components/ui/SkeletonLoader";
 import { formatDate } from "@/lib/format";
-import {
-  isBiometricAvailable,
-  isBiometricEnabled,
-  setBiometricEnabled,
-  getBiometricType,
-  authenticateWithBiometric,
-} from "@/lib/biometric";
+import { PasswordChangeForm } from "@/components/profile/PasswordChangeForm";
+import { BiometricToggle } from "@/components/profile/BiometricToggle";
+import { BusinessEditForm } from "@/components/profile/BusinessEditForm";
 
 function GroupedRow({
   label,
@@ -53,108 +46,11 @@ export default function ProfileScreen() {
   const { data, isLoading, refetch, isRefetching } = useDashboard();
   const insets = useSafeAreaInsets();
   const [editing, setEditing] = useState(false);
-  const [tradingAddress, setTradingAddress] = useState("");
-  const [phone, setPhone] = useState("");
-  const [saving, setSaving] = useState(false);
-
   const [showPasswordChange, setShowPasswordChange] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [changingPw, setChangingPw] = useState(false);
-
-  const [biometricHardwareAvailable, setBiometricHardwareAvailable] = useState(false);
-  const [biometricEnabled, setBiometricEnabledState] = useState(false);
-  const [biometricType, setBiometricType] = useState("Biometric");
-  const [togglingBiometric, setTogglingBiometric] = useState(false);
-
-  const loadBiometricState = useCallback(async () => {
-    const available = await isBiometricAvailable();
-    setBiometricHardwareAvailable(available);
-    if (available) {
-      const type = await getBiometricType();
-      setBiometricType(type);
-      const enabled = await isBiometricEnabled();
-      setBiometricEnabledState(enabled);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadBiometricState();
-  }, [loadBiometricState]);
-
-  const handleToggleBiometric = async (value: boolean) => {
-    setTogglingBiometric(true);
-    try {
-      if (value) {
-        // Authenticate first to confirm identity before enabling
-        const authenticated = await authenticateWithBiometric();
-        if (!authenticated) {
-          setTogglingBiometric(false);
-          return;
-        }
-        await setBiometricEnabled(true);
-        setBiometricEnabledState(true);
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      } else {
-        await setBiometricEnabled(false);
-        setBiometricEnabledState(false);
-      }
-    } catch {
-      Alert.alert("Error", "Could not update biometric settings");
-    } finally {
-      setTogglingBiometric(false);
-    }
-  };
 
   const user = data?.user;
   const business = data?.business;
   const directors = business?.directors ?? [];
-
-  const startEdit = () => {
-    setTradingAddress(business?.tradingAddress ?? "");
-    setPhone(business?.phone ?? "");
-    setEditing(true);
-  };
-
-  const saveProfile = async () => {
-    setSaving(true);
-    try {
-      await api.patch("/api/profile", { tradingAddress, phone });
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      setEditing(false);
-      refetch();
-    } catch {
-      Alert.alert("Error", "Could not save profile");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleChangePassword = async () => {
-    if (newPassword.length < 8) {
-      Alert.alert("Error", "Password must be at least 8 characters");
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match");
-      return;
-    }
-    setChangingPw(true);
-    try {
-      await api.post("/api/password/change", { currentPassword, newPassword });
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      Alert.alert("Success", "Password changed successfully");
-      setShowPasswordChange(false);
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-    } catch {
-      Alert.alert("Error", "Current password is incorrect");
-    } finally {
-      setChangingPw(false);
-    }
-  };
 
   const handleLogout = () => {
     Alert.alert("Sign Out", "Are you sure you want to sign out?", [
@@ -188,17 +84,15 @@ export default function ProfileScreen() {
           {isLoading ? (
             <Text style={styles.largeTitle}>Profile</Text>
           ) : (
-            <>
-              <View style={styles.profileRow}>
-                <Avatar name={business?.companyName} email={user?.email} size={60} />
-                <View style={styles.profileText}>
-                  <Text style={styles.profileName} numberOfLines={1}>
-                    {business?.companyName ?? "Your Account"}
-                  </Text>
-                  <Text style={styles.profileEmail} numberOfLines={1}>{user?.email}</Text>
-                </View>
+            <View style={styles.profileRow}>
+              <Avatar name={business?.companyName} email={user?.email} size={60} />
+              <View style={styles.profileText}>
+                <Text style={styles.profileName} numberOfLines={1}>
+                  {business?.companyName ?? "Your Account"}
+                </Text>
+                <Text style={styles.profileEmail} numberOfLines={1}>{user?.email}</Text>
               </View>
-            </>
+            </View>
           )}
         </View>
 
@@ -224,7 +118,10 @@ export default function ProfileScreen() {
                     <View style={styles.groupedSeparator} />
                     <Pressable
                       style={({ pressed }) => [styles.actionRow, pressed && styles.actionRowPressed]}
-                      onPress={() => router.push("/(dashboard)/verify-email")}
+                      onPress={() => {
+                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        router.push("/(dashboard)/verify-email");
+                      }}
                     >
                       <Text style={styles.actionRowLabel}>Verify Email</Text>
                       <MaterialCommunityIcons name="chevron-right" size={20} color={Colors.textLight} />
@@ -239,49 +136,14 @@ export default function ProfileScreen() {
               <Text style={styles.sectionTitle}>SECURITY</Text>
               <View style={styles.card}>
                 {showPasswordChange ? (
-                  <View style={styles.passwordForm}>
-                    <TextInput
-                      label="Current Password"
-                      value={currentPassword}
-                      onChangeText={setCurrentPassword}
-                      secureTextEntry
-                      mode="outlined"
-                      outlineColor={Colors.separator}
-                      activeOutlineColor={Colors.accent}
-                      style={styles.input}
-                      theme={{ roundness: Radius.sm }}
-                    />
-                    <TextInput
-                      label="New Password"
-                      value={newPassword}
-                      onChangeText={setNewPassword}
-                      secureTextEntry
-                      mode="outlined"
-                      outlineColor={Colors.separator}
-                      activeOutlineColor={Colors.accent}
-                      style={styles.input}
-                      theme={{ roundness: Radius.sm }}
-                    />
-                    <TextInput
-                      label="Confirm New Password"
-                      value={confirmPassword}
-                      onChangeText={setConfirmPassword}
-                      secureTextEntry
-                      mode="outlined"
-                      outlineColor={Colors.separator}
-                      activeOutlineColor={Colors.accent}
-                      style={styles.input}
-                      theme={{ roundness: Radius.sm }}
-                    />
-                    <View style={styles.buttonRow}>
-                      <GradientButton label="Save Password" onPress={handleChangePassword} loading={changingPw} />
-                      <GradientButton label="Cancel" onPress={() => setShowPasswordChange(false)} variant="outline" />
-                    </View>
-                  </View>
+                  <PasswordChangeForm onDone={() => setShowPasswordChange(false)} />
                 ) : (
                   <Pressable
                     style={({ pressed }) => [styles.actionRow, pressed && styles.actionRowPressed]}
-                    onPress={() => setShowPasswordChange(true)}
+                    onPress={() => {
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      setShowPasswordChange(true);
+                    }}
                   >
                     <Text style={styles.actionRowLabel}>Change Password</Text>
                     <MaterialCommunityIcons name="chevron-right" size={20} color={Colors.textLight} />
@@ -290,40 +152,20 @@ export default function ProfileScreen() {
               </View>
 
               {/* Biometric Authentication */}
-              {biometricHardwareAvailable && (
-                <>
-                  <Text style={styles.sectionTitle}>AUTHENTICATION</Text>
-                  <View style={styles.card}>
-                    <View style={styles.biometricRow}>
-                      <View style={styles.biometricInfo}>
-                        <MaterialCommunityIcons
-                          name={biometricType === "Face ID" ? "face-recognition" : "fingerprint"}
-                          size={22}
-                          color={Colors.accent}
-                        />
-                        <Text style={styles.biometricLabel}>{biometricType}</Text>
-                      </View>
-                      <Switch
-                        value={biometricEnabled}
-                        onValueChange={handleToggleBiometric}
-                        disabled={togglingBiometric}
-                        trackColor={{ false: Colors.fill, true: Colors.success }}
-                        thumbColor={Colors.white}
-                        ios_backgroundColor={Colors.fill}
-                      />
-                    </View>
-                    <Text style={styles.biometricHint}>
-                      Use {biometricType} to quickly sign in to your account.
-                    </Text>
-                  </View>
-                </>
-              )}
+              <BiometricToggle />
 
               {/* Business Details */}
               <View style={styles.sectionTitleRow}>
                 <Text style={styles.sectionTitle}>BUSINESS DETAILS</Text>
                 {!editing && (
-                  <Pressable onPress={startEdit} hitSlop={12}>
+                  <Pressable
+                    onPress={() => {
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      setEditing(true);
+                    }}
+                    hitSlop={12}
+                    style={({ pressed }) => pressed && { opacity: 0.6 }}
+                  >
                     <Text style={styles.editAction}>Edit</Text>
                   </Pressable>
                 )}
@@ -335,35 +177,12 @@ export default function ProfileScreen() {
                 <GroupedRow label="Registered Address" value={business?.registeredAddress} />
 
                 {editing ? (
-                  <View style={styles.editForm}>
-                    <View style={styles.groupedSeparator} />
-                    <TextInput
-                      label="Trading Address"
-                      value={tradingAddress}
-                      onChangeText={setTradingAddress}
-                      mode="outlined"
-                      outlineColor={Colors.separator}
-                      activeOutlineColor={Colors.accent}
-                      style={styles.input}
-                      multiline
-                      theme={{ roundness: Radius.sm }}
-                    />
-                    <TextInput
-                      label="Phone"
-                      value={phone}
-                      onChangeText={setPhone}
-                      mode="outlined"
-                      outlineColor={Colors.separator}
-                      activeOutlineColor={Colors.accent}
-                      style={styles.input}
-                      keyboardType="phone-pad"
-                      theme={{ roundness: Radius.sm }}
-                    />
-                    <View style={styles.buttonRow}>
-                      <GradientButton label="Save Changes" onPress={saveProfile} loading={saving} />
-                      <GradientButton label="Cancel" onPress={() => setEditing(false)} variant="outline" />
-                    </View>
-                  </View>
+                  <BusinessEditForm
+                    initialTradingAddress={business?.tradingAddress ?? ""}
+                    initialPhone={business?.phone ?? ""}
+                    onDone={() => setEditing(false)}
+                    onSaved={() => refetch()}
+                  />
                 ) : (
                   <>
                     <GroupedRow label="Trading Address" value={business?.tradingAddress} />
@@ -393,12 +212,15 @@ export default function ProfileScreen() {
                 </>
               )}
 
-              {/* Need Help? */}
+              {/* Support */}
               <Text style={styles.sectionTitle}>SUPPORT</Text>
               <View style={styles.card}>
                 <Pressable
                   style={({ pressed }) => [styles.actionRow, pressed && styles.actionRowPressed]}
-                  onPress={() => router.push("/(dashboard)/support")}
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    router.push("/(dashboard)/support");
+                  }}
                 >
                   <View style={styles.helpRow}>
                     <MaterialCommunityIcons name="lifebuoy" size={22} color={Colors.accent} />
@@ -412,7 +234,10 @@ export default function ProfileScreen() {
               <View style={styles.signOutContainer}>
                 <Pressable
                   style={({ pressed }) => [styles.signOutBtn, pressed && styles.signOutPressed]}
-                  onPress={handleLogout}
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                    handleLogout();
+                  }}
                 >
                   <Text style={styles.signOutText}>Sign Out</Text>
                 </Pressable>
@@ -522,21 +347,6 @@ const styles = StyleSheet.create({
     ...Typography.body,
     color: Colors.accent,
   },
-  passwordForm: {
-    gap: Spacing.sm,
-  },
-  editForm: {
-    gap: Spacing.sm,
-  },
-  input: {
-    backgroundColor: Colors.white,
-    fontSize: 15,
-  },
-  buttonRow: {
-    flexDirection: "row",
-    gap: Spacing.md,
-    marginTop: Spacing.sm,
-  },
   directorRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -555,27 +365,6 @@ const styles = StyleSheet.create({
     ...Typography.subheadline,
     color: Colors.textLight,
     marginTop: 1,
-  },
-  biometricRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    minHeight: 44,
-    paddingVertical: 10,
-  },
-  biometricInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.md,
-  },
-  biometricLabel: {
-    ...Typography.body,
-    color: Colors.textPrimary,
-  },
-  biometricHint: {
-    ...Typography.footnote,
-    color: Colors.textLight,
-    marginTop: Spacing.xs,
   },
   helpRow: {
     flexDirection: "row",

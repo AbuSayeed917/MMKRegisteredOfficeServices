@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { router } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors } from "@/theme/colors";
-import { GradientButton } from "@/components/ui/GradientButton";
+import { ActionButton } from "@/components/ui/ActionButton";
 
 export default function PaymentSuccessScreen() {
   return (
@@ -28,7 +28,7 @@ export default function PaymentSuccessScreen() {
           <Text style={styles.infoItem}>{"\u2022"} Confirmation email sent</Text>
         </View>
 
-        <GradientButton
+        <ActionButton
           label="Go to Dashboard"
           onPress={() => router.replace("/(dashboard)")}
           style={styles.button}

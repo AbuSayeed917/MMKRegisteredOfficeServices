@@ -2,6 +2,7 @@ import { ScrollView, View, Text, StyleSheet, RefreshControl, Pressable } from "r
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import * as Haptics from "expo-haptics";
 import { Colors, statusColor } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
 import { useDashboard } from "@/hooks/useDashboard";
@@ -123,7 +124,10 @@ export default function AgreementScreen() {
               {/* View Full Agreement */}
               <Text style={styles.sectionTitle}>DOCUMENT</Text>
               <Pressable
-                onPress={() => router.push("/(dashboard)/agreement-view")}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  router.push("/(dashboard)/agreement-view");
+                }}
                 style={({ pressed }) => [
                   styles.card,
                   styles.viewAgreementRow,

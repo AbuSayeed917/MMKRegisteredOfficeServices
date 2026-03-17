@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 import { Colors, statusColor } from "@/theme/colors";
 import { Spacing, Radius, Typography } from "@/theme/spacing";
 import { Avatar } from "@/components/ui/Avatar";
@@ -17,9 +18,12 @@ export function ClientRow({ client, onPress }: ClientRowProps) {
   return (
     <Pressable
       style={({ pressed }) => [styles.row, pressed && styles.pressed]}
-      onPress={onPress}
+      onPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        onPress();
+      }}
     >
-      <Avatar name={client.companyName} email={client.email} size={44} />
+      <Avatar name={client.companyName} email={client.email} size={36} />
       <View style={styles.info}>
         <Text style={styles.name} numberOfLines={1}>
           {client.companyName ?? client.email}

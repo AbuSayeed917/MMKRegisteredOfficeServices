@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 import { Colors, statusColor } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
 import { formatCurrency, formatDate } from "@/lib/format";
@@ -44,9 +45,10 @@ export function PaymentList({ payments }: PaymentListProps) {
         const color = statusColor(p.status);
 
         return (
-          <View
+          <Pressable
             key={p.id}
-            style={[styles.row, !isLast && styles.rowBorder]}
+            style={({ pressed }) => [styles.row, !isLast && styles.rowBorder, pressed && styles.rowPressed]}
+            onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
           >
             {/* Status icon */}
             <View
@@ -76,7 +78,7 @@ export function PaymentList({ payments }: PaymentListProps) {
                 {p.status.charAt(0) + p.status.slice(1).toLowerCase()}
               </Text>
             </View>
-          </View>
+          </Pressable>
         );
       })}
     </View>
@@ -101,6 +103,9 @@ const styles = StyleSheet.create({
   rowBorder: {
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: Colors.separator,
+  },
+  rowPressed: {
+    backgroundColor: Colors.fill,
   },
   iconRect: {
     width: 34,

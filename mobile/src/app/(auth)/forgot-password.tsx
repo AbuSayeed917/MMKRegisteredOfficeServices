@@ -5,7 +5,7 @@ import { TextInput } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
-import { GradientButton } from "@/components/ui/GradientButton";
+import { ActionButton } from "@/components/ui/ActionButton";
 import { api } from "@/lib/api";
 
 export default function ForgotPasswordScreen() {
@@ -47,7 +47,7 @@ export default function ForgotPasswordScreen() {
               <Text style={styles.successMessage}>
                 If an account exists for {email}, we&apos;ve sent a password reset link.
               </Text>
-              <GradientButton
+              <ActionButton
                 label="Back to Sign In"
                 onPress={() => router.back()}
                 variant="outline"
@@ -89,14 +89,14 @@ export default function ForgotPasswordScreen() {
                 theme={{ roundness: Radius.sm }}
               />
 
-              <GradientButton
+              <ActionButton
                 label="Send Reset Link"
                 onPress={handleSubmit}
                 loading={loading}
                 style={{ marginTop: Spacing.sm }}
               />
 
-              <GradientButton
+              <ActionButton
                 label="Back to Sign In"
                 onPress={() => router.back()}
                 variant="outline"
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: Colors.white,
-    fontSize: 17,
+    fontSize: 14,
     marginBottom: Spacing.lg,
   },
   inputOutline: {
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: Spacing.sm,
-    backgroundColor: "rgba(255, 59, 48, 0.08)",
+    backgroundColor: Colors.error + "14",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
     borderRadius: Radius.sm,

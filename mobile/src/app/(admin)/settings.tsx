@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ScrollView, View, Text, StyleSheet, Alert, Pressable, TextInput } from "react-native";
+import { ScrollView, View, Text, StyleSheet, Alert, Pressable, TextInput, Keyboard } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
@@ -49,10 +49,15 @@ export default function AdminSettingsScreen() {
         setAnnualFee(String(pence / 100));
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        console.error("Failed to load settings:", err);
+        Alert.alert("Error", "Could not load settings");
+        setLoading(false);
+      });
   }, []);
 
   const handleSave = async () => {
+    Keyboard.dismiss();
     const pounds = parseFloat(annualFee);
     if (isNaN(pounds) || pounds <= 0) {
       Alert.alert("Error", "Please enter a valid fee amount");
@@ -115,7 +120,7 @@ export default function AdminSettingsScreen() {
                     <View style={styles.feeInfo}>
                       <Text style={styles.feeLabel}>Annual Service Fee</Text>
                       <View style={styles.feeInputRow}>
-                        <Text style={styles.feeCurrency}>\u00a3</Text>
+                        <Text style={styles.feeCurrency}>£</Text>
                         <TextInput
                           value={annualFee}
                           onChangeText={setAnnualFee}
@@ -128,8 +133,11 @@ export default function AdminSettingsScreen() {
                     </View>
                   </View>
                   <Pressable
-                    style={({ pressed }) => [styles.saveBtn, pressed && styles.saveBtnPressed]}
-                    onPress={handleSave}
+                    style={({ pressed }) => [styles.saveBtn, pressed && styles.saveBtnPressed, saving && styles.saveBtnSaving]}
+                    onPress={() => {
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                      handleSave();
+                    }}
                     disabled={saving}
                   >
                     {saving ? (
@@ -166,7 +174,10 @@ export default function AdminSettingsScreen() {
               {/* Sign Out */}
               <Pressable
                 style={({ pressed }) => [styles.signOutBtn, pressed && styles.signOutPressed]}
-                onPress={handleLogout}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  handleLogout();
+                }}
               >
                 <MaterialCommunityIcons name="logout" size={20} color={Colors.error} />
                 <Text style={styles.signOutText}>Sign Out</Text>
@@ -186,7 +197,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: Spacing.xl,
-    paddingBottom: Spacing.lg,
+    paddingBottom: Spacing.sm,
     backgroundColor: Colors.bgPrimary,
   },
   headerTitle: {
@@ -225,8 +236,8 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.separator,
   },
   feeIconBg: {
-    width: 36,
-    height: 36,
+    width: 30,
+    height: 30,
     borderRadius: Radius.sm,
     alignItems: "center",
     justifyContent: "center",
@@ -264,6 +275,10 @@ const styles = StyleSheet.create({
   },
   saveBtnPressed: {
     opacity: 0.8,
+    transform: [{ scale: 0.98 }],
+  },
+  saveBtnSaving: {
+    opacity: 0.6,
   },
   saveBtnText: {
     ...Typography.headline,
@@ -281,8 +296,8 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.separator,
   },
   settingIcon: {
-    width: 30,
-    height: 30,
+    width: 26,
+    height: 26,
     borderRadius: Radius.xs,
     alignItems: "center",
     justifyContent: "center",

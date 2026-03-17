@@ -1,10 +1,11 @@
 import { Pressable, Text, StyleSheet, ViewStyle, ActivityIndicator, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import * as Haptics from "expo-haptics";
 import { Colors } from "@/theme/colors";
 import { Radius, Shadows, Typography } from "@/theme/spacing";
 
-interface GradientButtonProps {
+interface ActionButtonProps {
   label: string;
   onPress: () => void;
   loading?: boolean;
@@ -15,7 +16,7 @@ interface GradientButtonProps {
   size?: "default" | "compact";
 }
 
-export function GradientButton({
+export function ActionButton({
   label,
   onPress,
   loading = false,
@@ -24,7 +25,7 @@ export function GradientButton({
   variant = "accent",
   icon,
   size = "default",
-}: GradientButtonProps) {
+}: ActionButtonProps) {
   const isDisabled = disabled || loading;
   const isCompact = size === "compact";
 
@@ -113,27 +114,33 @@ export function GradientButton({
     );
   }
 
-  // Accent (default) — iOS system blue filled button
+  // Accent (default) — gradient filled button
   return (
     <Pressable
       onPress={handlePress}
       disabled={isDisabled}
       style={({ pressed }) => [
-        styles.accent,
-        isCompact && styles.compact,
+        styles.accentOuter,
         pressed && styles.accentPressed,
         isDisabled && styles.disabled,
         style,
       ]}
     >
-      {loading ? (
-        <ActivityIndicator size="small" color="#fff" />
-      ) : (
-        <View style={styles.contentRow}>
-          {icon}
-          <Text style={styles.accentText}>{label}</Text>
-        </View>
-      )}
+      <LinearGradient
+        colors={["#0ea5e9", "#38bdf8"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={[styles.accent, isCompact && styles.compact]}
+      >
+        {loading ? (
+          <ActivityIndicator size="small" color={Colors.white} />
+        ) : (
+          <View style={styles.contentRow}>
+            {icon}
+            <Text style={styles.accentText}>{label}</Text>
+          </View>
+        )}
+      </LinearGradient>
     </Pressable>
   );
 }
@@ -145,18 +152,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
   },
-  // ── Accent (filled blue) ──
+  // ── Accent (gradient) ──
+  accentOuter: {
+    borderRadius: Radius.md,
+    overflow: "hidden",
+    ...Shadows.glow,
+  },
   accent: {
-    backgroundColor: Colors.accent,
     paddingVertical: 16,
     paddingHorizontal: 24,
     borderRadius: Radius.md,
     alignItems: "center",
     justifyContent: "center",
-    ...Shadows.glow,
   },
   accentText: {
-    color: "#fff",
+    color: Colors.white,
     ...Typography.headline,
   },
   accentPressed: {

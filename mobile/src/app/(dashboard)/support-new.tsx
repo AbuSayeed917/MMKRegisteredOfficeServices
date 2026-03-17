@@ -17,7 +17,7 @@ import { router } from "expo-router";
 import { Colors } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
 import { useCreateTicket } from "@/hooks/useSupportTickets";
-import { GradientButton } from "@/components/ui/GradientButton";
+import { ActionButton } from "@/components/ui/ActionButton";
 
 const CATEGORIES = [
   { key: "GENERAL", label: "General" },
@@ -149,7 +149,7 @@ export default function SupportNewScreen() {
 
           {/* Submit */}
           <View style={styles.submitContainer}>
-            <GradientButton
+            <ActionButton
               label="Submit Ticket"
               onPress={handleSubmit}
               loading={createTicket.isPending}

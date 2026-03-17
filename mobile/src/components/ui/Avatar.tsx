@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
+import { Colors } from "@/theme/colors";
 
 type AvatarProps = {
   name?: string | null;
@@ -17,10 +18,10 @@ function getInitials(name?: string | null, email?: string | null): string {
   return "?";
 }
 
-// iOS 26 system colors
+// Brand-tinted avatar palette
 const avatarColors = [
-  "#007AFF", "#34C759", "#FF9500", "#AF52DE", "#FF2D55",
-  "#5856D6", "#00C7BE", "#32ADE6", "#FF3B30", "#5AC8FA",
+  "#0ea5e9", "#10b981", "#f59e0b", "#8b5cf6", "#ec4899",
+  "#6366f1", "#14b8a6", "#0c2d42", "#ef4444", "#38bdf8",
 ];
 
 function getColor(name?: string | null, email?: string | null): string {
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    color: "#fff",
+    color: Colors.white,
     fontWeight: "600",
     letterSpacing: -0.3,
   },

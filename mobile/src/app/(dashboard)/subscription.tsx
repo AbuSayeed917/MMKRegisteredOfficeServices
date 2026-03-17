@@ -8,7 +8,7 @@ import { Colors, statusColor } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
 import { useDashboard } from "@/hooks/useDashboard";
 import { api } from "@/lib/api";
-import { GradientButton } from "@/components/ui/GradientButton";
+import { ActionButton } from "@/components/ui/ActionButton";
 import { PaymentList } from "@/components/dashboard/PaymentList";
 import { SkeletonCard } from "@/components/ui/SkeletonLoader";
 import { formatDate } from "@/lib/format";
@@ -125,7 +125,7 @@ export default function SubscriptionScreen() {
 
             {showPayButton && (
               <View style={styles.buttonContainer}>
-                <GradientButton
+                <ActionButton
                   label={status === "RENEWAL_PENDING" || status === "EXPIRED" ? "Renew Now" : "Pay Now"}
                   onPress={handlePay}
                   loading={payLoading}

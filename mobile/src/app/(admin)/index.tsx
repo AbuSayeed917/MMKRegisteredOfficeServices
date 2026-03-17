@@ -1,7 +1,9 @@
 import { ScrollView, View, Text, StyleSheet, RefreshControl, Pressable } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import * as Haptics from "expo-haptics";
 import { Colors, statusColor } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
 import { useAdminOverview } from "@/hooks/useAdminOverview";
@@ -66,6 +68,12 @@ export default function AdminOverviewScreen() {
                   onAction={() => router.push("/(admin)/clients")}
                 />
                 <View style={styles.card}>
+                  <LinearGradient
+                    colors={["#0ea5e9", "#38bdf8"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.gradientBar}
+                  />
                   {data.recentRegistrations.length === 0 ? (
                     <View style={styles.emptyList}>
                       <Text style={styles.emptyText}>No recent registrations</Text>
@@ -79,9 +87,12 @@ export default function AdminOverviewScreen() {
                           pressed && styles.listRowPressed,
                           i < Math.min(4, data.recentRegistrations.length - 1) && styles.rowSeparator,
                         ]}
-                        onPress={() => router.push(`/(admin)/clients/${c.id}`)}
+                        onPress={() => {
+                          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                          router.push(`/(admin)/clients/${c.id}`);
+                        }}
                       >
-                        <Avatar name={c.companyName} email={c.email} size={40} />
+                        <Avatar name={c.companyName} email={c.email} size={34} />
                         <View style={styles.listInfo}>
                           <Text style={styles.listName} numberOfLines={1}>
                             {c.companyName ?? c.email}
@@ -111,18 +122,29 @@ export default function AdminOverviewScreen() {
                   onAction={() => router.push("/(admin)/payments")}
                 />
                 <View style={styles.card}>
+                  <LinearGradient
+                    colors={["#10b981", "#34d399"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.gradientBar}
+                  />
                   {data.recentPayments.length === 0 ? (
                     <View style={styles.emptyList}>
                       <Text style={styles.emptyText}>No recent payments</Text>
                     </View>
                   ) : (
                     data.recentPayments.slice(0, 5).map((p, i) => (
-                      <View
+                      <Pressable
                         key={p.id}
-                        style={[
+                        style={({ pressed }) => [
                           styles.listRow,
+                          pressed && styles.listRowPressed,
                           i < Math.min(4, data.recentPayments.length - 1) && styles.rowSeparator,
                         ]}
+                        onPress={() => {
+                          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                          router.push("/(admin)/payments");
+                        }}
                       >
                         <View style={styles.paymentIcon}>
                           <MaterialCommunityIcons name="cash" size={18} color={Colors.success} />
@@ -134,7 +156,7 @@ export default function AdminOverviewScreen() {
                           <Text style={styles.listDate}>{formatDate(p.paidAt ?? p.createdAt)}</Text>
                         </View>
                         <Text style={styles.paymentAmount}>{formatCurrency(p.amount)}</Text>
-                      </View>
+                      </Pressable>
                     ))
                   )}
                 </View>
@@ -198,6 +220,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     ...Shadows.sm,
   },
+  gradientBar: {
+    height: 3,
+  },
   listRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -238,13 +263,13 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   statusLabel: {
-    fontSize: 10,
+    ...Typography.caption2,
     fontWeight: "600",
     textTransform: "capitalize",
   },
   paymentIcon: {
-    width: 40,
-    height: 40,
+    width: 34,
+    height: 34,
     borderRadius: Radius.md,
     backgroundColor: Colors.success + "12",
     alignItems: "center",

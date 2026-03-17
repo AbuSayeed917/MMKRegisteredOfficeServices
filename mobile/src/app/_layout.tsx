@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Slot, router } from "expo-router";
 import * as Linking from "expo-linking";
 import { StatusBar } from "expo-status-bar";
@@ -84,9 +85,14 @@ export default function RootLayout() {
     return (
       <View style={styles.splash}>
         <View style={styles.logoContainer}>
-          <View style={styles.logoBg}>
+          <LinearGradient
+            colors={["#0ea5e9", "#38bdf8"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.logoBg}
+          >
             <Text style={styles.logoText}>MMK</Text>
-          </View>
+          </LinearGradient>
           <ActivityIndicator size="small" color={Colors.accent} style={styles.spinner} />
         </View>
       </View>
@@ -120,16 +126,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logoBg: {
-    width: 72,
-    height: 72,
-    borderRadius: 20,
-    backgroundColor: Colors.accent,
+    width: 56,
+    height: 56,
+    borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",
   },
   logoText: {
-    color: "#fff",
-    fontSize: 22,
+    color: Colors.white,
+    fontSize: 18,
     fontWeight: "800",
     letterSpacing: -0.5,
   },

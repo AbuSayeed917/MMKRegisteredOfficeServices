@@ -37,14 +37,14 @@ function wrapHtml(html: string): string {
           font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
           font-size: 16px;
           line-height: 1.6;
-          color: #000000;
+          color: #0c2d42;
           padding: 16px;
           margin: 0;
           background: #FFFFFF;
           -webkit-font-smoothing: antialiased;
         }
         h1, h2, h3, h4, h5, h6 {
-          color: #000000;
+          color: #0c2d42;
           font-weight: 600;
           margin-top: 24px;
           margin-bottom: 8px;
@@ -52,21 +52,21 @@ function wrapHtml(html: string): string {
         h1 { font-size: 22px; }
         h2 { font-size: 20px; }
         h3 { font-size: 17px; }
-        p { margin: 0 0 12px 0; color: #3C3C43; }
-        ul, ol { padding-left: 24px; color: #3C3C43; }
+        p { margin: 0 0 12px 0; color: #3d6478; }
+        ul, ol { padding-left: 24px; color: #3d6478; }
         li { margin-bottom: 6px; }
-        a { color: #007AFF; text-decoration: none; }
+        a { color: #0ea5e9; text-decoration: none; }
         table { width: 100%; border-collapse: collapse; margin: 12px 0; }
         th, td {
           padding: 10px 12px;
-          border-bottom: 1px solid rgba(60,60,67,0.12);
+          border-bottom: 1px solid rgba(12,45,66,0.10);
           text-align: left;
           font-size: 15px;
         }
-        th { font-weight: 600; color: #000000; }
-        td { color: #3C3C43; }
-        hr { border: none; border-top: 1px solid rgba(60,60,67,0.12); margin: 20px 0; }
-        strong { font-weight: 600; color: #000000; }
+        th { font-weight: 600; color: #0c2d42; }
+        td { color: #3d6478; }
+        hr { border: none; border-top: 1px solid rgba(12,45,66,0.10); margin: 20px 0; }
+        strong { font-weight: 600; color: #0c2d42; }
       </style>
     </head>
     <body>${html}</body>

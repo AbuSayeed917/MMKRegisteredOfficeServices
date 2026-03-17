@@ -168,16 +168,6 @@ export interface AdminPaymentItem {
   email: string;
 }
 
-export interface PaginatedResponse<T> {
-  data: T[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-}
-
 export interface AdminPaymentsResponse {
   payments: AdminPaymentItem[];
   summary: Record<PaymentStatus, { count: number; total: number }>;

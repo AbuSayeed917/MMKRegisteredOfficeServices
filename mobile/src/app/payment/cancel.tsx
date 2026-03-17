@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { router } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors } from "@/theme/colors";
-import { GradientButton } from "@/components/ui/GradientButton";
+import { ActionButton } from "@/components/ui/ActionButton";
 
 export default function PaymentCancelScreen() {
   return (
@@ -15,14 +15,14 @@ export default function PaymentCancelScreen() {
         <Text style={styles.title}>Payment Cancelled</Text>
         <Text style={styles.message}>No charges were made to your account.</Text>
 
-        <GradientButton
+        <ActionButton
           label="Back to Dashboard"
           onPress={() => router.replace("/(dashboard)")}
           variant="outline"
           style={styles.button}
         />
 
-        <GradientButton
+        <ActionButton
           label="Try Again"
           onPress={() => router.replace("/(dashboard)/subscription")}
           style={styles.button}

@@ -1,85 +1,85 @@
 /**
- * iOS 26 Liquid Glass — Color System
- * Inspired by Apple's 2025 design language: muted tones, vibrant accents,
- * translucent surfaces, and adaptive depth.
+ * MMK Brand Theme — Navy + Cyan palette
+ * Matching web app identity: deep navy (#0c2d42) + cyan accent (#0ea5e9)
+ * with warm blue-gray backgrounds and navy-toned depth.
  */
 export const Colors = {
   // ── Core Brand ──────────────────────────────────────────
-  primary: "#0a1628",        // Deep ink (near-black navy)
-  primaryMid: "#1a2d4a",
-  primaryLight: "#2a4a6b",
+  primary: "#0c2d42",        // Deep navy (web primary)
+  primaryMid: "#164058",
+  primaryLight: "#1e5570",
 
-  // Accent — Saturated Blue (Apple-style system blue)
-  accent: "#007AFF",         // iOS system blue
-  accentLight: "#5AC8FA",    // iOS system teal
-  accentDark: "#0051D5",
+  // Accent — Cyan (web brand accent)
+  accent: "#0ea5e9",         // Cyan
+  accentLight: "#38bdf8",    // Light cyan (gradient end)
+  accentDark: "#0284c7",
 
-  // ── Backgrounds (light, airy, Apple-style) ──────────────
-  bgPrimary: "#F2F2F7",     // iOS system grouped background
-  bgLight: "#F2F2F7",
-  bgDark: "#000000",
-  bgSecondary: "#FFFFFF",    // Secondary grouped background
-  bgTertiary: "#F2F2F7",
-  bgSection: "#E5E5EA",     // iOS system gray 5
+  // ── Backgrounds (warm blue-gray) ──────────────────────
+  bgPrimary: "#f0f7fb",     // Warm blue-gray
+  bgLight: "#f0f7fb",
+  bgDark: "#091b28",        // Dark navy
+  bgSecondary: "#FFFFFF",
+  bgTertiary: "#e6f0f7",
+  bgSection: "#dbeaf2",
 
   // ── Glass Surfaces ──────────────────────────────────────
-  glass: "rgba(255, 255, 255, 0.72)",          // Light glass
-  glassLight: "rgba(255, 255, 255, 0.56)",     // Lighter glass
-  glassDark: "rgba(0, 0, 0, 0.32)",            // Dark glass
-  glassUltraThin: "rgba(255, 255, 255, 0.40)", // Ultra thin glass
-  glassBorder: "rgba(255, 255, 255, 0.18)",    // Glass edge highlight
-  glassBorderDark: "rgba(0, 0, 0, 0.08)",
+  glass: "rgba(240, 247, 251, 0.78)",
+  glassLight: "rgba(240, 247, 251, 0.56)",
+  glassDark: "rgba(12, 45, 66, 0.32)",
+  glassUltraThin: "rgba(240, 247, 251, 0.44)",
+  glassBorder: "rgba(219, 234, 242, 0.35)",
+  glassBorderDark: "rgba(12, 45, 66, 0.08)",
 
-  // ── Text (SF Pro hierarchy) ─────────────────────────────
-  textPrimary: "#000000",    // Label
-  textSecondary: "#3C3C43",  // Secondary label (60% opacity)
-  textTertiary: "#3C3C4399", // Tertiary label (30% opacity)
-  textLight: "#8E8E93",      // Placeholder text
+  // ── Text ──────────────────────────────────────────────
+  textPrimary: "#0c2d42",    // Navy
+  textSecondary: "#3d6478",  // Muted gray-blue
+  textTertiary: "#3d647899",
+  textLight: "#7a9eb5",      // Placeholder / secondary
   textOnDark: "#FFFFFF",
-  textOnGlass: "#1C1C1E",
+  textOnGlass: "#0c2d42",
 
-  // ── Borders ─────────────────────────────────────────────
-  separator: "rgba(60, 60, 67, 0.12)",  // iOS separator
-  separatorOpaque: "#C6C6C8",
-  border: "#D1D1D6",
-  borderLight: "#E5E5EA",
-  borderDark: "#38383A",
+  // ── Borders ───────────────────────────────────────────
+  separator: "rgba(12, 45, 66, 0.10)",
+  separatorOpaque: "#c0d8e8",
+  border: "#c0d8e8",
+  borderLight: "#dbeaf2",
+  borderDark: "#1a3a4f",
 
-  // ── System Colors (iOS 26 vibrant palette) ──────────────
-  success: "#34C759",        // iOS system green
-  successLight: "#30D158",
-  warning: "#FF9500",        // iOS system orange
-  warningLight: "#FFCC00",   // iOS system yellow
-  error: "#FF3B30",          // iOS system red
-  errorDark: "#D70015",
-  info: "#007AFF",           // iOS system blue
+  // ── System Colors ─────────────────────────────────────
+  success: "#10b981",        // Emerald
+  successLight: "#34d399",
+  warning: "#f59e0b",        // Amber
+  warningLight: "#fbbf24",
+  error: "#ef4444",          // Red
+  errorDark: "#dc2626",
+  info: "#0ea5e9",           // Cyan
 
   // Extended palette
   pink: "#FF2D55",
   purple: "#AF52DE",
   indigo: "#5856D6",
-  teal: "#5AC8FA",
+  teal: "#38bdf8",
   mint: "#00C7BE",
-  cyan: "#32ADE6",
+  cyan: "#0ea5e9",
 
-  // ── Surfaces ────────────────────────────────────────────
+  // ── Surfaces ──────────────────────────────────────────
   white: "#FFFFFF",
   card: "#FFFFFF",
-  cardDark: "#1C1C1E",       // iOS dark elevated surface
+  cardDark: "#0c2d42",
 
-  // ── Fills (iOS system fills) ────────────────────────────
-  fill: "rgba(120, 120, 128, 0.12)",     // Quaternary system fill
-  fillSecondary: "rgba(120, 120, 128, 0.16)",
-  fillTertiary: "rgba(120, 120, 128, 0.08)",
+  // ── Fills ─────────────────────────────────────────────
+  fill: "rgba(12, 45, 66, 0.06)",
+  fillSecondary: "rgba(12, 45, 66, 0.10)",
+  fillTertiary: "rgba(12, 45, 66, 0.04)",
 
   // Misc
-  overlay: "rgba(0, 0, 0, 0.4)",
+  overlay: "rgba(12, 45, 66, 0.5)",
   transparent: "transparent",
 } as const;
 
 export type ColorKey = keyof typeof Colors;
 
-/** Map subscription/payment status → iOS system color */
+/** Map subscription/payment status → brand color */
 export function statusColor(status: string): string {
   switch (status) {
     case "ACTIVE":

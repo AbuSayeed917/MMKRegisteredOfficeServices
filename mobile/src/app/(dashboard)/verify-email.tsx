@@ -16,7 +16,7 @@ import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { Colors } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
-import { GradientButton } from "@/components/ui/GradientButton";
+import { ActionButton } from "@/components/ui/ActionButton";
 import { useDashboard } from "@/hooks/useDashboard";
 import { api } from "@/lib/api";
 
@@ -136,7 +136,7 @@ export default function VerifyEmailScreen() {
           <Text style={styles.successMessage}>
             Your email address has been successfully verified.
           </Text>
-          <GradientButton
+          <ActionButton
             label="Back to Profile"
             onPress={() => router.back()}
             style={styles.successBtn}
@@ -199,7 +199,7 @@ export default function VerifyEmailScreen() {
                 We will send a 6-digit verification code to your email address.
                 Please check your inbox and spam folder.
               </Text>
-              <GradientButton
+              <ActionButton
                 label="Send Verification Code"
                 onPress={handleSendCode}
                 loading={sending}
@@ -262,7 +262,7 @@ export default function VerifyEmailScreen() {
                 </View>
               )}
 
-              <GradientButton
+              <ActionButton
                 label="Verify"
                 onPress={handleVerify}
                 loading={verifying}

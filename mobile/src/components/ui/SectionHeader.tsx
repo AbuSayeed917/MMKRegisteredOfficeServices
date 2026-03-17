@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
+import * as Haptics from "expo-haptics";
 import { Colors } from "@/theme/colors";
 import { Typography, Spacing } from "@/theme/spacing";
 
@@ -13,7 +14,14 @@ export function SectionHeader({ title, actionLabel, onAction }: SectionHeaderPro
     <View style={styles.row}>
       <Text style={styles.title}>{title}</Text>
       {actionLabel && onAction && (
-        <Pressable onPress={onAction} hitSlop={12}>
+        <Pressable
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            onAction();
+          }}
+          hitSlop={12}
+          style={({ pressed }) => pressed && styles.actionPressed}
+        >
           <Text style={styles.action}>{actionLabel}</Text>
         </Pressable>
       )}
@@ -36,5 +44,8 @@ const styles = StyleSheet.create({
   action: {
     ...Typography.subheadline,
     color: Colors.accent,
+  },
+  actionPressed: {
+    opacity: 0.6,
   },
 });

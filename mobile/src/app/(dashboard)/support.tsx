@@ -5,7 +5,7 @@ import { router } from "expo-router";
 import { Colors } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
-import { GradientButton } from "@/components/ui/GradientButton";
+import { ActionButton } from "@/components/ui/ActionButton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { SkeletonCard } from "@/components/ui/SkeletonLoader";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -66,7 +66,7 @@ export default function SupportScreen() {
           <Text style={styles.largeTitle}>Support</Text>
         </View>
         <View style={styles.newTicketRow}>
-          <GradientButton
+          <ActionButton
             label="New Ticket"
             onPress={() => router.push("/(dashboard)/support-new")}
             size="compact"

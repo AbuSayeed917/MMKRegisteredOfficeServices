@@ -13,7 +13,6 @@ interface AuthState {
   isLoading: boolean;
   login: (user: AuthUser, cookie: string) => void;
   logout: () => void;
-  setSessionCookie: (cookie: string) => void;
   setLoading: (loading: boolean) => void;
 }
 
@@ -39,6 +38,5 @@ export const useAuthStore = create<AuthState>((set) => ({
       isLoading: false,
     }),
 
-  setSessionCookie: (cookie) => set({ sessionCookie: cookie }),
   setLoading: (loading) => set({ isLoading: loading }),
 }));

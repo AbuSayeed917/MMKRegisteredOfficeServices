@@ -2,6 +2,7 @@ import { ScrollView, View, Text, StyleSheet, RefreshControl, Pressable } from "r
 import { useLocalSearchParams, router } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Haptics from "expo-haptics";
 import { Colors, statusColor } from "@/theme/colors";
 import { Spacing, Radius, Shadows, Typography } from "@/theme/spacing";
 import { useAdminClientDetail } from "@/hooks/useAdminClientDetail";
@@ -52,14 +53,21 @@ export default function ClientDetailScreen() {
       >
         {/* Header */}
         <View style={[styles.header, { paddingTop: insets.top + 4 }]}>
-          <Pressable onPress={() => router.back()} style={styles.backBtn} hitSlop={8}>
-            <MaterialCommunityIcons name="chevron-left" size={28} color={Colors.accent} />
+          <Pressable
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              router.back();
+            }}
+            style={({ pressed }) => [styles.backBtn, pressed && styles.backBtnPressed]}
+            hitSlop={8}
+          >
+            <MaterialCommunityIcons name="chevron-left" size={22} color={Colors.accent} />
             <Text style={styles.backText}>Clients</Text>
           </Pressable>
 
           {!isLoading && (
             <View style={styles.headerContent}>
-              <Avatar name={business?.companyName} email={user?.email} size={60} />
+              <Avatar name={business?.companyName} email={user?.email} size={46} />
               <View style={styles.headerInfo}>
                 <Text style={styles.headerName} numberOfLines={2}>
                   {business?.companyName ?? user?.email ?? "Client"}
@@ -107,7 +115,7 @@ export default function ClientDetailScreen() {
             <>
               {/* Quick Actions */}
               {sub && (
-                <View style={styles.sectionCard}>
+                <View style={[styles.sectionCard, { borderLeftWidth: 3, borderLeftColor: Colors.warning }]}>
                   <View style={styles.sectionTitle}>
                     <View style={[styles.sectionIconBg, { backgroundColor: Colors.warning + "12" }]}>
                       <MaterialCommunityIcons name="lightning-bolt" size={16} color={Colors.warning} />
@@ -120,7 +128,7 @@ export default function ClientDetailScreen() {
 
               {/* Business Details */}
               {business && (
-                <View style={styles.sectionCard}>
+                <View style={[styles.sectionCard, { borderLeftWidth: 3, borderLeftColor: Colors.accent }]}>
                   <View style={styles.sectionTitle}>
                     <View style={[styles.sectionIconBg, { backgroundColor: Colors.accent + "12" }]}>
                       <MaterialCommunityIcons name="domain" size={16} color={Colors.accent} />
@@ -139,10 +147,10 @@ export default function ClientDetailScreen() {
 
               {/* Subscription */}
               {sub && (
-                <View style={styles.sectionCard}>
+                <View style={[styles.sectionCard, { borderLeftWidth: 3, borderLeftColor: statusColor(subStatus) }]}>
                   <View style={styles.sectionTitle}>
-                    <View style={[styles.sectionIconBg, { backgroundColor: Colors.accent + "12" }]}>
-                      <MaterialCommunityIcons name="credit-card-check-outline" size={16} color={Colors.accent} />
+                    <View style={[styles.sectionIconBg, { backgroundColor: statusColor(subStatus) + "12" }]}>
+                      <MaterialCommunityIcons name="credit-card-check-outline" size={16} color={statusColor(subStatus)} />
                     </View>
                     <Text style={styles.sectionLabel}>Subscription</Text>
                   </View>
@@ -166,10 +174,10 @@ export default function ClientDetailScreen() {
 
               {/* Directors */}
               {business && business.directors.length > 0 && (
-                <View style={styles.sectionCard}>
+                <View style={[styles.sectionCard, { borderLeftWidth: 3, borderLeftColor: Colors.indigo }]}>
                   <View style={styles.sectionTitle}>
-                    <View style={[styles.sectionIconBg, { backgroundColor: Colors.accent + "12" }]}>
-                      <MaterialCommunityIcons name="account-group-outline" size={16} color={Colors.accent} />
+                    <View style={[styles.sectionIconBg, { backgroundColor: Colors.indigo + "12" }]}>
+                      <MaterialCommunityIcons name="account-group-outline" size={16} color={Colors.indigo} />
                     </View>
                     <Text style={styles.sectionLabel}>Directors</Text>
                   </View>
@@ -181,7 +189,7 @@ export default function ClientDetailScreen() {
                         i < business.directors.length - 1 && styles.directorRowSeparator,
                       ]}
                     >
-                      <Avatar name={d.fullName} size={36} />
+                      <Avatar name={d.fullName} size={30} />
                       <View style={{ flex: 1 }}>
                         <Text style={styles.directorName}>{d.fullName}</Text>
                         <Text style={styles.directorMeta}>
@@ -197,17 +205,17 @@ export default function ClientDetailScreen() {
               {/* Payment History */}
               <View style={styles.section}>
                 <SectionHeader title="Payment History" />
-                <View style={styles.sectionCard}>
+                <View style={[styles.sectionCard, { borderLeftWidth: 3, borderLeftColor: Colors.success }]}>
                   <PaymentList payments={data.payments} />
                 </View>
               </View>
 
               {/* Audit Log */}
               {data.adminActions.length > 0 && (
-                <View style={styles.sectionCard}>
+                <View style={[styles.sectionCard, { borderLeftWidth: 3, borderLeftColor: Colors.textLight }]}>
                   <View style={styles.sectionTitle}>
-                    <View style={[styles.sectionIconBg, { backgroundColor: Colors.accent + "12" }]}>
-                      <MaterialCommunityIcons name="clipboard-text-clock-outline" size={16} color={Colors.accent} />
+                    <View style={[styles.sectionIconBg, { backgroundColor: Colors.textLight + "12" }]}>
+                      <MaterialCommunityIcons name="clipboard-text-clock-outline" size={16} color={Colors.textLight} />
                     </View>
                     <Text style={styles.sectionLabel}>Audit Log</Text>
                   </View>
@@ -252,6 +260,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: -Spacing.sm,
     marginBottom: Spacing.md,
+  },
+  backBtnPressed: {
+    opacity: 0.6,
   },
   backText: {
     ...Typography.body,
@@ -317,8 +328,8 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.lg,
   },
   sectionIconBg: {
-    width: 28,
-    height: 28,
+    width: 24,
+    height: 24,
     borderRadius: Radius.xs,
     alignItems: "center",
     justifyContent: "center",
@@ -334,8 +345,8 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.md,
   },
   detailIcon: {
-    width: 32,
-    height: 32,
+    width: 26,
+    height: 26,
     borderRadius: Radius.xs,
     backgroundColor: Colors.fill,
     alignItems: "center",

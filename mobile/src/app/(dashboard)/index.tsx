@@ -8,7 +8,7 @@ import { useDashboard } from "@/hooks/useDashboard";
 import { StatusCards } from "@/components/dashboard/StatusCards";
 import { CompanyDetails } from "@/components/dashboard/CompanyDetails";
 import { NotificationItem } from "@/components/dashboard/NotificationItem";
-import { SkeletonCard, SkeletonList } from "@/components/ui/SkeletonLoader";
+import { SkeletonCard, SkeletonList, SkeletonMetric } from "@/components/ui/SkeletonLoader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
 export default function DashboardHome() {
@@ -34,7 +34,16 @@ export default function DashboardHome() {
           <View style={{ width: 100, height: 16, borderRadius: 6, backgroundColor: Colors.bgSection, marginTop: 6 }} />
         </View>
         <View style={styles.content}>
-          <SkeletonCard />
+          <View style={styles.skeletonGrid}>
+            <View style={styles.skeletonRow}>
+              <SkeletonMetric />
+              <SkeletonMetric />
+            </View>
+            <View style={styles.skeletonRow}>
+              <SkeletonMetric />
+              <SkeletonMetric />
+            </View>
+          </View>
           <SkeletonCard />
           <SkeletonList count={3} />
         </View>
@@ -54,7 +63,6 @@ export default function DashboardHome() {
 
   const recentNotifications = data.notifications.slice(0, 4);
   const greeting = getGreeting();
-  const unreadCount = data.notifications.filter((n: { isRead: boolean }) => !n.isRead).length;
 
   return (
     <View style={styles.container}>
@@ -71,21 +79,6 @@ export default function DashboardHome() {
           <Text style={styles.userName} numberOfLines={1}>
             {data.business?.companyName ?? data.user.email}
           </Text>
-
-          {/* Status pills */}
-          <View style={styles.metricsRow}>
-            <View style={styles.metricPill}>
-              <View style={[styles.metricDot, { backgroundColor: data.subscription?.status === "ACTIVE" ? Colors.success : Colors.textLight }]} />
-              <Text style={styles.metricText}>
-                {data.subscription?.status === "ACTIVE" ? "Active Plan" : "No Plan"}
-              </Text>
-            </View>
-            {unreadCount > 0 && (
-              <View style={[styles.metricPill, styles.metricPillAccent]}>
-                <Text style={styles.metricTextAccent}>{unreadCount} unread</Text>
-              </View>
-            )}
-          </View>
         </View>
 
         {/* Content */}
@@ -94,6 +87,7 @@ export default function DashboardHome() {
             subscription={data.subscription}
             agreements={data.agreements}
             notifications={data.notifications}
+            nextPaymentDate={data.subscription?.nextPaymentDate}
           />
 
           <View style={styles.section}>
@@ -151,37 +145,12 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
     marginTop: 2,
   },
-  metricsRow: {
+  skeletonGrid: {
+    gap: Spacing.sm,
+  },
+  skeletonRow: {
     flexDirection: "row",
     gap: Spacing.sm,
-    marginTop: Spacing.md,
-  },
-  metricPill: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    backgroundColor: Colors.fill,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: 6,
-    borderRadius: Radius.full,
-  },
-  metricPillAccent: {
-    backgroundColor: "rgba(0, 122, 255, 0.10)",
-  },
-  metricDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  metricText: {
-    ...Typography.footnote,
-    fontWeight: "500",
-    color: Colors.textSecondary,
-  },
-  metricTextAccent: {
-    ...Typography.footnote,
-    fontWeight: "600",
-    color: Colors.accent,
   },
   content: {
     paddingHorizontal: Spacing.lg,
