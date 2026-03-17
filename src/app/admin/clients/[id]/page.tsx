@@ -268,6 +268,12 @@ export default function ClientDetailPage() {
   const sub = data.subscription;
   const availableActions: { action: string; label: string; variant: "default" | "destructive" | "outline" }[] = [];
 
+  if (sub?.status === "DRAFT") {
+    availableActions.push(
+      { action: "APPROVE", label: "Approve", variant: "default" },
+      { action: "REJECT", label: "Reject", variant: "destructive" }
+    );
+  }
   if (sub?.status === "PENDING_APPROVAL") {
     availableActions.push(
       { action: "APPROVE", label: "Approve", variant: "default" },
@@ -284,7 +290,7 @@ export default function ClientDetailPage() {
       { action: "REACTIVATE", label: "Reactivate", variant: "default" }
     );
   }
-  if (sub && !["WITHDRAWN", "REJECTED"].includes(sub.status)) {
+  if (sub && !["WITHDRAWN", "REJECTED", "DRAFT"].includes(sub.status)) {
     availableActions.push(
       { action: "CANCEL", label: "Cancel Service", variant: "outline" }
     );
@@ -374,25 +380,27 @@ export default function ClientDetailPage() {
       </div>
 
       {/* Action buttons */}
-      <Card className="border-[var(--mmk-border-light)] rounded-2xl">
-        <CardContent className="p-4 flex flex-wrap gap-2 items-center">
-          {availableActions.map((a) => (
-            <Button
-              key={a.action}
-              variant={a.variant}
-              size="sm"
-              className="rounded-full gap-1.5"
-              onClick={() => performAction(a.action)}
-              disabled={actionLoading !== null}
-            >
-              {actionLoading === a.action && (
-                <Loader2 className="size-3 animate-spin" />
-              )}
-              {a.label}
-            </Button>
-          ))}
-        </CardContent>
-      </Card>
+      {availableActions.length > 0 && (
+        <Card className="border-[var(--mmk-border-light)] rounded-2xl">
+          <CardContent className="p-4 flex flex-wrap gap-2 items-center">
+            {availableActions.map((a) => (
+              <Button
+                key={a.action}
+                variant={a.variant}
+                size="sm"
+                className="rounded-full gap-1.5"
+                onClick={() => performAction(a.action)}
+                disabled={actionLoading !== null}
+              >
+                {actionLoading === a.action && (
+                  <Loader2 className="size-3 animate-spin" />
+                )}
+                {a.label}
+              </Button>
+            ))}
+          </CardContent>
+        </Card>
+      )}
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Business Details */}
