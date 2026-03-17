@@ -1,33 +1,28 @@
-import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { BlobServiceClient } from "@azure/storage-blob";
 
-if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
-  console.warn("AWS S3 credentials not configured");
+const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING ?? "";
+const containerName = process.env.AZURE_STORAGE_CONTAINER ?? "agreements";
+
+if (!connectionString) {
+  console.warn("Azure Blob Storage credentials not configured");
 }
 
-export const s3Client = new S3Client({
-  region: process.env.AWS_REGION ?? "eu-west-2",
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? "",
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? "",
-  },
-});
-
-const BUCKET_NAME = process.env.AWS_S3_BUCKET ?? "mmk-registered-office";
+function getContainerClient() {
+  const blobServiceClient =
+    BlobServiceClient.fromConnectionString(connectionString);
+  return blobServiceClient.getContainerClient(containerName);
+}
 
 export async function uploadFile(
   key: string,
   body: Buffer,
   contentType: string
 ): Promise<string> {
-  await s3Client.send(
-    new PutObjectCommand({
-      Bucket: BUCKET_NAME,
-      Key: key,
-      Body: body,
-      ContentType: contentType,
-    })
-  );
+  const containerClient = getContainerClient();
+  const blockBlobClient = containerClient.getBlockBlobClient(key);
+  await blockBlobClient.uploadData(body, {
+    blobHTTPHeaders: { blobContentType: contentType },
+  });
   return key;
 }
 
@@ -35,9 +30,27 @@ export async function getSignedDownloadUrl(
   key: string,
   expiresIn = 3600
 ): Promise<string> {
-  const command = new GetObjectCommand({
-    Bucket: BUCKET_NAME,
-    Key: key,
-  });
-  return getSignedUrl(s3Client, command, { expiresIn });
+  const { generateBlobSASQueryParameters, BlobSASPermissions, StorageSharedKeyCredential } = await import("@azure/storage-blob");
+
+  // Parse account name and key from connection string
+  const accountName = connectionString.match(/AccountName=([^;]+)/)?.[1] ?? "";
+  const accountKey = connectionString.match(/AccountKey=([^;]+)/)?.[1] ?? "";
+
+  const sharedKeyCredential = new StorageSharedKeyCredential(
+    accountName,
+    accountKey
+  );
+
+  const sasToken = generateBlobSASQueryParameters(
+    {
+      containerName,
+      blobName: key,
+      permissions: BlobSASPermissions.parse("r"),
+      startsOn: new Date(),
+      expiresOn: new Date(Date.now() + expiresIn * 1000),
+    },
+    sharedKeyCredential
+  ).toString();
+
+  return `https://${accountName}.blob.core.windows.net/${containerName}/${key}?${sasToken}`;
 }
