@@ -130,7 +130,7 @@ export default function NotificationsPage() {
                   <div
                     className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
                       !notification.isRead
-                        ? "bg-[#0ea5e9]/10 text-[#0ea5e9]"
+                        ? "bg-[#0ea5e9]/10 text-foreground"
                         : "bg-muted/50 text-muted-foreground"
                     }`}
                   >
@@ -151,7 +151,7 @@ export default function NotificationsPage() {
                       </p>
                       <div className="flex items-center gap-2 flex-shrink-0">
                         {!notification.isRead && (
-                          <Badge className="bg-[#0ea5e9]/10 text-[#0ea5e9] text-[10px] px-1.5">
+                          <Badge className="bg-[#0ea5e9]/10 text-foreground text-[10px] px-1.5">
                             New
                           </Badge>
                         )}
@@ -179,7 +179,7 @@ export default function NotificationsPage() {
                           variant="ghost"
                           size="sm"
                           onClick={() => markAsRead(notification.id)}
-                          className="text-[10px] h-6 px-2 text-muted-foreground hover:text-[#0ea5e9]"
+                          className="text-[10px] h-6 px-2 text-muted-foreground hover:text-foreground"
                         >
                           Mark read
                         </Button>

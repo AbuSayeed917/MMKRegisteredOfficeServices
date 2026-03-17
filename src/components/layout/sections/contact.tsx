@@ -75,7 +75,7 @@ export const ContactSection = () => {
             <span className="section-label mb-4 block">07 — Contact</span>
             <h2 className="section-heading text-3xl md:text-4xl mb-4">
               Get In{" "}
-              <span className="font-display italic text-[#0ea5e9]">Touch</span>
+              <span className="font-display italic text-foreground">Touch</span>
             </h2>
             <p className="max-w-2xl mx-auto text-lg text-[var(--mmk-text-secondary)]">
               Have questions about our registered office service? We&apos;re here to

@@ -5,6 +5,16 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
     return null;
   }
 
+  // Skip SW in development to avoid stale cache issues
+  if (process.env.NODE_ENV === "development") {
+    // Unregister any existing SW in dev
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    for (const reg of registrations) {
+      await reg.unregister();
+    }
+    return null;
+  }
+
   try {
     const registration = await navigator.serviceWorker.register(SW_PATH, {
       scope: SW_SCOPE,

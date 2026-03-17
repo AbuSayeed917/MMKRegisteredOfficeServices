@@ -174,7 +174,7 @@ function FileDropZone({
           )}
         </div>
         <p className="text-sm text-center">
-          <span className="font-medium text-[#0ea5e9]">Click to upload</span>{" "}
+          <span className="font-medium text-foreground">Click to upload</span>{" "}
           <span className="text-muted-foreground">or drag and drop</span>
         </p>
         <p className="text-xs text-muted-foreground mt-1">{description}</p>
@@ -274,7 +274,7 @@ export function DocumentUploadStep({
           {/* Info note */}
           <div className="bg-[#0ea5e9]/5 border border-[#0ea5e9]/20 rounded-xl p-3 text-sm flex items-start gap-2">
             <ShieldCheck className="size-4 text-[#0ea5e9] mt-0.5 flex-shrink-0" />
-            <p className="text-primary dark:text-[#7a9eb5] text-xs">
+            <p className="text-primary dark:text-white/70 text-xs">
               Your documents are stored securely and used solely for identity
               verification. They will be reviewed by our admin team as part of
               your registration process.

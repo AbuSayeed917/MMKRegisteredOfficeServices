@@ -85,7 +85,7 @@ export default function CreateTicketPage() {
       <div>
         <Link
           href="/dashboard/support"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-[#0ea5e9] transition-colors mb-4"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
         >
           <ArrowLeft className="size-3.5" />
           Back to Support

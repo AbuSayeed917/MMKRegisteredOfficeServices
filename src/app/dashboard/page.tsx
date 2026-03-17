@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { BrandPattern, BrandSwoosh } from "@/components/ui/brand-pattern";
 import {
   Building2,
   CreditCard,
@@ -21,6 +22,11 @@ import {
   Shield,
   User,
   LifeBuoy,
+  Mail,
+  ArrowRight,
+  FileCheck,
+  Banknote,
+  ClipboardCheck,
 } from "lucide-react";
 
 interface DashboardData {
@@ -65,13 +71,13 @@ const statusConfig: Record<
   string,
   { label: string; color: string; bg: string }
 > = {
-  ACTIVE: { label: "Active", color: "text-emerald-700 dark:text-emerald-400", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
-  PENDING_APPROVAL: { label: "Pending Approval", color: "text-amber-700 dark:text-amber-400", bg: "bg-amber-100 dark:bg-amber-900/30" },
-  DRAFT: { label: "Draft", color: "text-gray-700 dark:text-gray-400", bg: "bg-gray-100 dark:bg-gray-800" },
-  EXPIRED: { label: "Expired", color: "text-red-700 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/30" },
-  SUSPENDED: { label: "Suspended", color: "text-red-700 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/30" },
-  REJECTED: { label: "Rejected", color: "text-red-700 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/30" },
-  RENEWAL_PENDING: { label: "Renewal Pending", color: "text-amber-700 dark:text-amber-400", bg: "bg-amber-100 dark:bg-amber-900/30" },
+  ACTIVE: { label: "Active", color: "text-emerald-700", bg: "bg-emerald-100" },
+  PENDING_APPROVAL: { label: "Pending Approval", color: "text-amber-700", bg: "bg-amber-100" },
+  DRAFT: { label: "Draft", color: "text-gray-700", bg: "bg-gray-100" },
+  EXPIRED: { label: "Expired", color: "text-red-700", bg: "bg-red-100" },
+  SUSPENDED: { label: "Suspended", color: "text-red-700", bg: "bg-red-100" },
+  REJECTED: { label: "Rejected", color: "text-red-700", bg: "bg-red-100" },
+  RENEWAL_PENDING: { label: "Renewal Pending", color: "text-amber-700", bg: "bg-amber-100" },
 };
 
 export default function DashboardPage() {
@@ -93,12 +99,13 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-8 w-48" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-40 rounded-2xl" />
+        <Skeleton className="h-36 rounded-2xl" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-28 rounded-2xl" />
           ))}
         </div>
+        <Skeleton className="h-48 rounded-2xl" />
       </div>
     );
   }
@@ -119,24 +126,107 @@ export default function DashboardPage() {
   const unreadCount = data.notifications.filter((n) => !n.isRead).length;
   const subStatus = statusConfig[data.subscription?.status || "DRAFT"] || statusConfig.DRAFT;
   const latestAgreement = data.agreements[0];
+  const isActive = data.subscription?.status === "ACTIVE";
+
+  // Journey steps for service tracker
+  const journeySteps = [
+    {
+      icon: ClipboardCheck,
+      label: "Registered",
+      done: true,
+    },
+    {
+      icon: FileCheck,
+      label: "Agreement",
+      done: latestAgreement?.status === "SIGNED",
+    },
+    {
+      icon: Banknote,
+      label: "Payment",
+      done: data.payments.some((p) => p.status === "PAID"),
+    },
+    {
+      icon: CheckCircle2,
+      label: "Active",
+      done: isActive,
+    },
+  ];
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-primary dark:text-white">
-          Welcome back
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          {data.business?.companyName || data.user.email}
-        </p>
+      {/* ───── Welcome Banner ───── */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#057baa] to-[#033d5c] text-white">
+        {/* Pattern overlay */}
+        <BrandPattern
+          className="absolute inset-0 pointer-events-none"
+          opacity={0.08}
+          variant="geometric"
+        />
+        <div className="relative z-10 p-6 sm:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <p className="text-white/60 text-xs font-medium uppercase tracking-wider mb-1">
+                Client Portal
+              </p>
+              <h1 className="text-xl sm:text-2xl font-bold">
+                Welcome back{data.business ? `, ${data.business.companyName}` : ""}
+              </h1>
+              <p className="text-white/70 text-sm mt-1">
+                {data.user.email}
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge className={`${subStatus.bg} ${subStatus.color} text-xs font-semibold px-3 py-1`}>
+                {subStatus.label}
+              </Badge>
+            </div>
+          </div>
+
+          {/* Service Journey Tracker */}
+          <div className="mt-6 flex items-center gap-0">
+            {journeySteps.map((step, i) => {
+              const Icon = step.icon;
+              return (
+                <div key={step.label} className="flex items-center flex-1 last:flex-none">
+                  <div className="flex flex-col items-center gap-1.5">
+                    <div
+                      className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                        step.done
+                          ? "bg-white text-[#057baa]"
+                          : "bg-white/15 text-white/50"
+                      }`}
+                    >
+                      <Icon className="size-4" />
+                    </div>
+                    <span className={`text-[10px] font-medium whitespace-nowrap ${
+                      step.done ? "text-white" : "text-white/40"
+                    }`}>
+                      {step.label}
+                    </span>
+                  </div>
+                  {i < journeySteps.length - 1 && (
+                    <div className={`flex-1 h-0.5 mx-2 mt-[-18px] rounded-full ${
+                      step.done ? "bg-white/40" : "bg-white/10"
+                    }`} />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Swoosh accent */}
+        <BrandSwoosh
+          className="absolute bottom-0 left-0 w-full h-6 opacity-30"
+          color="#38bdf8"
+        />
       </div>
 
-      {/* Status cards */}
+      {/* ───── Status Cards Grid ───── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {/* Subscription Status */}
+        {/* Subscription */}
         <Link href="/dashboard/subscription" className="h-full">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0 h-full">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-all cursor-pointer group overflow-hidden !py-0 !gap-0 h-full hover:-translate-y-0.5">
             <div className="h-1 bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]" />
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -149,7 +239,7 @@ export default function DashboardPage() {
                     {subStatus.label}
                   </Badge>
                 </div>
-                <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9] transition-colors shrink-0" />
+                <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground transition-colors shrink-0" />
               </div>
               {data.subscription?.endDate && (
                 <p className="text-[11px] text-muted-foreground mt-2 ml-12 flex items-center gap-1">
@@ -165,9 +255,9 @@ export default function DashboardPage() {
           </Card>
         </Link>
 
-        {/* Agreement Status */}
+        {/* Agreement */}
         <Link href="/dashboard/agreement" className="h-full">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0 h-full">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-all cursor-pointer group overflow-hidden !py-0 !gap-0 h-full hover:-translate-y-0.5">
             <div className="h-1 bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]" />
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -180,19 +270,19 @@ export default function DashboardPage() {
                     <Badge
                       className={`text-[10px] mt-0.5 ${
                         latestAgreement.status === "SIGNED"
-                          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-                          : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                          ? "bg-emerald-100 text-emerald-700"
+                          : "bg-amber-100 text-amber-700"
                       }`}
                     >
                       {latestAgreement.status === "SIGNED" ? "Signed" : "Pending"}
                     </Badge>
                   ) : (
-                    <Badge className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 text-[10px] mt-0.5">
+                    <Badge className="bg-gray-100 text-gray-600 text-[10px] mt-0.5">
                       No Agreement
                     </Badge>
                   )}
                 </div>
-                <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9] transition-colors shrink-0" />
+                <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground transition-colors shrink-0" />
               </div>
               {latestAgreement?.signedAt && (
                 <p className="text-[11px] text-muted-foreground mt-2 ml-12 flex items-center gap-1">
@@ -210,7 +300,7 @@ export default function DashboardPage() {
 
         {/* Notifications */}
         <Link href="/dashboard/notifications" className="h-full">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0 h-full">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-all cursor-pointer group overflow-hidden !py-0 !gap-0 h-full hover:-translate-y-0.5">
             <div className="h-1 bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]" />
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -237,7 +327,7 @@ export default function DashboardPage() {
                     )}
                   </p>
                 </div>
-                <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9] transition-colors shrink-0" />
+                <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground transition-colors shrink-0" />
               </div>
             </CardContent>
           </Card>
@@ -245,7 +335,7 @@ export default function DashboardPage() {
 
         {/* Support */}
         <Link href="/dashboard/support" className="h-full">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group overflow-hidden !py-0 !gap-0 h-full">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-all cursor-pointer group overflow-hidden !py-0 !gap-0 h-full hover:-translate-y-0.5">
             <div className="h-1 bg-gradient-to-r from-purple-400 to-purple-500" />
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -263,48 +353,85 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      {/* Company Info */}
-      {data.business && (
+      {/* ───── Company Info + Service Summary ───── */}
+      <div className="grid lg:grid-cols-3 gap-4">
+        {/* Company Details — takes 2 cols */}
+        {data.business && (
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl overflow-hidden lg:col-span-2">
+            <div className="h-1 bg-gradient-to-r from-primary to-[#0ea5e9]" />
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-3 text-base">
+                <Building2 className="size-4.5 text-[#0ea5e9]" />
+                Company Details
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid sm:grid-cols-2 gap-4 text-sm">
+                <div className="bg-[var(--mmk-bg-section)] rounded-xl p-3">
+                  <p className="text-xs text-muted-foreground mb-0.5">
+                    Company Name
+                  </p>
+                  <p className="font-semibold">{data.business.companyName}</p>
+                </div>
+                <div className="bg-[var(--mmk-bg-section)] rounded-xl p-3">
+                  <p className="text-xs text-muted-foreground mb-0.5 flex items-center gap-1">
+                    <Hash className="size-3" /> CRN
+                  </p>
+                  <p className="font-mono font-semibold">{data.business.crn}</p>
+                </div>
+                <div className="bg-[var(--mmk-bg-section)] rounded-xl p-3">
+                  <p className="text-xs text-muted-foreground mb-0.5">Type</p>
+                  <Badge variant="secondary" className="text-xs font-semibold">
+                    {data.business.companyType}
+                  </Badge>
+                </div>
+                <div className="bg-[var(--mmk-bg-section)] rounded-xl p-3">
+                  <p className="text-xs text-muted-foreground mb-0.5 flex items-center gap-1">
+                    <MapPin className="size-3" /> Registered Address
+                  </p>
+                  <p className="font-medium">{data.business.registeredAddress}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Your Service — takes 1 col */}
         <Card className="border-[var(--mmk-border-light)] rounded-2xl overflow-hidden">
-          <div className="h-1 bg-gradient-to-r from-primary to-[#0ea5e9]" />
+          <div className="h-1 bg-gradient-to-r from-emerald-400 to-emerald-500" />
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-3 text-base">
-              <Building2 className="size-4.5 text-[#0ea5e9]" />
-              Company Details
+              <Shield className="size-4.5 text-emerald-500" />
+              Your Service
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid sm:grid-cols-2 gap-4 text-sm">
+          <CardContent className="space-y-3">
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-50 border border-emerald-100">
+              <Mail className="size-4 text-emerald-600 shrink-0" />
               <div>
-                <p className="text-xs text-muted-foreground mb-0.5">
-                  Company Name
-                </p>
-                <p className="font-medium">{data.business.companyName}</p>
+                <p className="text-xs font-semibold text-emerald-800">Mail Handling</p>
+                <p className="text-[11px] text-emerald-600">Notified within 2 business days</p>
               </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#0ea5e9]/5 border border-[#0ea5e9]/10">
+              <Building2 className="size-4 text-[#0ea5e9] shrink-0" />
               <div>
-                <p className="text-xs text-muted-foreground mb-0.5 flex items-center gap-1">
-                  <Hash className="size-3" /> CRN
-                </p>
-                <p className="font-mono">{data.business.crn}</p>
+                <p className="text-xs font-semibold">Registered Address</p>
+                <p className="text-[11px] text-muted-foreground">Companies House compliant</p>
               </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#0ea5e9]/5 border border-[#0ea5e9]/10">
+              <FileText className="size-4 text-[#0ea5e9] shrink-0" />
               <div>
-                <p className="text-xs text-muted-foreground mb-0.5">Type</p>
-                <Badge variant="secondary" className="text-xs">
-                  {data.business.companyType}
-                </Badge>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground mb-0.5 flex items-center gap-1">
-                  <MapPin className="size-3" /> Registered Address
-                </p>
-                <p>{data.business.registeredAddress}</p>
+                <p className="text-xs font-semibold">Document Scanning</p>
+                <p className="text-[11px] text-muted-foreground">Available on request</p>
               </div>
             </div>
           </CardContent>
         </Card>
-      )}
+      </div>
 
-      {/* Recent Notifications */}
+      {/* ───── Recent Notifications ───── */}
       {data.notifications.length > 0 && (
         <Card className="border-[var(--mmk-border-light)] rounded-2xl overflow-hidden">
           <div className="h-1 bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]" />
@@ -355,10 +482,10 @@ export default function DashboardPage() {
         </Card>
       )}
 
-      {/* Quick actions */}
-      <div className="grid sm:grid-cols-2 gap-3">
+      {/* ───── Quick Actions ───── */}
+      <div className="grid sm:grid-cols-3 gap-3">
         <Link href="/dashboard/profile">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group p-4 flex items-center gap-3">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-all cursor-pointer group p-4 flex items-center gap-3 hover:-translate-y-0.5">
             <div className="w-9 h-9 rounded-lg bg-[#0ea5e9]/10 flex items-center justify-center">
               <User className="size-4 text-[#0ea5e9]" />
             </div>
@@ -368,13 +495,27 @@ export default function DashboardPage() {
                 Update your details
               </p>
             </div>
-            <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9]" />
+            <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground" />
+          </Card>
+        </Link>
+        <Link href="/dashboard/documents">
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-all cursor-pointer group p-4 flex items-center gap-3 hover:-translate-y-0.5">
+            <div className="w-9 h-9 rounded-lg bg-[#0ea5e9]/10 flex items-center justify-center">
+              <FileText className="size-4 text-[#0ea5e9]" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium">View Documents</p>
+              <p className="text-xs text-muted-foreground">
+                Agreements & receipts
+              </p>
+            </div>
+            <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground" />
           </Card>
         </Link>
         <Link href="/dashboard/support">
-          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-shadow cursor-pointer group p-4 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-[#0ea5e9]/10 flex items-center justify-center">
-              <Shield className="size-4 text-[#0ea5e9]" />
+          <Card className="border-[var(--mmk-border-light)] rounded-2xl hover:shadow-md transition-all cursor-pointer group p-4 flex items-center gap-3 hover:-translate-y-0.5">
+            <div className="w-9 h-9 rounded-lg bg-purple-500/10 flex items-center justify-center">
+              <LifeBuoy className="size-4 text-purple-500" />
             </div>
             <div className="flex-1">
               <p className="text-sm font-medium">Need Help?</p>
@@ -382,7 +523,7 @@ export default function DashboardPage() {
                 Contact our support team
               </p>
             </div>
-            <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9]" />
+            <ChevronRight className="size-4 text-muted-foreground group-hover:text-purple-500" />
           </Card>
         </Link>
       </div>

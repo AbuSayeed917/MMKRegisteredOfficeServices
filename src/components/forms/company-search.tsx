@@ -274,7 +274,7 @@ export function CompanySearch({
 
       {/* Loading profile indicator */}
       {isLoadingProfile && (
-        <div className="mt-2 flex items-center gap-2 text-sm text-[#0ea5e9]">
+        <div className="mt-2 flex items-center gap-2 text-sm text-foreground">
           <Loader2 className="size-4 animate-spin" />
           <span>Loading company details...</span>
         </div>
@@ -315,7 +315,7 @@ export function CompanySearch({
                   <Building2
                     className={`size-4 ${
                       company.company_status === "active"
-                        ? "text-[#0ea5e9]"
+                        ? "text-foreground"
                         : "text-muted-foreground"
                     }`}
                   />

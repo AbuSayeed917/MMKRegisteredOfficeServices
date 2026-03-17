@@ -31,11 +31,11 @@ export const CTASection = () => {
             <div className="relative z-10">
               <h2 className="section-heading text-3xl md:text-4xl lg:text-5xl text-white mb-6">
                 Ready to Get Your{" "}
-                <span className="font-display italic text-[#38bdf8]">
+                <span className="font-display italic text-white">
                   Registered Office?
                 </span>
               </h2>
-              <p className="max-w-2xl mx-auto text-lg text-[#7a9eb5] mb-10">
+              <p className="max-w-2xl mx-auto text-lg text-white/70 mb-10">
                 Join 75+ businesses who trust MMK Accountants with their
                 registered office needs. Register online in minutes and get started
                 for just £75 per year.

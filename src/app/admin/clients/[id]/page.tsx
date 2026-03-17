@@ -574,7 +574,7 @@ export default function ClientDetailPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-6 text-[10px] gap-1 mt-1 p-0 text-[#0ea5e9]"
+                            className="h-6 text-[10px] gap-1 mt-1 p-0 text-foreground"
                             onClick={() => viewDocument(d.id, "id")}
                           >
                             <Eye className="size-3" /> View
@@ -609,7 +609,7 @@ export default function ClientDetailPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-6 text-[10px] gap-1 mt-1 p-0 text-[#0ea5e9]"
+                            className="h-6 text-[10px] gap-1 mt-1 p-0 text-foreground"
                             onClick={() => viewDocument(d.id, "address")}
                           >
                             <Eye className="size-3" /> View

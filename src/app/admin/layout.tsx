@@ -124,7 +124,7 @@ export default function AdminLayout({
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
                   isActive
-                    ? "bg-[#0ea5e9]/20 text-[#38bdf8] font-medium"
+                    ? "bg-white/15 text-white font-medium"
                     : "text-white/70 hover:text-white hover:bg-white/5"
                 }`}
               >

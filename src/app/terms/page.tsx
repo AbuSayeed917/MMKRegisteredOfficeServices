@@ -152,7 +152,7 @@ export default function TermsPage() {
           </h2>
           <p>
             If you have any questions about these Terms, please contact us at{" "}
-            <a href="mailto:info@mmkaccountants.co.uk" className="text-[#0ea5e9] hover:underline">
+            <a href="mailto:info@mmkaccountants.co.uk" className="text-foreground underline">
               info@mmkaccountants.co.uk
             </a>.
           </p>

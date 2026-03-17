@@ -20,7 +20,6 @@ import {
 } from "../ui/navigation-menu";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { ToggleTheme } from "./toggle-theme";
 
 interface RouteProps {
   href: string;
@@ -49,14 +48,14 @@ export const Navbar = () => {
   return (
     <>
       {/* Top Contact Bar — hidden on mobile, visible on dark hero */}
-      <div className="hidden md:block text-[#7a9eb5] text-xs py-2" style={{ backgroundColor: '#033d5c' }}>
+      <div className="hidden md:block text-white font-bold text-xs py-2" style={{ backgroundColor: '#033d5c' }}>
         <div className="container flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <a href="tel:+441234567890" className="flex items-center gap-1.5 hover:text-[#38bdf8] transition-colors">
+            <a href="tel:+441234567890" className="flex items-center gap-1.5 hover:text-white transition-colors">
               <Phone className="size-3" />
               <span>Contact Us</span>
             </a>
-            <a href="mailto:info@mmkaccountants.co.uk" className="flex items-center gap-1.5 hover:text-[#38bdf8] transition-colors">
+            <a href="mailto:info@mmkaccountants.co.uk" className="flex items-center gap-1.5 hover:text-white transition-colors">
               <Mail className="size-3" />
               <span>info@mmkaccountants.co.uk</span>
             </a>
@@ -83,7 +82,6 @@ export const Navbar = () => {
 
           {/* Mobile Menu */}
           <div className="flex items-center gap-2 lg:hidden">
-            <ToggleTheme />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="text-foreground">
@@ -131,7 +129,7 @@ export const Navbar = () => {
                     <Button
                       onClick={() => setIsOpen(false)}
                       asChild
-                      className="justify-start text-base rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold hover:shadow-lg"
+                      className="justify-start text-base rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-white font-bold hover:shadow-lg"
                     >
                       <Link href="/register">Get Started</Link>
                     </Button>
@@ -157,7 +155,7 @@ export const Navbar = () => {
                   <NavigationMenuLink asChild>
                     <Link
                       href={href}
-                      className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-2 rounded-lg hover:bg-accent/10"
+                      className="text-sm font-bold text-foreground hover:text-foreground transition-colors px-3 py-2 rounded-lg hover:bg-accent/10"
                     >
                       {label}
                     </Link>
@@ -169,16 +167,14 @@ export const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-3">
-            <ToggleTheme />
-
-            <Button asChild variant="ghost" size="sm" className="text-sm font-medium">
+            <Button asChild variant="ghost" size="sm" className="text-sm font-bold text-foreground">
               <Link href="/login">Sign In</Link>
             </Button>
 
             <Button
               asChild
               size="sm"
-              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold px-6 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-white font-bold px-6 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
             >
               <Link href="/register">Get Started</Link>
             </Button>

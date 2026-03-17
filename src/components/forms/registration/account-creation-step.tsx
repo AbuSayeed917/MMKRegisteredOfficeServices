@@ -503,7 +503,7 @@ export function AccountCreationStep({
                   <a
                     href="/terms"
                     target="_blank"
-                    className="text-[#0ea5e9] hover:text-[#38bdf8] underline"
+                    className="text-foreground underline"
                   >
                     Terms of Service
                   </a>{" "}
@@ -535,7 +535,7 @@ export function AccountCreationStep({
                   <a
                     href="/privacy"
                     target="_blank"
-                    className="text-[#0ea5e9] hover:text-[#38bdf8] underline"
+                    className="text-foreground underline"
                   >
                     Privacy Policy
                   </a>{" "}

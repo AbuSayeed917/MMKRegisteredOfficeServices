@@ -104,7 +104,7 @@ export default function CookiePolicyPage() {
               href="https://stripe.com/privacy"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#0ea5e9] hover:underline"
+              className="text-foreground underline"
             >
               Stripe&apos;s Privacy Policy
             </a>{" "}
@@ -151,7 +151,7 @@ export default function CookiePolicyPage() {
           </h2>
           <p>
             For questions about our use of cookies, contact us at{" "}
-            <a href="mailto:info@mmkaccountants.co.uk" className="text-[#0ea5e9] hover:underline">
+            <a href="mailto:info@mmkaccountants.co.uk" className="text-foreground underline">
               info@mmkaccountants.co.uk
             </a>.
           </p>

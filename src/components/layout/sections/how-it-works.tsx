@@ -47,7 +47,7 @@ export const HowItWorksSection = () => {
             <span className="section-label mb-4 block">04 — How It Works</span>
             <h2 className="section-heading text-3xl md:text-4xl mb-4">
               Get Started in{" "}
-              <span className="font-display italic text-[#0ea5e9]">
+              <span className="font-display italic text-foreground">
                 4 Simple Steps
               </span>
             </h2>
@@ -81,7 +81,7 @@ export const HowItWorksSection = () => {
                   {/* Step number circle */}
                   <div className="relative mx-auto mb-4 w-16 h-16 rounded-full bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center shadow-lg group-hover:shadow-[0_0_40px_rgba(14,165,233,0.3)] transition-shadow duration-500">
                     <Icon className="size-7 text-primary" />
-                    <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-primary text-[#38bdf8] text-xs font-bold flex items-center justify-center border-2 border-[#0ea5e9]">
+                    <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center border-2 border-[#0ea5e9]">
                       {step}
                     </div>
                   </div>

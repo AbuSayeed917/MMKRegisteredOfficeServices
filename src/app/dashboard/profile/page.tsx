@@ -256,7 +256,7 @@ export default function ProfilePage() {
                     <Button
                       variant="link"
                       size="sm"
-                      className="text-[11px] text-[#0ea5e9] p-0 h-auto ml-2"
+                      className="text-[11px] text-foreground underline p-0 h-auto ml-2"
                       onClick={handleSendVerification}
                       disabled={sendingVerification}
                     >

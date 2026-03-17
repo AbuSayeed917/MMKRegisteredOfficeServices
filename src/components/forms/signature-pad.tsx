@@ -190,14 +190,14 @@ export function SignaturePad({
         <TabsList className="grid w-full grid-cols-2 rounded-xl h-10">
           <TabsTrigger
             value="typed"
-            className="rounded-lg gap-2 text-xs data-[state=active]:bg-[#0ea5e9]/10 data-[state=active]:text-[#0ea5e9]"
+            className="rounded-lg gap-2 text-xs data-[state=active]:bg-[#0ea5e9]/10 data-[state=active]:text-foreground"
           >
             <Type className="size-3.5" />
             Type Name
           </TabsTrigger>
           <TabsTrigger
             value="drawn"
-            className="rounded-lg gap-2 text-xs data-[state=active]:bg-[#0ea5e9]/10 data-[state=active]:text-[#0ea5e9]"
+            className="rounded-lg gap-2 text-xs data-[state=active]:bg-[#0ea5e9]/10 data-[state=active]:text-foreground"
           >
             <Pen className="size-3.5" />
             Draw Signature

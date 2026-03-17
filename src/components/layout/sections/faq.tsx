@@ -65,7 +65,7 @@ export const FAQSection = () => {
             <span className="section-label mb-4 block">06 — FAQ</span>
             <h2 className="section-heading text-3xl md:text-4xl mb-4">
               Common{" "}
-              <span className="font-display italic text-[#0ea5e9]">
+              <span className="font-display italic text-foreground">
                 Questions
               </span>
             </h2>
@@ -88,7 +88,7 @@ export const FAQSection = () => {
                 className="bg-card border border-[var(--mmk-border-light)] rounded-2xl px-6 data-[state=open]:shadow-md data-[state=open]:border-[#0ea5e9]/30 transition-all duration-300"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <AccordionTrigger className="text-left text-sm font-semibold hover:text-[#0ea5e9] transition-colors py-5">
+                <AccordionTrigger className="text-left text-sm font-semibold hover:text-foreground transition-colors py-5">
                   {question}
                 </AccordionTrigger>
                 <AccordionContent className="text-sm text-[var(--mmk-text-secondary)] leading-relaxed pb-5">

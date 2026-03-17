@@ -194,7 +194,7 @@ export default function RegisterPage() {
               </span>
               <h1 className="section-heading text-2xl md:text-3xl mb-3">
                 Register Your{" "}
-                <span className="font-display italic text-[#0ea5e9]">
+                <span className="font-display italic text-foreground">
                   Company
                 </span>
               </h1>
@@ -270,7 +270,7 @@ export default function RegisterPage() {
                             isCompleted
                               ? "bg-emerald-600 text-white"
                               : isCurrent
-                              ? "bg-primary text-[#38bdf8]"
+                              ? "bg-primary text-white"
                               : "bg-muted-foreground/20 text-muted-foreground"
                           }`}
                         >
@@ -280,7 +280,7 @@ export default function RegisterPage() {
                       <span
                         className={`mt-2 text-[11px] font-medium text-center leading-tight ${
                           isCurrent
-                            ? "text-[#0ea5e9]"
+                            ? "text-foreground"
                             : isCompleted
                             ? "text-emerald-500"
                             : "text-muted-foreground"
@@ -368,7 +368,7 @@ export default function RegisterPage() {
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="font-medium text-[#0ea5e9] hover:text-[#38bdf8] transition-colors"
+                className="font-medium text-foreground underline transition-colors"
               >
                 Sign in
               </Link>

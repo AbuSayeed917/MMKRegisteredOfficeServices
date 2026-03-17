@@ -101,7 +101,7 @@ export const TestimonialSection = () => {
             <span className="section-label mb-4 block">05 — Testimonials</span>
             <h2 className="section-heading text-3xl md:text-4xl mb-4">
               Hear What Our{" "}
-              <span className="font-display italic text-[#0ea5e9]">Clients</span>{" "}
+              <span className="font-display italic text-foreground">Clients</span>{" "}
               Say
             </h2>
             <p className="max-w-2xl mx-auto text-lg text-[var(--mmk-text-secondary)]">
@@ -140,7 +140,7 @@ export const TestimonialSection = () => {
                       <div className="flex items-center gap-3">
                         <Avatar className="size-10 border-2 border-[#0ea5e9]/20 group-hover:border-[#0ea5e9]/40 transition-colors">
                           <AvatarImage src={review.avatar} alt={review.name} />
-                          <AvatarFallback className="bg-[#0ea5e9]/10 text-[#0ea5e9] text-xs font-semibold">
+                          <AvatarFallback className="bg-[#0ea5e9]/10 text-foreground text-xs font-semibold">
                             {review.initials}
                           </AvatarFallback>
                         </Avatar>

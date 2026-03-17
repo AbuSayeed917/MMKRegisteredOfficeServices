@@ -293,7 +293,7 @@ export default function AdminSupportTicketsPage() {
                       )}
                     </div>
                   </div>
-                  <ChevronRight className="size-4 text-muted-foreground group-hover:text-[#0ea5e9] flex-shrink-0" />
+                  <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground flex-shrink-0" />
                 </Link>
               ))}
             </div>

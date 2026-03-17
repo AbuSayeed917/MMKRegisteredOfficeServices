@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const FooterSection = () => {
   return (
-    <footer id="footer" className="text-[#7a9eb5]" style={{ backgroundColor: '#033d5c' }}>
+    <footer id="footer" className="text-white/70" style={{ backgroundColor: '#033d5c' }}>
       <div className="container py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-x-12 gap-y-10">
           {/* Logo & Description */}
@@ -18,11 +18,11 @@ export const FooterSection = () => {
               the United Kingdom. Trusted since 2012.
             </p>
             <div className="space-y-3">
-              <a href="mailto:info@mmkaccountants.co.uk" className="flex items-center gap-2 text-sm hover:text-[#38bdf8] transition-colors">
+              <a href="mailto:info@mmkaccountants.co.uk" className="flex items-center gap-2 text-sm hover:text-white transition-colors">
                 <Mail className="size-4 text-[#0ea5e9]" />
                 info@mmkaccountants.co.uk
               </a>
-              <a href="tel:+441234567890" className="flex items-center gap-2 text-sm hover:text-[#38bdf8] transition-colors">
+              <a href="tel:+441234567890" className="flex items-center gap-2 text-sm hover:text-white transition-colors">
                 <Phone className="size-4 text-[#0ea5e9]" />
                 Contact Us
               </a>
@@ -36,35 +36,35 @@ export const FooterSection = () => {
           {/* Services */}
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-white text-sm mb-1">Services</h3>
-            <Link href="/" className="text-sm hover:text-[#38bdf8] transition-colors">Home</Link>
-            <Link href="/pricing" className="text-sm hover:text-[#38bdf8] transition-colors">Pricing</Link>
-            <Link href="/register" className="text-sm hover:text-[#38bdf8] transition-colors">Register</Link>
-            <Link href="/#services" className="text-sm hover:text-[#38bdf8] transition-colors">Our Services</Link>
+            <Link href="/" className="text-sm hover:text-white transition-colors">Home</Link>
+            <Link href="/pricing" className="text-sm hover:text-white transition-colors">Pricing</Link>
+            <Link href="/register" className="text-sm hover:text-white transition-colors">Register</Link>
+            <Link href="/#services" className="text-sm hover:text-white transition-colors">Our Services</Link>
           </div>
 
           {/* Account */}
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-white text-sm mb-1">Account</h3>
-            <Link href="/login" className="text-sm hover:text-[#38bdf8] transition-colors">Sign In</Link>
-            <Link href="/dashboard" className="text-sm hover:text-[#38bdf8] transition-colors">Dashboard</Link>
-            <Link href="/forgot-password" className="text-sm hover:text-[#38bdf8] transition-colors">Reset Password</Link>
+            <Link href="/login" className="text-sm hover:text-white transition-colors">Sign In</Link>
+            <Link href="/dashboard" className="text-sm hover:text-white transition-colors">Dashboard</Link>
+            <Link href="/forgot-password" className="text-sm hover:text-white transition-colors">Reset Password</Link>
           </div>
 
           {/* Quick Links */}
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-white text-sm mb-1">Quick Links</h3>
-            <Link href="/#benefits" className="text-sm hover:text-[#38bdf8] transition-colors">Why Choose Us</Link>
-            <Link href="/#how-it-works" className="text-sm hover:text-[#38bdf8] transition-colors">How It Works</Link>
-            <Link href="/#faq" className="text-sm hover:text-[#38bdf8] transition-colors">FAQ</Link>
-            <Link href="/#contact" className="text-sm hover:text-[#38bdf8] transition-colors">Contact</Link>
+            <Link href="/#benefits" className="text-sm hover:text-white transition-colors">Why Choose Us</Link>
+            <Link href="/#how-it-works" className="text-sm hover:text-white transition-colors">How It Works</Link>
+            <Link href="/#faq" className="text-sm hover:text-white transition-colors">FAQ</Link>
+            <Link href="/#contact" className="text-sm hover:text-white transition-colors">Contact</Link>
           </div>
 
           {/* Legal */}
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-white text-sm mb-1">Legal</h3>
-            <Link href="/terms" className="text-sm hover:text-[#38bdf8] transition-colors">Terms & Conditions</Link>
-            <Link href="/privacy" className="text-sm hover:text-[#38bdf8] transition-colors">Privacy Policy</Link>
-            <Link href="/cookies" className="text-sm hover:text-[#38bdf8] transition-colors">Cookie Policy</Link>
+            <Link href="/terms" className="text-sm hover:text-white transition-colors">Terms & Conditions</Link>
+            <Link href="/privacy" className="text-sm hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/cookies" className="text-sm hover:text-white transition-colors">Cookie Policy</Link>
           </div>
         </div>
 

@@ -71,7 +71,7 @@ export default function ForgotPasswordPage() {
                   </p>
                   <Link
                     href="/login"
-                    className="inline-flex items-center gap-1.5 text-sm font-medium text-[#0ea5e9] hover:text-[#38bdf8] transition-colors"
+                    className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground underline transition-colors"
                   >
                     <ArrowLeft className="size-3.5" />
                     Back to Sign In
@@ -119,7 +119,7 @@ export default function ForgotPasswordPage() {
                   <p className="text-center text-sm text-[var(--mmk-text-secondary)]">
                     <Link
                       href="/login"
-                      className="inline-flex items-center gap-1.5 font-medium text-[#0ea5e9] hover:text-[#38bdf8] transition-colors"
+                      className="inline-flex items-center gap-1.5 font-medium text-foreground underline transition-colors"
                     >
                       <ArrowLeft className="size-3.5" />
                       Back to Sign In

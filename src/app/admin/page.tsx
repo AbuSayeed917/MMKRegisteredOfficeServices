@@ -92,7 +92,7 @@ export default function AdminOverviewPage() {
       label: "Total Clients",
       value: metrics.totalClients,
       icon: Users,
-      color: "text-[#0ea5e9]",
+      color: "text-foreground",
       bg: "bg-[#0ea5e9]/10",
       gradient: "from-[#0ea5e9] to-[#38bdf8]",
       href: "/admin/clients",
@@ -187,7 +187,7 @@ export default function AdminOverviewPage() {
                   <p className="text-[10px] text-muted-foreground truncate">{card.label}</p>
                   <p className="text-sm font-bold leading-tight">{card.value}</p>
                 </div>
-                <ChevronRight className="size-3 text-muted-foreground group-hover:text-[#0ea5e9] transition-colors shrink-0" />
+                <ChevronRight className="size-3 text-muted-foreground group-hover:text-foreground transition-colors shrink-0" />
               </CardContent>
             </Card>
           );
@@ -205,7 +205,7 @@ export default function AdminOverviewPage() {
             </CardTitle>
             <Link
               href="/admin/clients"
-              className="text-xs text-[#0ea5e9] hover:underline flex items-center gap-1"
+              className="text-xs text-foreground underline flex items-center gap-1"
             >
               View all <ChevronRight className="size-3" />
             </Link>
@@ -255,7 +255,7 @@ export default function AdminOverviewPage() {
             </CardTitle>
             <Link
               href="/admin/payments"
-              className="text-xs text-[#0ea5e9] hover:underline flex items-center gap-1"
+              className="text-xs text-foreground underline flex items-center gap-1"
             >
               View all <ChevronRight className="size-3" />
             </Link>

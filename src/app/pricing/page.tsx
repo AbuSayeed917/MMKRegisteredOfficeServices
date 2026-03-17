@@ -23,7 +23,7 @@ export default function PricingPage() {
       <section className="py-16">
         <div className="container">
           <h2 className="section-heading text-2xl text-center mb-8">
-            Payment <span className="font-display italic text-[#0ea5e9]">Methods</span>
+            Payment <span className="font-display italic text-foreground">Methods</span>
           </h2>
           <div className="grid gap-6 md:grid-cols-2 max-w-3xl mx-auto">
             <Card className="bg-card border-[var(--mmk-border-light)] rounded-2xl card-hover">
@@ -79,7 +79,7 @@ export default function PricingPage() {
       <section className="py-16 text-center bg-section-alt">
         <div className="container">
           <h2 className="section-heading text-2xl mb-3">
-            Coming <span className="font-display italic text-[#0ea5e9]">Soon</span>
+            Coming <span className="font-display italic text-foreground">Soon</span>
           </h2>
           <p className="mb-8 text-[var(--mmk-text-secondary)]">
             Additional services to enhance your experience.

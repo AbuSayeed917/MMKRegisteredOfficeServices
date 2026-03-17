@@ -174,7 +174,7 @@ export default function TicketDetailPage() {
       <div className="space-y-6">
         <Link
           href="/dashboard/support"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-[#0ea5e9] transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="size-3.5" />
           Back to Support
@@ -199,7 +199,7 @@ export default function TicketDetailPage() {
       {/* Back link */}
       <Link
         href="/dashboard/support"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-[#0ea5e9] transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <ArrowLeft className="size-3.5" />
         Back to Support
@@ -265,7 +265,7 @@ export default function TicketDetailPage() {
                       <div
                         className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
                           isAdmin
-                            ? "bg-[#0ea5e9]/10 text-[#0ea5e9]"
+                            ? "bg-[#0ea5e9]/10 text-foreground"
                             : "bg-muted/50 text-muted-foreground"
                         }`}
                       >
@@ -280,7 +280,7 @@ export default function TicketDetailPage() {
                           {msg.sender.email}
                         </span>
                         {isAdmin && (
-                          <Badge className="bg-[#0ea5e9]/10 text-[#0ea5e9] text-[9px] px-1.5 py-0">
+                          <Badge className="bg-[#0ea5e9]/10 text-foreground text-[9px] px-1.5 py-0">
                             Staff
                           </Badge>
                         )}

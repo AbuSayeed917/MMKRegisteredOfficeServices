@@ -22,7 +22,7 @@ export const PricingSection = () => {
             <span className="section-label mb-4 block">Pricing</span>
             <h2 className="section-heading text-3xl md:text-4xl mb-4">
               Simple, Transparent{" "}
-              <span className="font-display italic text-[#0ea5e9]">Pricing</span>
+              <span className="font-display italic text-foreground">Pricing</span>
             </h2>
             <p className="max-w-2xl mx-auto text-lg text-[var(--mmk-text-secondary)]">
               One plan. Everything included. No hidden fees.

@@ -187,7 +187,7 @@ export function BusinessDetailsStep({
             <div className="bg-[#0ea5e9]/5 border border-[#0ea5e9]/20 rounded-2xl p-5 space-y-4">
               <div className="flex items-center gap-2 mb-1">
                 <Info className="size-4 text-[#0ea5e9]" />
-                <span className="text-sm font-semibold text-[#0ea5e9]">
+                <span className="text-sm font-semibold text-foreground">
                   Company Details from Companies House
                 </span>
               </div>

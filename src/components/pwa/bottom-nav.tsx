@@ -40,8 +40,8 @@ export function BottomNav({ items, basePath }: BottomNavProps) {
               href={item.href}
               className={`relative flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-xl transition-colors ${
                 active
-                  ? "text-[#0ea5e9]"
-                  : "text-[#3d6478] dark:text-white/50"
+                  ? "text-foreground"
+                  : "text-muted-foreground"
               }`}
             >
               <Icon className="size-5" />

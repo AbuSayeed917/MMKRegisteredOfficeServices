@@ -58,7 +58,7 @@ export const ServicesSection = () => {
             <span className="section-label mb-4 block">03 — Our Services</span>
             <h2 className="section-heading text-3xl md:text-4xl mb-4">
               What We{" "}
-              <span className="font-display italic text-[#0ea5e9]">Provide</span>
+              <span className="font-display italic text-foreground">Provide</span>
             </h2>
             <p className="max-w-2xl mx-auto text-lg text-[var(--mmk-text-secondary)]">
               A comprehensive registered office service designed for modern businesses.

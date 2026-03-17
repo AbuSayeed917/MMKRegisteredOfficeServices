@@ -256,7 +256,7 @@ export default function AdminSupportTicketDetailPage() {
       <div className="space-y-6">
         <Link
           href="/admin/support-tickets"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-[#0ea5e9] transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="size-4" />
           Back to Tickets
@@ -286,7 +286,7 @@ export default function AdminSupportTicketDetailPage() {
       <div>
         <Link
           href="/admin/support-tickets"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-[#0ea5e9] transition-colors mb-4"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
         >
           <ArrowLeft className="size-4" />
           Back to Tickets

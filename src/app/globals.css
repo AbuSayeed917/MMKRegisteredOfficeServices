@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+/* Light theme only */
 
 html {
   overflow-x: hidden;
@@ -77,13 +77,13 @@ html:focus-within {
 
   /* Backgrounds */
   --background: #f0f7fb;
-  --foreground: #057baa;
+  --foreground: #1a1a1a;
 
   --card: #ffffff;
-  --card-foreground: #057baa;
+  --card-foreground: #1a1a1a;
 
   --popover: #ffffff;
-  --popover-foreground: #057baa;
+  --popover-foreground: #1a1a1a;
 
   /* Primary — MMK Brand Blue */
   --primary: #057baa;
@@ -91,10 +91,10 @@ html:focus-within {
 
   /* Secondary — MMK light blue */
   --secondary: #e2f2f5;
-  --secondary-foreground: #057baa;
+  --secondary-foreground: #1a1a1a;
 
   --muted: #e2f2f5;
-  --muted-foreground: #3d6478;
+  --muted-foreground: #6b7280;
 
   --accent: #0ea5e9;
   --accent-foreground: #ffffff;
@@ -132,8 +132,8 @@ html:focus-within {
   --mmk-accent-dark: #0284c7;
   --mmk-bg-dark: #033d5c;
   --mmk-bg-section: #e2f2f5;
-  --mmk-text-secondary: #3d6478;
-  --mmk-text-light: #7a9eb5;
+  --mmk-text-secondary: #6b7280;
+  --mmk-text-light: #9ca3af;
   --mmk-border: #c0d8e8;
   --mmk-border-light: #dbeaf2;
 
@@ -146,50 +146,6 @@ html:focus-within {
   --shadow-accent: 0 8px 32px rgba(14, 165, 233, 0.2);
 }
 
-.dark {
-  --background: #033d5c;
-  --foreground: #f0f7fb;
-
-  --card: #057baa;
-  --card-foreground: #f0f7fb;
-
-  --popover: #057baa;
-  --popover-foreground: #f0f7fb;
-
-  --primary: #0ea5e9;
-  --primary-foreground: #033d5c;
-
-  --secondary: #046891;
-  --secondary-foreground: #f0f7fb;
-
-  --muted: #046891;
-  --muted-foreground: #7a9eb5;
-
-  --accent: #0ea5e9;
-  --accent-foreground: #033d5c;
-
-  --destructive: #dc2626;
-  --destructive-foreground: #f0f7fb;
-
-  --border: #0891c8;
-  --input: #046891;
-  --ring: #0ea5e9;
-
-  --chart-1: #38bdf8;
-  --chart-2: #34d399;
-  --chart-3: #f59e0b;
-  --chart-4: #a78bfa;
-  --chart-5: #f472b6;
-
-  --sidebar: #033d5c;
-  --sidebar-foreground: #f0f7fb;
-  --sidebar-primary: #0ea5e9;
-  --sidebar-primary-foreground: #033d5c;
-  --sidebar-accent: #057baa;
-  --sidebar-accent-foreground: #f0f7fb;
-  --sidebar-border: #046891;
-  --sidebar-ring: #0ea5e9;
-}
 
 @layer base {
   * {
@@ -231,7 +187,7 @@ html:focus-within {
 /* Accent gradient button */
 .btn-accent {
   background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-  color: #057baa;
+  color: #ffffff;
   font-weight: 600;
   border-radius: 9999px;
   padding: 0.75rem 2rem;
@@ -279,7 +235,7 @@ html:focus-within {
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--mmk-accent);
+  color: #1a1a1a;
 }
 
 /* Section heading with Playfair */
@@ -363,9 +319,9 @@ html:focus-within {
   100% { background-position: 200% center; }
 }
 
-/* Dark hero gradient overlay */
+/* Hero gradient overlay — light theme */
 .hero-gradient {
-  background: linear-gradient(160deg, #033d5c 0%, #057baa 30%, #0891c8 60%, #0ea5e9 100%);
+  background: linear-gradient(160deg, #057baa 0%, #0891c8 40%, #0ea5e9 70%, #38bdf8 100%);
 }
 
 /* CTA gradient */
@@ -386,9 +342,6 @@ html:focus-within {
   background-color: #e2f2f5;
 }
 
-.dark .bg-section-alt {
-  background-color: #057baa;
-}
 
 /* =========== Hero Floating Animations =========== */
 

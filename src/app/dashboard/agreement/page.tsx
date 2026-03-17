@@ -184,7 +184,7 @@ export default function AgreementPage() {
 
               {/* Agreement info */}
               <div className="bg-[#0ea5e9]/5 border border-[#0ea5e9]/20 rounded-xl p-4">
-                <p className="text-sm font-medium text-[#0ea5e9] mb-1">
+                <p className="text-sm font-medium text-foreground mb-1">
                   Agreement Summary
                 </p>
                 <ul className="text-xs text-[var(--mmk-text-secondary)] space-y-1">

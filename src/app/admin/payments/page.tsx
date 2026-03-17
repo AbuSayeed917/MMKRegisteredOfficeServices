@@ -119,7 +119,7 @@ export default function AdminPaymentsPage() {
       value: data?.summary?.REFUNDED?.total || 0,
       count: data?.summary?.REFUNDED?.count || 0,
       icon: RotateCcw,
-      color: "text-[#0ea5e9]",
+      color: "text-foreground",
       bg: "bg-[#0ea5e9]/10",
     },
   ];

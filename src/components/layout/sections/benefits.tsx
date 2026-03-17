@@ -43,7 +43,7 @@ export const BenefitsSection = () => {
               <span className="section-label mb-4 block">01 — Why Choose Us</span>
               <h2 className="section-heading text-3xl md:text-4xl mb-6">
                 Why Choose{" "}
-                <span className="font-display italic text-[#0ea5e9]">
+                <span className="font-display italic text-foreground">
                   MMK Accountants?
                 </span>
               </h2>

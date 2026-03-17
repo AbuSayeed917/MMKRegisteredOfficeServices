@@ -62,7 +62,7 @@ export const FeaturesSection = () => {
             <span className="section-label mb-4 block">02 — Platform Features</span>
             <h2 className="section-heading text-3xl md:text-4xl mb-4">
               Everything You{" "}
-              <span className="font-display italic text-[#0ea5e9]">Need</span>
+              <span className="font-display italic text-foreground">Need</span>
             </h2>
             <p className="max-w-2xl mx-auto text-lg text-[var(--mmk-text-secondary)]">
               Our platform makes managing your registered office address simple,

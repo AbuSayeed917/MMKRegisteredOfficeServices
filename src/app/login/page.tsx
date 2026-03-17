@@ -96,7 +96,7 @@ export default function LoginPage() {
                     <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                     <Link
                       href="/forgot-password"
-                      className="text-xs text-[#0ea5e9] hover:text-[#38bdf8] transition-colors"
+                      className="text-xs text-foreground underline transition-colors"
                     >
                       Forgot password?
                     </Link>
@@ -130,7 +130,7 @@ export default function LoginPage() {
 
                 <p className="text-center text-sm text-[var(--mmk-text-secondary)]">
                   Don&apos;t have an account?{" "}
-                  <Link href="/register" className="font-medium text-[#0ea5e9] hover:text-[#38bdf8] transition-colors">
+                  <Link href="/register" className="font-medium text-foreground underline transition-colors">
                     Register now
                   </Link>
                 </p>

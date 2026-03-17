@@ -117,20 +117,20 @@ export default function DashboardLayout({
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group ${
                   active
-                    ? "bg-[#0ea5e9]/15 text-[#38bdf8]"
+                    ? "bg-white/15 text-white"
                     : "text-white/60 hover:text-white hover:bg-white/5"
                 }`}
               >
                 <Icon
                   className={`size-4.5 ${
                     active
-                      ? "text-[#0ea5e9]"
+                      ? "text-white"
                       : "text-white/40 group-hover:text-white/70"
                   }`}
                 />
                 {item.label}
                 {active && (
-                  <ChevronRight className="size-3.5 ml-auto text-[#0ea5e9]/60" />
+                  <ChevronRight className="size-3.5 ml-auto text-white/60" />
                 )}
               </Link>
             );

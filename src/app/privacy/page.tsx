@@ -115,7 +115,7 @@ export default function PrivacyPage() {
           </ul>
           <p>
             To exercise any of these rights, contact us at{" "}
-            <a href="mailto:info@mmkaccountants.co.uk" className="text-[#0ea5e9] hover:underline">
+            <a href="mailto:info@mmkaccountants.co.uk" className="text-foreground underline">
               info@mmkaccountants.co.uk
             </a>.
           </p>
@@ -130,7 +130,7 @@ export default function PrivacyPage() {
               href="https://ico.org.uk"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#0ea5e9] hover:underline"
+              className="text-foreground underline"
             >
               ico.org.uk
             </a>.
@@ -141,7 +141,7 @@ export default function PrivacyPage() {
           </h2>
           <p>
             For privacy-related enquiries, contact us at{" "}
-            <a href="mailto:info@mmkaccountants.co.uk" className="text-[#0ea5e9] hover:underline">
+            <a href="mailto:info@mmkaccountants.co.uk" className="text-foreground underline">
               info@mmkaccountants.co.uk
             </a>.
           </p>

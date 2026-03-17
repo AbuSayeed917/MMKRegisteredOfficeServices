@@ -289,7 +289,7 @@ export function AgreementStep({
 
           {/* Legal disclaimer */}
           <div className="bg-[#0ea5e9]/5 border border-[#0ea5e9]/20 rounded-xl p-4 text-xs text-[var(--mmk-text-secondary)] space-y-1">
-            <p className="font-medium text-[#0ea5e9]">
+            <p className="font-medium text-foreground">
               By signing, you confirm that:
             </p>
             <ul className="list-disc pl-4 space-y-0.5">
