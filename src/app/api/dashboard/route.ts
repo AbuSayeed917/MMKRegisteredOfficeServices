@@ -21,7 +21,17 @@ export async function GET() {
           where: { id: userId },
           include: {
             businessProfile: {
-              include: { directors: true },
+              include: {
+                directors: {
+                  select: {
+                    id: true,
+                    fullName: true,
+                    position: true,
+                    idDocumentName: true,
+                    addressProofName: true,
+                  },
+                },
+              },
             },
           },
         }),
@@ -74,9 +84,9 @@ export async function GET() {
               fullName: d.fullName,
               position: d.position,
               idDocumentName: d.idDocumentName,
-              hasIdDocument: !!d.idDocumentData,
+              hasIdDocument: !!d.idDocumentName,
               addressProofName: d.addressProofName,
-              hasAddressProof: !!d.addressProofData,
+              hasAddressProof: !!d.addressProofName,
             })),
           }
         : null,
