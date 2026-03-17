@@ -1,0 +1,70 @@
+# Dependabot configuration — keeps dependencies up to date automatically
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+
+version: 2
+updates:
+  # npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/London"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "muhammadabusayeed"
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "chore(deps):"
+    # Group minor/patch updates to reduce PR noise
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+      next-ecosystem:
+        patterns:
+          - "next"
+          - "next-auth"
+          - "@next/*"
+          - "eslint-config-next"
+      react-ecosystem:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      prisma:
+        patterns:
+          - "@prisma/*"
+          - "prisma"
+      ui-components:
+        patterns:
+          - "@radix-ui/*"
+          - "tailwindcss"
+          - "class-variance-authority"
+          - "clsx"
+          - "tailwind-merge"
+      lucide:
+        patterns:
+          - "lucide-react"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/London"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "muhammadabusayeed"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(ci):"

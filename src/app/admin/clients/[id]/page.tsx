@@ -391,99 +391,8 @@ export default function ClientDetailPage() {
               {a.label}
             </Button>
           ))}
-          <div className="flex-1" />
-          <Button
-            variant="destructive"
-            size="sm"
-            className="rounded-full gap-1.5 bg-red-600 hover:bg-red-700"
-            onClick={() => {
-              setDeleteConfirmation("");
-              setShowDeleteModal(true);
-            }}
-          >
-            <Trash2 className="size-3" />
-            Delete Client
-          </Button>
         </CardContent>
       </Card>
-
-      {/* Delete Confirmation Modal */}
-      {showDeleteModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden">
-            <div className="h-1.5 bg-gradient-to-r from-red-500 to-red-600" />
-            <div className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="size-10 rounded-full bg-red-100 flex items-center justify-center">
-                  <Trash2 className="size-5 text-red-600" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg text-gray-900">
-                    Delete Client Permanently
-                  </h3>
-                  <p className="text-xs text-gray-500">
-                    This action cannot be undone
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
-                <p className="text-sm text-red-800">
-                  You are about to permanently delete{" "}
-                  <strong>{clientName}</strong> and all associated data
-                  including business profile, directors, KYC documents,
-                  agreements, payments, subscriptions, and notifications.
-                </p>
-              </div>
-
-              <div className="space-y-2 mb-5">
-                <label className="text-sm font-medium text-gray-700">
-                  Type{" "}
-                  <code className="bg-gray-100 px-2 py-0.5 rounded text-red-600 font-mono text-xs">
-                    {expectedDeletePhrase}
-                  </code>{" "}
-                  to confirm
-                </label>
-                <input
-                  type="text"
-                  value={deleteConfirmation}
-                  onChange={(e) => setDeleteConfirmation(e.target.value)}
-                  placeholder={expectedDeletePhrase}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900 placeholder:text-gray-400"
-                  autoFocus
-                />
-              </div>
-
-              <div className="flex gap-3">
-                <Button
-                  variant="outline"
-                  className="flex-1 rounded-full"
-                  onClick={() => setShowDeleteModal(false)}
-                  disabled={deleteLoading}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="destructive"
-                  className="flex-1 rounded-full bg-red-600 hover:bg-red-700 gap-1.5"
-                  onClick={handleDelete}
-                  disabled={
-                    deleteConfirmation !== expectedDeletePhrase ||
-                    deleteLoading
-                  }
-                >
-                  {deleteLoading ? (
-                    <Loader2 className="size-3 animate-spin" />
-                  ) : (
-                    <Trash2 className="size-3" />
-                  )}
-                  Delete Permanently
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Business Details */}
@@ -907,6 +816,109 @@ export default function ClientDetailPage() {
           </Card>
         )}
       </div>
+
+      {/* Danger Zone — Delete Client */}
+      <Card className="border-red-200 rounded-2xl overflow-hidden">
+        <div className="h-1 bg-gradient-to-r from-red-500 to-red-600" />
+        <CardContent className="p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-red-600">Danger Zone</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Permanently delete this client and all associated data. This cannot be undone.
+            </p>
+          </div>
+          <Button
+            variant="destructive"
+            size="sm"
+            className="rounded-full gap-1.5 bg-red-600 hover:bg-red-700"
+            onClick={() => {
+              setDeleteConfirmation("");
+              setShowDeleteModal(true);
+            }}
+          >
+            <Trash2 className="size-3" />
+            Delete Client
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden">
+            <div className="h-1.5 bg-gradient-to-r from-red-500 to-red-600" />
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="size-10 rounded-full bg-red-100 flex items-center justify-center">
+                  <Trash2 className="size-5 text-red-600" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-gray-900">
+                    Delete Client Permanently
+                  </h3>
+                  <p className="text-xs text-gray-500">
+                    This action cannot be undone
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
+                <p className="text-sm text-red-800">
+                  You are about to permanently delete{" "}
+                  <strong>{clientName}</strong> and all associated data
+                  including business profile, directors, KYC documents,
+                  agreements, payments, subscriptions, and notifications.
+                </p>
+              </div>
+
+              <div className="space-y-2 mb-5">
+                <label className="text-sm font-medium text-gray-700">
+                  Type{" "}
+                  <code className="bg-gray-100 px-2 py-0.5 rounded text-red-600 font-mono text-xs">
+                    {expectedDeletePhrase}
+                  </code>{" "}
+                  to confirm
+                </label>
+                <input
+                  type="text"
+                  value={deleteConfirmation}
+                  onChange={(e) => setDeleteConfirmation(e.target.value)}
+                  placeholder={expectedDeletePhrase}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900 placeholder:text-gray-400"
+                  autoFocus
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  className="flex-1 rounded-full"
+                  onClick={() => setShowDeleteModal(false)}
+                  disabled={deleteLoading}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  className="flex-1 rounded-full bg-red-600 hover:bg-red-700 gap-1.5"
+                  onClick={handleDelete}
+                  disabled={
+                    deleteConfirmation !== expectedDeletePhrase ||
+                    deleteLoading
+                  }
+                >
+                  {deleteLoading ? (
+                    <Loader2 className="size-3 animate-spin" />
+                  ) : (
+                    <Trash2 className="size-3" />
+                  )}
+                  Delete Permanently
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
