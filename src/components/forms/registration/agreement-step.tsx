@@ -224,20 +224,20 @@ export function AgreementStep({
             <div
               ref={scrollContainerRef}
               onScroll={handleScroll}
-              className="bg-white dark:bg-gray-950 border border-[var(--mmk-border)] rounded-xl p-6 max-h-[400px] overflow-y-auto prose prose-sm dark:prose-invert max-w-none
-                prose-headings:text-primary dark:prose-headings:text-white
+              className="bg-white border border-[var(--mmk-border)] rounded-xl p-6 max-h-[400px] overflow-y-auto prose prose-sm max-w-none
+                prose-headings:text-gray-900
                 prose-h1:text-xl prose-h1:font-bold prose-h1:mb-4
                 prose-h2:text-base prose-h2:font-semibold prose-h2:mt-6 prose-h2:mb-2
-                prose-p:text-sm prose-p:leading-relaxed
-                prose-li:text-sm prose-li:leading-relaxed
-                prose-strong:text-primary dark:prose-strong:text-white
+                prose-p:text-sm prose-p:leading-relaxed prose-p:text-gray-700
+                prose-li:text-sm prose-li:leading-relaxed prose-li:text-gray-700
+                prose-strong:text-gray-900
               "
               dangerouslySetInnerHTML={{ __html: agreementHtml }}
             />
 
             {/* Scroll indicator overlay */}
             {!hasScrolledToBottom && (
-              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-gray-950 to-transparent rounded-b-xl pointer-events-none flex items-end justify-center pb-2">
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent rounded-b-xl pointer-events-none flex items-end justify-center pb-2">
                 <p className="text-[10px] text-muted-foreground animate-bounce pointer-events-auto">
                   ↓ Scroll down to read the full agreement
                 </p>
