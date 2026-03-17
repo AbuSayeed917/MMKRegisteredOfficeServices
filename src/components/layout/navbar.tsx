@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu, Phone, Mail } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 import {
   Sheet,
@@ -48,7 +49,7 @@ export const Navbar = () => {
   return (
     <>
       {/* Top Contact Bar — hidden on mobile, visible on dark hero */}
-      <div className="hidden md:block bg-[#071a28] text-[#7a9eb5] text-xs py-2">
+      <div className="hidden md:block text-[#7a9eb5] text-xs py-2" style={{ backgroundColor: '#033d5c' }}>
         <div className="container flex items-center justify-between">
           <div className="flex items-center gap-6">
             <a href="tel:+441234567890" className="flex items-center gap-1.5 hover:text-[#38bdf8] transition-colors">
@@ -77,13 +78,7 @@ export const Navbar = () => {
         <div className="container flex items-center justify-between h-[72px]">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center text-[#0c2d42] font-bold text-lg shadow-md group-hover:shadow-lg transition-shadow">
-              M
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-sm leading-tight tracking-tight">MMK Accountants</span>
-              <span className="text-[10px] text-muted-foreground leading-tight">Registered Office</span>
-            </div>
+            <Image src="/images/mmk-logo.png" alt="MMK Accountants" width={120} height={73} className="h-10 w-auto" priority />
           </Link>
 
           {/* Mobile Menu */}
@@ -104,10 +99,7 @@ export const Navbar = () => {
                   <SheetHeader className="mb-6 ml-4">
                     <SheetTitle className="flex items-center">
                       <Link href="/" className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center text-[#0c2d42] font-bold text-lg">
-                          M
-                        </div>
-                        <span className="font-bold">MMK Accountants</span>
+                        <Image src="/images/mmk-logo.png" alt="MMK Accountants" width={120} height={73} className="h-9 w-auto" />
                       </Link>
                     </SheetTitle>
                   </SheetHeader>
@@ -139,7 +131,7 @@ export const Navbar = () => {
                     <Button
                       onClick={() => setIsOpen(false)}
                       asChild
-                      className="justify-start text-base rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold hover:shadow-lg"
+                      className="justify-start text-base rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold hover:shadow-lg"
                     >
                       <Link href="/register">Get Started</Link>
                     </Button>
@@ -186,7 +178,7 @@ export const Navbar = () => {
             <Button
               asChild
               size="sm"
-              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-6 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold px-6 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
             >
               <Link href="/register">Get Started</Link>
             </Button>

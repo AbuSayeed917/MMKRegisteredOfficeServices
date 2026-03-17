@@ -87,7 +87,7 @@ export default function AdminLayout({
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0c2d42] text-white flex flex-col transition-transform duration-300 lg:translate-x-0 lg:static ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-primary text-white flex flex-col transition-transform duration-300 lg:translate-x-0 lg:static ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -99,7 +99,7 @@ export default function AdminLayout({
             onClick={() => setSidebarOpen(false)}
           >
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center">
-              <Shield className="size-5 text-[#0c2d42]" />
+              <Shield className="size-5 text-primary" />
             </div>
             <div>
               <p className="font-bold text-sm">MMK Admin</p>
@@ -162,7 +162,7 @@ export default function AdminLayout({
           >
             <Menu className="size-5" />
           </Button>
-          <h2 className="font-semibold text-sm text-[#0c2d42] dark:text-white">
+          <h2 className="font-semibold text-sm text-primary dark:text-white">
             {currentPage}
           </h2>
         </header>

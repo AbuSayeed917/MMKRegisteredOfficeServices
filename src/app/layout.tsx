@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   description:
     "Professional registered office address service for your business. Use our Luton office as your Companies House registered address for just £75/year.",
   manifest: "/manifest.json",
-  themeColor: "#0c2d42",
+  themeColor: "#057baa",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

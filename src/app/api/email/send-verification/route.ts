@@ -54,13 +54,13 @@ export async function POST() {
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px 24px;">
           <div style="text-align: center; margin-bottom: 24px;">
-            <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); display: inline-flex; align-items: center; justify-content: center; color: #0c2d42; font-weight: bold; font-size: 20px;">M</div>
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); display: inline-flex; align-items: center; justify-content: center; color: #057baa; font-weight: bold; font-size: 20px;">M</div>
           </div>
-          <h2 style="color: #0c2d42; font-size: 20px; margin: 0 0 12px; text-align: center;">Verify Your Email</h2>
+          <h2 style="color: #057baa; font-size: 20px; margin: 0 0 12px; text-align: center;">Verify Your Email</h2>
           <p style="color: #3d6478; font-size: 14px; line-height: 22px; text-align: center;">Use the code below to verify your email address. This code expires in 15 minutes.</p>
           <div style="text-align: center; margin: 24px 0;">
             <div style="background: #f0f7fb; border-radius: 12px; padding: 20px; display: inline-block;">
-              <span style="font-size: 32px; font-weight: 700; letter-spacing: 6px; color: #0c2d42; font-family: monospace;">${code}</span>
+              <span style="font-size: 32px; font-weight: 700; letter-spacing: 6px; color: #057baa; font-family: monospace;">${code}</span>
             </div>
           </div>
           <p style="color: #7a9eb5; font-size: 12px; line-height: 18px; text-align: center;">If you didn't request this, you can safely ignore this email.</p>

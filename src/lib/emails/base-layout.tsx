@@ -64,7 +64,7 @@ const container = {
 };
 
 const header = {
-  backgroundColor: "#0c2d42",
+  backgroundColor: "#057baa",
   borderRadius: "16px 16px 0 0",
   padding: "32px 40px 24px",
   textAlign: "center" as const,
@@ -82,7 +82,7 @@ const logoIcon = {
   width: "44px",
   height: "32px",
   backgroundColor: "#0ea5e9",
-  color: "#0c2d42",
+  color: "#057baa",
   borderRadius: "8px",
   textAlign: "center" as const,
   lineHeight: "32px",

@@ -13,7 +13,7 @@ export default function PrivacyPage() {
       <Navbar />
       <main className="container max-w-3xl py-16 space-y-8">
         <div>
-          <h1 className="text-3xl font-bold text-[#0c2d42] dark:text-white">
+          <h1 className="text-3xl font-bold text-primary dark:text-white">
             Privacy Policy
           </h1>
           <p className="text-sm text-muted-foreground mt-2">
@@ -22,7 +22,7 @@ export default function PrivacyPage() {
         </div>
 
         <section className="space-y-4 text-sm leading-relaxed text-[var(--mmk-text-secondary)]">
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             1. Data Controller
           </h2>
           <p>
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
             principal office in Luton, United Kingdom.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             2. Data We Collect
           </h2>
           <p>We collect the following categories of personal data:</p>
@@ -44,7 +44,7 @@ export default function PrivacyPage() {
             <li><strong>Communication data:</strong> support ticket messages, email correspondence</li>
           </ul>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             3. Legal Basis for Processing
           </h2>
           <p>We process your data under the following legal bases:</p>
@@ -55,7 +55,7 @@ export default function PrivacyPage() {
             <li><strong>Consent:</strong> for marketing communications (where applicable)</li>
           </ul>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             4. How We Use Your Data
           </h2>
           <ul className="list-disc list-inside space-y-1 pl-2">
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
             <li>To comply with legal and regulatory obligations</li>
           </ul>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             5. Data Sharing
           </h2>
           <p>We may share your data with:</p>
@@ -82,7 +82,7 @@ export default function PrivacyPage() {
             marketing purposes without your explicit consent.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             6. Data Retention
           </h2>
           <p>
@@ -91,7 +91,7 @@ export default function PrivacyPage() {
             records are retained for 7 years as required by HMRC.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             7. Data Security
           </h2>
           <p>
@@ -100,7 +100,7 @@ export default function PrivacyPage() {
             controls, and regular security reviews.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             8. Your Rights
           </h2>
           <p>Under UK GDPR, you have the right to:</p>
@@ -120,7 +120,7 @@ export default function PrivacyPage() {
             </a>.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             9. Complaints
           </h2>
           <p>
@@ -136,7 +136,7 @@ export default function PrivacyPage() {
             </a>.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             10. Contact
           </h2>
           <p>

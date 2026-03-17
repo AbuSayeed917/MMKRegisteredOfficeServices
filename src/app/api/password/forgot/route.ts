@@ -51,9 +51,9 @@ export async function POST(request: NextRequest) {
         html: `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px 24px;">
             <div style="text-align: center; margin-bottom: 24px;">
-              <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); display: inline-flex; align-items: center; justify-content: center; color: #0c2d42; font-weight: bold; font-size: 20px;">M</div>
+              <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); display: inline-flex; align-items: center; justify-content: center; color: #057baa; font-weight: bold; font-size: 20px;">M</div>
             </div>
-            <h2 style="color: #0c2d42; font-size: 20px; margin: 0 0 12px; text-align: center;">Reset Your Password</h2>
+            <h2 style="color: #057baa; font-size: 20px; margin: 0 0 12px; text-align: center;">Reset Your Password</h2>
             <p style="color: #3d6478; font-size: 14px; line-height: 22px;">We received a request to reset your password. Click the button below to set a new password. This link expires in 1 hour.</p>
             <div style="text-align: center; margin: 24px 0;">
               <a href="${resetUrl}" style="background-color: #0ea5e9; border-radius: 9999px; color: #ffffff; font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 32px; display: inline-block;">Reset Password</a>

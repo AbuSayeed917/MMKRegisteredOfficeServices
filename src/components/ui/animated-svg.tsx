@@ -23,16 +23,16 @@ export function FloatingDocumentSVG({ className = "" }: { className?: string }) 
         `}
       </style>
       <g className="doc-body">
-        <rect x="10" y="10" width="100" height="140" rx="8" fill="#0c2d42" opacity="0.1" />
+        <rect x="10" y="10" width="100" height="140" rx="8" fill="#057baa" opacity="0.1" />
         <rect x="10" y="10" width="100" height="140" rx="8" fill="url(#docGrad)" />
         <rect x="10" y="10" width="100" height="35" rx="8" fill="#0ea5e9" opacity="0.15" />
         <circle cx="35" cy="27" r="8" fill="#0ea5e9" opacity="0.3" />
         <rect className="doc-line" x="50" y="22" width="45" height="4" rx="2" fill="#0ea5e9" opacity="0.4" />
         <rect className="doc-line" x="50" y="30" width="30" height="3" rx="1.5" fill="#0ea5e9" opacity="0.25" />
-        <rect className="doc-line" x="25" y="58" width="70" height="4" rx="2" fill="#0c2d42" opacity="0.12" />
-        <rect className="doc-line" x="25" y="70" width="55" height="4" rx="2" fill="#0c2d42" opacity="0.08" />
-        <rect className="doc-line" x="25" y="82" width="65" height="4" rx="2" fill="#0c2d42" opacity="0.1" />
-        <rect className="doc-line" x="25" y="94" width="45" height="4" rx="2" fill="#0c2d42" opacity="0.07" />
+        <rect className="doc-line" x="25" y="58" width="70" height="4" rx="2" fill="#057baa" opacity="0.12" />
+        <rect className="doc-line" x="25" y="70" width="55" height="4" rx="2" fill="#057baa" opacity="0.08" />
+        <rect className="doc-line" x="25" y="82" width="65" height="4" rx="2" fill="#057baa" opacity="0.1" />
+        <rect className="doc-line" x="25" y="94" width="45" height="4" rx="2" fill="#057baa" opacity="0.07" />
         <rect x="25" y="115" width="30" height="20" rx="4" fill="#0ea5e9" opacity="0.2" />
         <path d="M30 125 L40 125 L35 120 Z" fill="#0ea5e9" opacity="0.4" />
       </g>
@@ -89,7 +89,7 @@ export function AnimatedShieldSVG({ className = "" }: { className?: string }) {
       <defs>
         <linearGradient id="shieldGrad" x1="12" y1="8" x2="88" y2="114">
           <stop stopColor="#ffffff" />
-          <stop offset="1" stopColor="#e4f0f8" />
+          <stop offset="1" stopColor="#e2f2f5" />
         </linearGradient>
       </defs>
     </svg>
@@ -117,7 +117,7 @@ export function AnimatedBuildingSVG({ className = "" }: { className?: string }) 
         `}
       </style>
       {/* Ground */}
-      <rect x="10" y="168" width="180" height="4" rx="2" fill="#0c2d42" opacity="0.1" />
+      <rect x="10" y="168" width="180" height="4" rx="2" fill="#057baa" opacity="0.1" />
 
       {/* Building 1 - Main */}
       <g className="building">
@@ -135,7 +135,7 @@ export function AnimatedBuildingSVG({ className = "" }: { className?: string }) 
         <rect className="window" x="78" y="116" width="12" height="14" rx="2" fill="#0ea5e9" />
         <rect className="window" x="98" y="116" width="12" height="14" rx="2" fill="#0ea5e9" />
         {/* Door */}
-        <rect x="70" y="145" width="20" height="23" rx="3" fill="#0c2d42" opacity="0.3" />
+        <rect x="70" y="145" width="20" height="23" rx="3" fill="#057baa" opacity="0.3" />
       </g>
 
       {/* Building 2 - Left */}
@@ -162,16 +162,16 @@ export function AnimatedBuildingSVG({ className = "" }: { className?: string }) 
 
       <defs>
         <linearGradient id="buildGrad1" x1="50" y1="40" x2="110" y2="168">
-          <stop stopColor="#0c2d42" />
-          <stop offset="1" stopColor="#134e6a" />
+          <stop stopColor="#057baa" />
+          <stop offset="1" stopColor="#046891" />
         </linearGradient>
         <linearGradient id="buildGrad2" x1="18" y1="70" x2="58" y2="168">
-          <stop stopColor="#134e6a" />
-          <stop offset="1" stopColor="#1a6d8e" />
+          <stop stopColor="#046891" />
+          <stop offset="1" stopColor="#0891c8" />
         </linearGradient>
         <linearGradient id="buildGrad3" x1="118" y1="85" x2="168" y2="168">
-          <stop stopColor="#134e6a" />
-          <stop offset="1" stopColor="#1a6d8e" />
+          <stop stopColor="#046891" />
+          <stop offset="1" stopColor="#0891c8" />
         </linearGradient>
       </defs>
     </svg>
@@ -200,9 +200,9 @@ export function AnimatedMailSVG({ className = "" }: { className?: string }) {
         <g className="letter">
           <rect x="22" y="25" width="76" height="50" rx="4" fill="#ffffff" stroke="#c0d8e8" strokeWidth="1" />
           <rect x="32" y="35" width="40" height="3" rx="1.5" fill="#0ea5e9" opacity="0.4" />
-          <rect x="32" y="42" width="56" height="2" rx="1" fill="#0c2d42" opacity="0.1" />
-          <rect x="32" y="48" width="48" height="2" rx="1" fill="#0c2d42" opacity="0.08" />
-          <rect x="32" y="54" width="52" height="2" rx="1" fill="#0c2d42" opacity="0.06" />
+          <rect x="32" y="42" width="56" height="2" rx="1" fill="#057baa" opacity="0.1" />
+          <rect x="32" y="48" width="48" height="2" rx="1" fill="#057baa" opacity="0.08" />
+          <rect x="32" y="54" width="52" height="2" rx="1" fill="#057baa" opacity="0.06" />
         </g>
 
         {/* Envelope body */}
@@ -246,16 +246,16 @@ export function AnimatedPaymentSVG({ className = "" }: { className?: string }) {
       </style>
       <g className="credit-card">
         {/* Card shadow */}
-        <rect x="13" y="23" width="100" height="62" rx="8" fill="#0c2d42" opacity="0.08" />
+        <rect x="13" y="23" width="100" height="62" rx="8" fill="#057baa" opacity="0.08" />
         {/* Card body */}
         <rect x="10" y="20" width="100" height="62" rx="8" fill="url(#cardGrad)" stroke="#0ea5e9" strokeWidth="1.5" />
         {/* Card stripe */}
-        <rect x="10" y="35" width="100" height="10" fill="#0c2d42" opacity="0.15" />
+        <rect x="10" y="35" width="100" height="10" fill="#057baa" opacity="0.15" />
         {/* Chip */}
         <rect x="22" y="48" width="14" height="10" rx="2" fill="#0ea5e9" opacity="0.3" stroke="#0ea5e9" strokeWidth="0.5" />
         {/* Numbers */}
-        <rect x="22" y="64" width="30" height="3" rx="1.5" fill="#0c2d42" opacity="0.15" />
-        <rect x="58" y="64" width="20" height="3" rx="1.5" fill="#0c2d42" opacity="0.1" />
+        <rect x="22" y="64" width="30" height="3" rx="1.5" fill="#057baa" opacity="0.15" />
+        <rect x="58" y="64" width="20" height="3" rx="1.5" fill="#057baa" opacity="0.1" />
       </g>
 
       {/* Coins */}

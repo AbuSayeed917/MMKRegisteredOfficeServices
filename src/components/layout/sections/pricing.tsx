@@ -73,7 +73,7 @@ export const PricingSection = () => {
             <Card className="relative border-[#0ea5e9] shadow-lg rounded-2xl lg:scale-105 card-hover h-full group">
               {/* Recommended badge */}
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] text-xs font-semibold px-4 py-1.5 rounded-full shadow-md inline-flex items-center gap-1.5">
+                <span className="bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary text-xs font-semibold px-4 py-1.5 rounded-full shadow-md inline-flex items-center gap-1.5">
                   <Sparkles className="size-3" />
                   Recommended
                 </span>
@@ -109,7 +109,7 @@ export const PricingSection = () => {
                 </ul>
               </CardContent>
               <CardFooter>
-                <Button asChild className="w-full rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                <Button asChild className="w-full rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                   <Link href="/register">Get Started</Link>
                 </Button>
               </CardFooter>

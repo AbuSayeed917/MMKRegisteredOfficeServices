@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   companyTitle: {
     fontSize: 16,
     fontWeight: 700,
-    color: "#0c2d42",
+    color: "#057baa",
     marginBottom: 2,
   },
   companySubtitle: {
@@ -79,14 +79,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 700,
-    color: "#0c2d42",
+    color: "#057baa",
     marginBottom: 20,
     textAlign: "center",
   },
   sectionTitle: {
     fontSize: 12,
     fontWeight: 700,
-    color: "#0c2d42",
+    color: "#057baa",
     marginTop: 16,
     marginBottom: 6,
   },
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   signatureName: {
     fontSize: 18,
     fontStyle: "italic",
-    color: "#0c2d42",
+    color: "#057baa",
     marginBottom: 2,
   },
   signatureImage: {
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     objectFit: "contain",
   },
   signatureLine: {
-    borderBottom: "1px solid #0c2d42",
+    borderBottom: "1px solid #057baa",
     marginTop: 4,
     marginBottom: 4,
   },

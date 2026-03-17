@@ -320,7 +320,7 @@ export default function ClientDetailPage() {
           </Button>
         </Link>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-[#0c2d42] dark:text-white">
+          <h1 className="text-2xl font-bold text-primary dark:text-white">
             {data.business?.companyName || data.user.email}
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
@@ -368,7 +368,7 @@ export default function ClientDetailPage() {
         {/* Business Details */}
         {data.business && (
           <Card className="border-[var(--mmk-border-light)] rounded-2xl overflow-hidden">
-            <div className="h-1 bg-gradient-to-r from-[#0c2d42] to-[#0ea5e9]" />
+            <div className="h-1 bg-gradient-to-r from-primary to-[#0ea5e9]" />
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Building2 className="size-4 text-[#0ea5e9]" />
@@ -741,7 +741,7 @@ export default function ClientDetailPage() {
         {/* Audit Log */}
         {data.adminActions.length > 0 && (
           <Card className="border-[var(--mmk-border-light)] rounded-2xl overflow-hidden lg:col-span-2">
-            <div className="h-1 bg-gradient-to-r from-[#0c2d42] to-[#0ea5e9]" />
+            <div className="h-1 bg-gradient-to-r from-primary to-[#0ea5e9]" />
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Shield className="size-4 text-[#0ea5e9]" />

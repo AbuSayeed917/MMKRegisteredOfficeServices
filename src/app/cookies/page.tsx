@@ -13,7 +13,7 @@ export default function CookiePolicyPage() {
       <Navbar />
       <main className="container max-w-3xl py-16 space-y-8">
         <div>
-          <h1 className="text-3xl font-bold text-[#0c2d42] dark:text-white">
+          <h1 className="text-3xl font-bold text-primary dark:text-white">
             Cookie Policy
           </h1>
           <p className="text-sm text-muted-foreground mt-2">
@@ -22,7 +22,7 @@ export default function CookiePolicyPage() {
         </div>
 
         <section className="space-y-4 text-sm leading-relaxed text-[var(--mmk-text-secondary)]">
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             1. What Are Cookies
           </h2>
           <p>
@@ -30,11 +30,11 @@ export default function CookiePolicyPage() {
             us provide a better experience by remembering your preferences and keeping you signed in.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             2. Cookies We Use
           </h2>
 
-          <h3 className="text-base font-medium text-[#0c2d42] dark:text-white">
+          <h3 className="text-base font-medium text-primary dark:text-white">
             Essential Cookies
           </h3>
           <p>
@@ -69,7 +69,7 @@ export default function CookiePolicyPage() {
             </table>
           </div>
 
-          <h3 className="text-base font-medium text-[#0c2d42] dark:text-white">
+          <h3 className="text-base font-medium text-primary dark:text-white">
             Functional Cookies
           </h3>
           <p>
@@ -94,7 +94,7 @@ export default function CookiePolicyPage() {
             </table>
           </div>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             3. Third-Party Cookies
           </h2>
           <p>
@@ -114,7 +114,7 @@ export default function CookiePolicyPage() {
             We do not use analytics cookies, advertising cookies, or social media tracking cookies.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             4. Managing Cookies
           </h2>
           <p>
@@ -138,7 +138,7 @@ export default function CookiePolicyPage() {
             </li>
           </ul>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             5. Changes to This Policy
           </h2>
           <p>
@@ -146,7 +146,7 @@ export default function CookiePolicyPage() {
             page with an updated &ldquo;Last updated&rdquo; date.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             6. Contact
           </h2>
           <p>

@@ -43,7 +43,7 @@ function PaymentSuccessContent() {
           <div className="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="size-10 text-emerald-500" />
           </div>
-          <h1 className="text-2xl font-bold text-[#0c2d42] dark:text-white mb-2">
+          <h1 className="text-2xl font-bold text-primary dark:text-white mb-2">
             Payment Successful!
           </h1>
           <p className="text-sm text-muted-foreground mb-4 max-w-sm mx-auto">
@@ -65,7 +65,7 @@ function PaymentSuccessContent() {
           </div>
 
           <Link href="/dashboard" className="block mt-6">
-            <Button className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-8 gap-2">
+            <Button className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold px-8 gap-2">
               Go to Dashboard
               <ArrowRight className="size-4" />
             </Button>

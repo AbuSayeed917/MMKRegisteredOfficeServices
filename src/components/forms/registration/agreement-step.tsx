@@ -225,12 +225,12 @@ export function AgreementStep({
               ref={scrollContainerRef}
               onScroll={handleScroll}
               className="bg-white dark:bg-gray-950 border border-[var(--mmk-border)] rounded-xl p-6 max-h-[400px] overflow-y-auto prose prose-sm dark:prose-invert max-w-none
-                prose-headings:text-[#0c2d42] dark:prose-headings:text-white
+                prose-headings:text-primary dark:prose-headings:text-white
                 prose-h1:text-xl prose-h1:font-bold prose-h1:mb-4
                 prose-h2:text-base prose-h2:font-semibold prose-h2:mt-6 prose-h2:mb-2
                 prose-p:text-sm prose-p:leading-relaxed
                 prose-li:text-sm prose-li:leading-relaxed
-                prose-strong:text-[#0c2d42] dark:prose-strong:text-white
+                prose-strong:text-primary dark:prose-strong:text-white
               "
               dangerouslySetInnerHTML={{ __html: agreementHtml }}
             />
@@ -323,7 +323,7 @@ export function AgreementStep({
             </Button>
             <Button
               type="submit"
-              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-6 sm:px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2"
+              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold px-6 sm:px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2"
             >
               Sign & Continue
               <ArrowRight className="size-4" />

@@ -64,7 +64,7 @@ export const BenefitsSection = () => {
                   height={400}
                   className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0c2d42]/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />
                 <div className="absolute bottom-4 left-4 text-white">
                   <div className="text-sm font-semibold">MMK Accountants</div>
                   <div className="text-xs text-white/70">Luton, United Kingdom</div>

@@ -44,9 +44,9 @@ export function InstallPromptBanner() {
 
   return (
     <div className="fixed bottom-20 left-4 right-4 z-50 sm:left-auto sm:right-4 sm:bottom-4 sm:max-w-sm">
-      <div className="bg-[#0c2d42] text-white rounded-2xl p-4 shadow-xl flex items-center gap-3">
+      <div className="bg-primary text-white rounded-2xl p-4 shadow-xl flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center shrink-0">
-          <Download className="size-5 text-[#0c2d42]" />
+          <Download className="size-5 text-primary" />
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold">Install MMK Office</p>
@@ -57,7 +57,7 @@ export function InstallPromptBanner() {
         <Button
           size="sm"
           onClick={promptInstall}
-          className="bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold rounded-full px-4 hover:shadow-lg shrink-0"
+          className="bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold rounded-full px-4 hover:shadow-lg shrink-0"
         >
           Install
         </Button>

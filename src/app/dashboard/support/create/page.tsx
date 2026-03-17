@@ -90,7 +90,7 @@ export default function CreateTicketPage() {
           <ArrowLeft className="size-3.5" />
           Back to Support
         </Link>
-        <h1 className="text-2xl font-bold text-[#0c2d42] dark:text-white">
+        <h1 className="text-2xl font-bold text-primary dark:text-white">
           New Support Ticket
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -111,7 +111,7 @@ export default function CreateTicketPage() {
             <div className="space-y-2">
               <label
                 htmlFor="subject"
-                className="text-sm font-medium text-[#0c2d42] dark:text-white"
+                className="text-sm font-medium text-primary dark:text-white"
               >
                 Subject <span className="text-red-500">*</span>
               </label>
@@ -129,7 +129,7 @@ export default function CreateTicketPage() {
             <div className="space-y-2">
               <label
                 htmlFor="category"
-                className="text-sm font-medium text-[#0c2d42] dark:text-white"
+                className="text-sm font-medium text-primary dark:text-white"
               >
                 Category
               </label>
@@ -154,7 +154,7 @@ export default function CreateTicketPage() {
             <div className="space-y-2">
               <label
                 htmlFor="message"
-                className="text-sm font-medium text-[#0c2d42] dark:text-white"
+                className="text-sm font-medium text-primary dark:text-white"
               >
                 Description <span className="text-red-500">*</span>
               </label>
@@ -183,7 +183,7 @@ export default function CreateTicketPage() {
               <Button
                 type="submit"
                 disabled={!canSubmit}
-                className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-6 gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold px-6 gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
               >
                 {submitting ? (
                   <>

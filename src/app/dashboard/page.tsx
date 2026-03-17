@@ -124,7 +124,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-[#0c2d42] dark:text-white">
+        <h1 className="text-2xl font-bold text-primary dark:text-white">
           Welcome back
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -266,7 +266,7 @@ export default function DashboardPage() {
       {/* Company Info */}
       {data.business && (
         <Card className="border-[var(--mmk-border-light)] rounded-2xl overflow-hidden">
-          <div className="h-1 bg-gradient-to-r from-[#0c2d42] to-[#0ea5e9]" />
+          <div className="h-1 bg-gradient-to-r from-primary to-[#0ea5e9]" />
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-3 text-base">
               <Building2 className="size-4.5 text-[#0ea5e9]" />

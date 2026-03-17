@@ -400,7 +400,7 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
             {data.agreement.signatureType === "typed" && (
               <div className="mt-2 bg-white dark:bg-gray-900 border border-[var(--mmk-border)] rounded-lg p-3 text-center">
                 <p
-                  className="text-lg italic text-[#0c2d42] dark:text-white"
+                  className="text-lg italic text-primary dark:text-white"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   {data.agreement.signatureData}
@@ -465,7 +465,7 @@ export function ReviewStep({ data, onBack }: ReviewStepProps) {
             type="button"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-5 sm:px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2"
+            className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold px-5 sm:px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2"
           >
             {isSubmitting ? (
               <>

@@ -105,7 +105,7 @@ export default function SubscriptionPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#0c2d42] dark:text-white">
+        <h1 className="text-2xl font-bold text-primary dark:text-white">
           Subscription
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -203,7 +203,7 @@ export default function SubscriptionPage() {
             <div className="mt-6 bg-[#0ea5e9]/5 border border-[#0ea5e9]/20 rounded-xl p-4 flex items-start gap-3">
               <CreditCard className="size-5 text-[#0ea5e9] mt-0.5 flex-shrink-0" />
               <div>
-                <p className="text-sm font-medium text-[#0c2d42] dark:text-white">
+                <p className="text-sm font-medium text-primary dark:text-white">
                   Complete Your Payment
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">
@@ -237,7 +237,7 @@ export default function SubscriptionPage() {
               <Button
                 onClick={handleCheckout}
                 disabled={checkoutLoading}
-                className="w-full sm:w-auto rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-8 gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                className="w-full sm:w-auto rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold px-8 gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
               >
                 {checkoutLoading ? (
                   <>
@@ -260,7 +260,7 @@ export default function SubscriptionPage() {
 
       {/* Payment History */}
       <Card className="border-[var(--mmk-border-light)] rounded-2xl overflow-hidden">
-        <div className="h-1 bg-gradient-to-r from-[#0c2d42] to-[#0ea5e9]" />
+        <div className="h-1 bg-gradient-to-r from-primary to-[#0ea5e9]" />
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-base">
             <Banknote className="size-5 text-[#0ea5e9]" />

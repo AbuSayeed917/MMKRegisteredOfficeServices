@@ -96,7 +96,7 @@ export default function SupportTicketsPage() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#0c2d42] dark:text-white">
+          <h1 className="text-2xl font-bold text-primary dark:text-white">
             Support Tickets
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
@@ -104,7 +104,7 @@ export default function SupportTicketsPage() {
           </p>
         </div>
         <Link href="/dashboard/support/create">
-          <Button className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-5 gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+          <Button className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold px-5 gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
             <Plus className="size-4" />
             New Ticket
           </Button>
@@ -124,7 +124,7 @@ export default function SupportTicketsPage() {
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-[#0c2d42] dark:text-white truncate">
+                        <p className="text-sm font-semibold text-primary dark:text-white truncate">
                           {ticket.subject}
                         </p>
                         <div className="flex items-center gap-2 mt-2 flex-wrap">

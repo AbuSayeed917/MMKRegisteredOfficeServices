@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -48,8 +49,8 @@ export default function ForgotPasswordPage() {
         <div className="w-full max-w-md">
           <Card className="border-[var(--mmk-border-light)] rounded-2xl shadow-lg">
             <CardHeader className="text-center pb-4">
-              <div className="mx-auto mb-4 w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center text-[#0c2d42] font-bold text-2xl shadow-md">
-                M
+              <div className="mx-auto mb-4">
+                <Image src="/images/mmk-logo.png" alt="MMK Accountants" width={120} height={73} className="h-12 w-auto mx-auto" />
               </div>
               <CardTitle className="text-xl">
                 {sent ? "Check Your Email" : "Forgot Password"}
@@ -102,7 +103,7 @@ export default function ForgotPasswordPage() {
 
                   <Button
                     type="submit"
-                    className="w-full rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                    className="w-full rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
                     disabled={loading}
                   >
                     {loading ? (

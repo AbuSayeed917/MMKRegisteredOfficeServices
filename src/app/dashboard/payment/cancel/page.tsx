@@ -14,7 +14,7 @@ export default function PaymentCancelPage() {
           <div className="w-20 h-20 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mx-auto mb-6">
             <XCircle className="size-10 text-amber-500" />
           </div>
-          <h1 className="text-2xl font-bold text-[#0c2d42] dark:text-white mb-2">
+          <h1 className="text-2xl font-bold text-primary dark:text-white mb-2">
             Payment Cancelled
           </h1>
           <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
@@ -33,7 +33,7 @@ export default function PaymentCancelPage() {
               </Button>
             </Link>
             <Link href="/dashboard/subscription">
-              <Button className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-6 gap-2">
+              <Button className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold px-6 gap-2">
                 <CreditCard className="size-4" />
                 Try Again
               </Button>

@@ -214,7 +214,7 @@ export default function RegisterPage() {
                   {(() => {
                     const Icon = steps[currentStep].icon;
                     return (
-                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center text-[#0c2d42] shadow-md">
+                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center text-primary shadow-md">
                         <Icon className="size-4" />
                       </div>
                     );
@@ -256,7 +256,7 @@ export default function RegisterPage() {
                           isCompleted
                             ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20"
                             : isCurrent
-                            ? "bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] shadow-lg shadow-[#0ea5e9]/20"
+                            ? "bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] text-primary shadow-lg shadow-[#0ea5e9]/20"
                             : "bg-muted text-muted-foreground"
                         }`}
                       >
@@ -270,7 +270,7 @@ export default function RegisterPage() {
                             isCompleted
                               ? "bg-emerald-600 text-white"
                               : isCurrent
-                              ? "bg-[#0c2d42] text-[#38bdf8]"
+                              ? "bg-primary text-[#38bdf8]"
                               : "bg-muted-foreground/20 text-muted-foreground"
                           }`}
                         >

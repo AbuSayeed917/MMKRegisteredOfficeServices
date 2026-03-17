@@ -28,7 +28,7 @@ export function BottomNav({ items, basePath }: BottomNavProps) {
   };
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-[#0c2d42] border-t border-[#dbeaf2] dark:border-white/10 safe-area-bottom">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-primary border-t border-[#dbeaf2] dark:border-white/10 safe-area-bottom">
       <div className="flex items-center justify-around h-16 px-2">
         {items.map((item) => {
           const Icon = item.icon;

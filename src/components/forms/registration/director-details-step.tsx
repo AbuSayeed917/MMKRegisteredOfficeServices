@@ -268,7 +268,7 @@ export function DirectorDetailsStep({
           {/* Info note */}
           <div className="bg-[#0ea5e9]/5 border border-[#0ea5e9]/20 rounded-xl p-3 text-sm flex items-start gap-2">
             <AlertTriangle className="size-4 text-[#0ea5e9] mt-0.5 flex-shrink-0" />
-            <p className="text-[#0c2d42] dark:text-[#7a9eb5] text-xs">
+            <p className="text-primary dark:text-[#7a9eb5] text-xs">
               In the next step, you will upload identification documents
               (passport or driving licence) and proof of address for identity
               verification.
@@ -288,7 +288,7 @@ export function DirectorDetailsStep({
             </Button>
             <Button
               type="submit"
-              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-6 sm:px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2"
+              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold px-6 sm:px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2"
             >
               Continue
               <ArrowRight className="size-4" />

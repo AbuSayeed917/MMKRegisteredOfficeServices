@@ -63,7 +63,7 @@ const badgeText = {
 };
 
 const heading = {
-  color: "#0c2d42",
+  color: "#057baa",
   fontSize: "24px",
   fontWeight: "700" as const,
   margin: "0 0 16px",
@@ -84,7 +84,7 @@ const box = {
 };
 
 const boxTitle = {
-  color: "#0c2d42",
+  color: "#057baa",
   fontSize: "14px",
   fontWeight: "600" as const,
   margin: "0 0 8px",

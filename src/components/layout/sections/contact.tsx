@@ -98,7 +98,7 @@ export const ContactSection = () => {
                     height={200}
                     className="w-full h-40 object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c2d42]/50 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/50 to-transparent" />
                   <div className="absolute bottom-2 left-3 text-white text-xs font-medium">Our Team</div>
                 </div>
                 <div className="relative rounded-2xl overflow-hidden group">
@@ -109,7 +109,7 @@ export const ContactSection = () => {
                     height={200}
                     className="w-full h-40 object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c2d42]/50 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/50 to-transparent" />
                   <div className="absolute bottom-2 left-3 text-white text-xs font-medium">Our Office</div>
                 </div>
               </div>
@@ -123,7 +123,7 @@ export const ContactSection = () => {
                   height={200}
                   className="w-full h-36 object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0c2d42]/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />
                 <div className="absolute bottom-3 left-4 text-white">
                   <div className="text-sm font-semibold">Serving Businesses Across the UK</div>
                   <div className="text-xs text-white/70">Based in Luton, United Kingdom</div>
@@ -266,7 +266,7 @@ export const ContactSection = () => {
                     <Button
                       type="submit"
                       disabled={status === "sending"}
-                      className="w-full rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold py-3 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60"
+                      className="w-full rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold py-3 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60"
                     >
                       {status === "sending" ? (
                         <>

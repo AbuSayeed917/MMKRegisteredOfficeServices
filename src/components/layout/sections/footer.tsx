@@ -1,21 +1,17 @@
 import { Separator } from "@/components/ui/separator";
 import { Mail, Phone, MapPin } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export const FooterSection = () => {
   return (
-    <footer id="footer" className="bg-[#071a28] text-[#7a9eb5]">
+    <footer id="footer" className="text-[#7a9eb5]" style={{ backgroundColor: '#033d5c' }}>
       <div className="container py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-x-12 gap-y-10">
           {/* Logo & Description */}
           <div className="col-span-full xl:col-span-2">
-            <Link href="/" className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center text-[#0c2d42] font-bold text-lg">
-                M
-              </div>
-              <div>
-                <span className="font-bold text-white text-lg">MMK Accountants</span>
-              </div>
+            <Link href="/" className="flex items-center mb-4">
+              <Image src="/images/mmk-logo.png" alt="MMK Accountants" width={140} height={85} className="h-12 w-auto brightness-0 invert" />
             </Link>
             <p className="text-sm leading-relaxed mb-6 max-w-xs">
               Professional registered office address service for businesses across
@@ -72,7 +68,7 @@ export const FooterSection = () => {
           </div>
         </div>
 
-        <Separator className="my-8 bg-[#1a6d8e]/30" />
+        <Separator className="my-8 bg-[#0891c8]/30" />
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs">

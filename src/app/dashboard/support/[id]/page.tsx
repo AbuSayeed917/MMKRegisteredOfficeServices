@@ -211,7 +211,7 @@ export default function TicketDetailPage() {
         <CardContent className="p-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
-              <h1 className="text-xl font-bold text-[#0c2d42] dark:text-white">
+              <h1 className="text-xl font-bold text-primary dark:text-white">
                 {ticket.subject}
               </h1>
               <div className="flex items-center gap-2 mt-2 flex-wrap">
@@ -244,7 +244,7 @@ export default function TicketDetailPage() {
 
       {/* Messages Thread */}
       <div className="space-y-4">
-        <h2 className="text-sm font-semibold text-[#0c2d42] dark:text-white flex items-center gap-2">
+        <h2 className="text-sm font-semibold text-primary dark:text-white flex items-center gap-2">
           <MessageSquare className="size-4 text-[#0ea5e9]" />
           Messages ({ticket.messages.length})
         </h2>
@@ -276,7 +276,7 @@ export default function TicketDetailPage() {
                         )}
                       </div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs font-medium text-[#0c2d42] dark:text-white">
+                        <span className="text-xs font-medium text-primary dark:text-white">
                           {msg.sender.email}
                         </span>
                         {isAdmin && (
@@ -342,7 +342,7 @@ export default function TicketDetailPage() {
                 <Button
                   type="submit"
                   disabled={!replyMessage.trim() || sending}
-                  className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-[#0c2d42] font-semibold px-6 gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                  className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold px-6 gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
                 >
                   {sending ? (
                     <>

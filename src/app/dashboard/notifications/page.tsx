@@ -92,7 +92,7 @@ export default function NotificationsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#0c2d42] dark:text-white">
+          <h1 className="text-2xl font-bold text-primary dark:text-white">
             Notifications
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
@@ -143,7 +143,7 @@ export default function NotificationsPage() {
                       <p
                         className={`text-sm ${
                           !notification.isRead
-                            ? "font-semibold text-[#0c2d42] dark:text-white"
+                            ? "font-semibold text-primary dark:text-white"
                             : "font-medium text-muted-foreground"
                         }`}
                       >

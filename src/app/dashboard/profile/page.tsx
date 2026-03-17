@@ -219,7 +219,7 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#0c2d42] dark:text-white">
+        <h1 className="text-2xl font-bold text-primary dark:text-white">
           My Profile
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -426,7 +426,7 @@ export default function ProfilePage() {
       {/* Business Details */}
       {data.business && (
         <Card className="border-[var(--mmk-border-light)] rounded-2xl overflow-hidden">
-          <div className="h-1 bg-gradient-to-r from-[#0c2d42] to-[#0ea5e9]" />
+          <div className="h-1 bg-gradient-to-r from-primary to-[#0ea5e9]" />
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center justify-between text-base">
               <span className="flex items-center gap-3">

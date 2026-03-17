@@ -76,7 +76,7 @@ const badgeText = {
 };
 
 const heading = {
-  color: "#0c2d42",
+  color: "#057baa",
   fontSize: "24px",
   fontWeight: "700" as const,
   margin: "0 0 16px",
@@ -110,7 +110,7 @@ const labelCell = {
 };
 
 const valueCell = {
-  color: "#0c2d42",
+  color: "#057baa",
   fontSize: "13px",
   fontWeight: "600" as const,
   padding: "6px 0",
@@ -134,7 +134,7 @@ const messageLabel = {
 };
 
 const messageText = {
-  color: "#0c2d42",
+  color: "#057baa",
   fontSize: "14px",
   lineHeight: "24px",
   margin: "0",

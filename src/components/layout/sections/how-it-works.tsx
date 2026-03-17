@@ -80,8 +80,8 @@ export const HowItWorksSection = () => {
 
                   {/* Step number circle */}
                   <div className="relative mx-auto mb-4 w-16 h-16 rounded-full bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center shadow-lg group-hover:shadow-[0_0_40px_rgba(14,165,233,0.3)] transition-shadow duration-500">
-                    <Icon className="size-7 text-[#0c2d42]" />
-                    <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-[#0c2d42] text-[#38bdf8] text-xs font-bold flex items-center justify-center border-2 border-[#0ea5e9]">
+                    <Icon className="size-7 text-primary" />
+                    <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-primary text-[#38bdf8] text-xs font-bold flex items-center justify-center border-2 border-[#0ea5e9]">
                       {step}
                     </div>
                   </div>

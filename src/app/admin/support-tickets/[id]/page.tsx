@@ -293,7 +293,7 @@ export default function AdminSupportTicketDetailPage() {
         </Link>
         <div className="flex flex-col sm:flex-row sm:items-start gap-3">
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl font-bold text-[#0c2d42] dark:text-white truncate">
+            <h1 className="text-2xl font-bold text-primary dark:text-white truncate">
               {ticket.subject}
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
@@ -365,7 +365,7 @@ export default function AdminSupportTicketDetailPage() {
       <Card className="border-[var(--mmk-border-light)] rounded-2xl">
         <CardContent className="p-4">
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-            <p className="text-sm font-medium text-[#0c2d42] dark:text-white flex-shrink-0">
+            <p className="text-sm font-medium text-primary dark:text-white flex-shrink-0">
               Actions
             </p>
             <div className="flex flex-wrap gap-2 flex-1">
@@ -547,7 +547,7 @@ export default function AdminSupportTicketDetailPage() {
       {/* Reply form */}
       <Card className="border-[var(--mmk-border-light)] rounded-2xl">
         <CardHeader className="pb-2">
-          <CardTitle className="text-base text-[#0c2d42] dark:text-white">
+          <CardTitle className="text-base text-primary dark:text-white">
             Reply
           </CardTitle>
         </CardHeader>

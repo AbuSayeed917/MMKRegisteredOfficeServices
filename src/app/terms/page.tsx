@@ -13,7 +13,7 @@ export default function TermsPage() {
       <Navbar />
       <main className="container max-w-3xl py-16 space-y-8">
         <div>
-          <h1 className="text-3xl font-bold text-[#0c2d42] dark:text-white">
+          <h1 className="text-3xl font-bold text-primary dark:text-white">
             Terms &amp; Conditions
           </h1>
           <p className="text-sm text-muted-foreground mt-2">
@@ -22,7 +22,7 @@ export default function TermsPage() {
         </div>
 
         <section className="space-y-4 text-sm leading-relaxed text-[var(--mmk-text-secondary)]">
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             1. Introduction
           </h2>
           <p>
@@ -36,7 +36,7 @@ export default function TermsPage() {
             be bound by these Terms. If you do not agree, you must not use the Service.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             2. Service Description
           </h2>
           <p>
@@ -50,7 +50,7 @@ export default function TermsPage() {
             <li>Forwarding or scanning of mail upon request (additional charges may apply)</li>
           </ul>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             3. Eligibility
           </h2>
           <p>
@@ -59,7 +59,7 @@ export default function TermsPage() {
             Registration Number (CRN), and keep them up to date.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             4. Fees and Payment
           </h2>
           <ul className="list-disc list-inside space-y-1 pl-2">
@@ -69,7 +69,7 @@ export default function TermsPage() {
             <li>All fees are non-refundable once the Service period has commenced, except where required by law.</li>
           </ul>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             5. Term and Renewal
           </h2>
           <p>
@@ -78,7 +78,7 @@ export default function TermsPage() {
             before the renewal date.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             6. Client Obligations
           </h2>
           <ul className="list-disc list-inside space-y-1 pl-2">
@@ -88,7 +88,7 @@ export default function TermsPage() {
             <li>You must collect or arrange forwarding of mail in a timely manner. Mail uncollected for over 90 days may be disposed of.</li>
           </ul>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             7. Termination
           </h2>
           <p>
@@ -106,7 +106,7 @@ export default function TermsPage() {
             within 14 days. We will hold any mail for 30 days following termination.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             8. Limitation of Liability
           </h2>
           <p>
@@ -120,7 +120,7 @@ export default function TermsPage() {
             carriers, nor for the content of correspondence received at the address.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             9. Data Protection
           </h2>
           <p>
@@ -129,7 +129,7 @@ export default function TermsPage() {
             refer to our Privacy Policy for full details.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             10. Electronic Signatures
           </h2>
           <p>
@@ -138,7 +138,7 @@ export default function TermsPage() {
             your IP address and timestamp, are recorded as evidence of your consent.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             11. Governing Law
           </h2>
           <p>
@@ -147,7 +147,7 @@ export default function TermsPage() {
             the exclusive jurisdiction of the courts of England and Wales.
           </p>
 
-          <h2 className="text-lg font-semibold text-[#0c2d42] dark:text-white">
+          <h2 className="text-lg font-semibold text-primary dark:text-white">
             12. Contact
           </h2>
           <p>

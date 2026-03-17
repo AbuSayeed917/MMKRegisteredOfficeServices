@@ -55,31 +55,45 @@ html:focus-within {
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+
+  /* MMK Brand Colors — registered for Tailwind arbitrary values */
+  --color-mmk-primary: var(--mmk-primary);
+  --color-mmk-primary-mid: var(--mmk-primary-mid);
+  --color-mmk-primary-light: var(--mmk-primary-light);
+  --color-mmk-accent: var(--mmk-accent);
+  --color-mmk-accent-light: var(--mmk-accent-light);
+  --color-mmk-accent-dark: var(--mmk-accent-dark);
+  --color-mmk-bg-dark: var(--mmk-bg-dark);
+  --color-mmk-bg-section: var(--mmk-bg-section);
+  --color-mmk-text-secondary: var(--mmk-text-secondary);
+  --color-mmk-text-light: var(--mmk-text-light);
+  --color-mmk-border: var(--mmk-border);
+  --color-mmk-border-light: var(--mmk-border-light);
 }
 
-/* =========== MMK Accountants Theme — Navy + Cyan =========== */
+/* =========== MMK Accountants Theme — Brand Blue + Cyan =========== */
 :root {
   --radius: 1rem;
 
   /* Backgrounds */
   --background: #f0f7fb;
-  --foreground: #0c2d42;
+  --foreground: #057baa;
 
   --card: #ffffff;
-  --card-foreground: #0c2d42;
+  --card-foreground: #057baa;
 
   --popover: #ffffff;
-  --popover-foreground: #0c2d42;
+  --popover-foreground: #057baa;
 
-  /* Primary — Deep Navy */
-  --primary: #0c2d42;
+  /* Primary — MMK Brand Blue */
+  --primary: #057baa;
   --primary-foreground: #ffffff;
 
-  /* Secondary — Light blue tint */
-  --secondary: #e4f0f8;
-  --secondary-foreground: #0c2d42;
+  /* Secondary — MMK light blue */
+  --secondary: #e2f2f5;
+  --secondary-foreground: #057baa;
 
-  --muted: #e4f0f8;
+  --muted: #e2f2f5;
   --muted-foreground: #3d6478;
 
   --accent: #0ea5e9;
@@ -100,65 +114,65 @@ html:focus-within {
   --chart-5: #ec4899;
 
   /* Sidebar */
-  --sidebar: #0c2d42;
+  --sidebar: #057baa;
   --sidebar-foreground: #f0f7fb;
   --sidebar-primary: #0ea5e9;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #134e6a;
+  --sidebar-accent: #046891;
   --sidebar-accent-foreground: #f0f7fb;
-  --sidebar-border: #1a6d8e;
+  --sidebar-border: #0891c8;
   --sidebar-ring: #0ea5e9;
 
   /* MMK Custom */
-  --mmk-primary: #0c2d42;
-  --mmk-primary-mid: #134e6a;
-  --mmk-primary-light: #1a6d8e;
+  --mmk-primary: #057baa;
+  --mmk-primary-mid: #046891;
+  --mmk-primary-light: #0891c8;
   --mmk-accent: #0ea5e9;
   --mmk-accent-light: #38bdf8;
   --mmk-accent-dark: #0284c7;
-  --mmk-bg-dark: #071a28;
-  --mmk-bg-section: #e4f0f8;
+  --mmk-bg-dark: #033d5c;
+  --mmk-bg-section: #e2f2f5;
   --mmk-text-secondary: #3d6478;
   --mmk-text-light: #7a9eb5;
   --mmk-border: #c0d8e8;
   --mmk-border-light: #dbeaf2;
 
   /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(12, 45, 66, 0.04);
-  --shadow-md: 0 8px 32px rgba(12, 45, 66, 0.06);
-  --shadow-lg: 0 20px 48px rgba(12, 45, 66, 0.09);
-  --shadow-xl: 0 32px 72px rgba(12, 45, 66, 0.12);
+  --shadow-sm: 0 2px 8px rgba(5, 123, 170, 0.04);
+  --shadow-md: 0 8px 32px rgba(5, 123, 170, 0.06);
+  --shadow-lg: 0 20px 48px rgba(5, 123, 170, 0.09);
+  --shadow-xl: 0 32px 72px rgba(5, 123, 170, 0.12);
   --shadow-glow: 0 0 60px rgba(14, 165, 233, 0.35);
   --shadow-accent: 0 8px 32px rgba(14, 165, 233, 0.2);
 }
 
 .dark {
-  --background: #071a28;
+  --background: #033d5c;
   --foreground: #f0f7fb;
 
-  --card: #0c2d42;
+  --card: #057baa;
   --card-foreground: #f0f7fb;
 
-  --popover: #0c2d42;
+  --popover: #057baa;
   --popover-foreground: #f0f7fb;
 
   --primary: #0ea5e9;
-  --primary-foreground: #071a28;
+  --primary-foreground: #033d5c;
 
-  --secondary: #134e6a;
+  --secondary: #046891;
   --secondary-foreground: #f0f7fb;
 
-  --muted: #134e6a;
+  --muted: #046891;
   --muted-foreground: #7a9eb5;
 
   --accent: #0ea5e9;
-  --accent-foreground: #071a28;
+  --accent-foreground: #033d5c;
 
   --destructive: #dc2626;
   --destructive-foreground: #f0f7fb;
 
-  --border: #1a6d8e;
-  --input: #134e6a;
+  --border: #0891c8;
+  --input: #046891;
   --ring: #0ea5e9;
 
   --chart-1: #38bdf8;
@@ -167,13 +181,13 @@ html:focus-within {
   --chart-4: #a78bfa;
   --chart-5: #f472b6;
 
-  --sidebar: #071a28;
+  --sidebar: #033d5c;
   --sidebar-foreground: #f0f7fb;
   --sidebar-primary: #0ea5e9;
-  --sidebar-primary-foreground: #071a28;
-  --sidebar-accent: #0c2d42;
+  --sidebar-primary-foreground: #033d5c;
+  --sidebar-accent: #057baa;
   --sidebar-accent-foreground: #f0f7fb;
-  --sidebar-border: #134e6a;
+  --sidebar-border: #046891;
   --sidebar-ring: #0ea5e9;
 }
 
@@ -217,7 +231,7 @@ html:focus-within {
 /* Accent gradient button */
 .btn-accent {
   background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-  color: #0c2d42;
+  color: #057baa;
   font-weight: 600;
   border-radius: 9999px;
   padding: 0.75rem 2rem;
@@ -228,7 +242,7 @@ html:focus-within {
 
 .btn-accent:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(14, 165, 233, 0.3);
+  box-shadow: 0 8px 32px rgba(5, 123, 170, 0.3);
 }
 
 /* Outline button */
@@ -245,7 +259,7 @@ html:focus-within {
 
 .btn-outline:hover {
   border-color: #0ea5e9;
-  background: rgba(14, 165, 233, 0.06);
+  background: rgba(5, 123, 170, 0.06);
   transform: translateY(-2px);
 }
 
@@ -310,7 +324,7 @@ html:focus-within {
 
 /* Glow effect */
 .glow {
-  box-shadow: 0 0 60px rgba(14, 165, 233, 0.35);
+  box-shadow: 0 0 60px rgba(5, 123, 170, 0.35);
 }
 
 /* Scroll reveal animation */
@@ -327,8 +341,8 @@ html:focus-within {
 
 /* Pulse glow for accents */
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(14, 165, 233, 0.2); }
-  50% { box-shadow: 0 0 40px rgba(14, 165, 233, 0.4); }
+  0%, 100% { box-shadow: 0 0 20px rgba(5, 123, 170, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(5, 123, 170, 0.4); }
 }
 
 /* Counter animation */
@@ -351,12 +365,12 @@ html:focus-within {
 
 /* Dark hero gradient overlay */
 .hero-gradient {
-  background: linear-gradient(160deg, #061a28 0%, #0c2d42 30%, #134e6a 60%, #1a6d8e 100%);
+  background: linear-gradient(160deg, #033d5c 0%, #057baa 30%, #0891c8 60%, #0ea5e9 100%);
 }
 
 /* CTA gradient */
 .cta-gradient {
-  background: linear-gradient(135deg, #0c2d42 0%, #134e6a 50%, #1a6d8e 100%);
+  background: linear-gradient(135deg, #057baa 0%, #0891c8 50%, #0ea5e9 100%);
 }
 
 /* Accent text gradient */
@@ -369,11 +383,11 @@ html:focus-within {
 
 /* Section alternating backgrounds */
 .bg-section-alt {
-  background-color: #e4f0f8;
+  background-color: #e2f2f5;
 }
 
 .dark .bg-section-alt {
-  background-color: #0c2d42;
+  background-color: #057baa;
 }
 
 /* =========== Hero Floating Animations =========== */
@@ -457,7 +471,7 @@ html:focus-within {
 /* Gradient border on focus for inputs */
 input:focus, textarea:focus {
   border-color: #0ea5e9 !important;
-  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1) !important;
+  box-shadow: 0 0 0 3px rgba(5, 123, 170, 0.1) !important;
 }
 
 /* Smooth image zoom */

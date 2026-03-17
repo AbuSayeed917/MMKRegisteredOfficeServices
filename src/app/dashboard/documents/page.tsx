@@ -48,7 +48,7 @@ export default function DocumentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#0c2d42] dark:text-white">
+        <h1 className="text-2xl font-bold text-primary dark:text-white">
           KYC Documents
         </h1>
         <p className="text-sm text-muted-foreground mt-1">

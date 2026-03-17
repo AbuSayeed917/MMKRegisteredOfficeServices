@@ -48,7 +48,7 @@ export function SignaturePad({
       ctx.scale(dpr, dpr);
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      ctx.strokeStyle = "#0c2d42";
+      ctx.strokeStyle = "#057baa";
       ctx.lineWidth = 2.5;
       contextRef.current = ctx;
     });
@@ -217,12 +217,12 @@ export function SignaturePad({
             {typedName.trim() && (
               <div className="bg-white dark:bg-gray-900 border-2 border-dashed border-[var(--mmk-border)] rounded-xl p-6 text-center">
                 <p
-                  className="text-2xl italic text-[#0c2d42] dark:text-white"
+                  className="text-2xl italic text-primary dark:text-white"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   {typedName}
                 </p>
-                <div className="w-48 h-px bg-[#0c2d42]/30 dark:bg-white/30 mx-auto mt-3" />
+                <div className="w-48 h-px bg-primary/30 dark:bg-white/30 mx-auto mt-3" />
                 <p className="text-[10px] text-muted-foreground mt-1">
                   Electronic Signature
                 </p>
@@ -244,7 +244,7 @@ export function SignaturePad({
               )}
 
               {/* Signature line */}
-              <div className="absolute bottom-8 left-6 right-6 h-px bg-[#0c2d42]/20 dark:bg-white/20" />
+              <div className="absolute bottom-8 left-6 right-6 h-px bg-primary/20 dark:bg-white/20" />
 
               <canvas
                 ref={canvasRef}

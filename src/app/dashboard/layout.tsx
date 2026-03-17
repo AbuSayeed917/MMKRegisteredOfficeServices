@@ -50,7 +50,7 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Mobile header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#0c2d42] border-b border-white/10 flex items-center justify-between px-4">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-primary border-b border-white/10 flex items-center justify-between px-4">
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
@@ -77,7 +77,7 @@ export default function DashboardLayout({
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-[#0c2d42] text-white transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-primary text-white transition-transform duration-300 lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -85,7 +85,7 @@ export default function DashboardLayout({
         <div className="h-16 flex items-center justify-between px-5 border-b border-white/10">
           <Link href="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center">
-              <Building2 className="size-4 text-[#0c2d42]" />
+              <Building2 className="size-4 text-primary" />
             </div>
             <div>
               <span className="font-bold text-sm leading-none">MMK</span>
