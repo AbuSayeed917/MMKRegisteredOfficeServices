@@ -23,7 +23,6 @@ import {
   User,
   LifeBuoy,
   Mail,
-  ArrowRight,
   FileCheck,
   Banknote,
   ClipboardCheck,
