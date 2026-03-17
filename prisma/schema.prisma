@@ -59,6 +59,7 @@ enum AdminActionType {
   CANCEL
   REFUND
   NOTE
+  DELETE
 }
 
 enum TicketStatus {

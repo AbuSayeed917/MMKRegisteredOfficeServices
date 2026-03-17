@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +28,7 @@ import {
   Type,
   ShieldCheck,
   Eye,
+  Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -114,12 +115,16 @@ const statusColors: Record<string, string> = {
 
 export default function ClientDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const [data, setData] = useState<ClientDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [downloading, setDownloading] = useState<string | null>(null);
   const [viewingDoc, setViewingDoc] = useState<{ directorId: string; docType: string } | null>(null);
   const [docData, setDocData] = useState<DocumentData | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const clientId = params.id as string;
 
@@ -209,6 +214,32 @@ export default function ClientDetailPage() {
     }
   };
 
+  const clientName = data?.business?.companyName || data?.user.email || "";
+  const expectedDeletePhrase = `Delete/${clientName}`;
+
+  const handleDelete = async () => {
+    if (deleteConfirmation !== expectedDeletePhrase) return;
+    setDeleteLoading(true);
+    try {
+      const res = await fetch(`/api/admin/clients/${clientId}/delete`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirmationPhrase: deleteConfirmation }),
+      });
+      const result = await res.json();
+      if (res.ok) {
+        toast.success(result.message);
+        router.push("/admin/clients");
+      } else {
+        toast.error(result.error || "Failed to delete client");
+      }
+    } catch {
+      toast.error("Failed to delete client");
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -271,11 +302,12 @@ export default function ClientDetailPage() {
                 {viewingDoc.docType === "id" ? "Photo ID" : "Proof of Address"}
               </h3>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
                 onClick={() => { setViewingDoc(null); setDocData(null); }}
-                className="rounded-full"
+                className="rounded-full gap-1.5 border-gray-300 text-gray-700 hover:bg-gray-100"
               >
+                <XCircle className="size-4" />
                 Close
               </Button>
             </div>
@@ -320,7 +352,7 @@ export default function ClientDetailPage() {
           </Button>
         </Link>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-primary dark:text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             {data.business?.companyName || data.user.email}
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
@@ -342,26 +374,115 @@ export default function ClientDetailPage() {
       </div>
 
       {/* Action buttons */}
-      {availableActions.length > 0 && (
-        <Card className="border-[var(--mmk-border-light)] rounded-2xl">
-          <CardContent className="p-4 flex flex-wrap gap-2">
-            {availableActions.map((a) => (
-              <Button
-                key={a.action}
-                variant={a.variant}
-                size="sm"
-                className="rounded-full gap-1.5"
-                onClick={() => performAction(a.action)}
-                disabled={actionLoading !== null}
-              >
-                {actionLoading === a.action && (
-                  <Loader2 className="size-3 animate-spin" />
-                )}
-                {a.label}
-              </Button>
-            ))}
-          </CardContent>
-        </Card>
+      <Card className="border-[var(--mmk-border-light)] rounded-2xl">
+        <CardContent className="p-4 flex flex-wrap gap-2 items-center">
+          {availableActions.map((a) => (
+            <Button
+              key={a.action}
+              variant={a.variant}
+              size="sm"
+              className="rounded-full gap-1.5"
+              onClick={() => performAction(a.action)}
+              disabled={actionLoading !== null}
+            >
+              {actionLoading === a.action && (
+                <Loader2 className="size-3 animate-spin" />
+              )}
+              {a.label}
+            </Button>
+          ))}
+          <div className="flex-1" />
+          <Button
+            variant="destructive"
+            size="sm"
+            className="rounded-full gap-1.5 bg-red-600 hover:bg-red-700"
+            onClick={() => {
+              setDeleteConfirmation("");
+              setShowDeleteModal(true);
+            }}
+          >
+            <Trash2 className="size-3" />
+            Delete Client
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden">
+            <div className="h-1.5 bg-gradient-to-r from-red-500 to-red-600" />
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="size-10 rounded-full bg-red-100 flex items-center justify-center">
+                  <Trash2 className="size-5 text-red-600" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-gray-900">
+                    Delete Client Permanently
+                  </h3>
+                  <p className="text-xs text-gray-500">
+                    This action cannot be undone
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
+                <p className="text-sm text-red-800">
+                  You are about to permanently delete{" "}
+                  <strong>{clientName}</strong> and all associated data
+                  including business profile, directors, KYC documents,
+                  agreements, payments, subscriptions, and notifications.
+                </p>
+              </div>
+
+              <div className="space-y-2 mb-5">
+                <label className="text-sm font-medium text-gray-700">
+                  Type{" "}
+                  <code className="bg-gray-100 px-2 py-0.5 rounded text-red-600 font-mono text-xs">
+                    {expectedDeletePhrase}
+                  </code>{" "}
+                  to confirm
+                </label>
+                <input
+                  type="text"
+                  value={deleteConfirmation}
+                  onChange={(e) => setDeleteConfirmation(e.target.value)}
+                  placeholder={expectedDeletePhrase}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900 placeholder:text-gray-400"
+                  autoFocus
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  className="flex-1 rounded-full"
+                  onClick={() => setShowDeleteModal(false)}
+                  disabled={deleteLoading}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  className="flex-1 rounded-full bg-red-600 hover:bg-red-700 gap-1.5"
+                  onClick={handleDelete}
+                  disabled={
+                    deleteConfirmation !== expectedDeletePhrase ||
+                    deleteLoading
+                  }
+                >
+                  {deleteLoading ? (
+                    <Loader2 className="size-3 animate-spin" />
+                  ) : (
+                    <Trash2 className="size-3" />
+                  )}
+                  Delete Permanently
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       <div className="grid lg:grid-cols-2 gap-6">

@@ -94,7 +94,7 @@ html:focus-within {
   --secondary-foreground: #1a1a1a;
 
   --muted: #e2f2f5;
-  --muted-foreground: #6b7280;
+  --muted-foreground: #4b5563;
 
   --accent: #0ea5e9;
   --accent-foreground: #ffffff;
@@ -132,8 +132,8 @@ html:focus-within {
   --mmk-accent-dark: #0284c7;
   --mmk-bg-dark: #033d5c;
   --mmk-bg-section: #e2f2f5;
-  --mmk-text-secondary: #6b7280;
-  --mmk-text-light: #9ca3af;
+  --mmk-text-secondary: #4b5563;
+  --mmk-text-light: #6b7280;
   --mmk-border: #c0d8e8;
   --mmk-border-light: #dbeaf2;
 

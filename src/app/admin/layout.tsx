@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
@@ -98,9 +99,13 @@ export default function AdminLayout({
             className="flex items-center gap-3"
             onClick={() => setSidebarOpen(false)}
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8] flex items-center justify-center">
-              <Shield className="size-5 text-primary" />
-            </div>
+            <Image
+              src="/images/mmk-logo.png"
+              alt="MMK"
+              width={36}
+              height={36}
+              className="rounded-xl brightness-0 invert"
+            />
             <div>
               <p className="font-bold text-sm">MMK Admin</p>
               <p className="text-[10px] text-white/60">Management Portal</p>
@@ -162,7 +167,7 @@ export default function AdminLayout({
           >
             <Menu className="size-5" />
           </Button>
-          <h2 className="font-semibold text-sm text-primary dark:text-white">
+          <h2 className="font-semibold text-sm text-foreground">
             {currentPage}
           </h2>
         </header>
