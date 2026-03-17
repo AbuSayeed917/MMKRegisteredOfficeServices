@@ -74,6 +74,7 @@ export function BusinessDetailsStep({
       : null
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [companyAlreadyRegistered, setCompanyAlreadyRegistered] = useState(false);
 
   const handleCompanySelect = (profile: CompanyProfileResponse) => {
     const addressStr = formatAddress(profile.registered_office_address);
@@ -131,6 +132,9 @@ export function BusinessDetailsStep({
       newErrors.companyStatus =
         "Only active companies can register for this service";
     }
+    if (companyAlreadyRegistered) {
+      newErrors.companyNumber = "This company is already registered";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -175,6 +179,7 @@ export function BusinessDetailsStep({
               onCompanySelect={handleCompanySelect}
               onClear={handleClear}
               selectedCompany={selectedCompany}
+              onCompanyAlreadyRegistered={setCompanyAlreadyRegistered}
             />
             <p className="text-xs text-muted-foreground">
               Search by company name or CRN number. Details will be filled
@@ -368,7 +373,8 @@ export function BusinessDetailsStep({
           <div className="flex justify-end pt-2">
             <Button
               type="submit"
-              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-primary font-semibold px-6 sm:px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2"
+              disabled={companyAlreadyRegistered}
+              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-white font-semibold px-6 sm:px-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
             >
               Continue
               <ArrowRight className="size-4" />

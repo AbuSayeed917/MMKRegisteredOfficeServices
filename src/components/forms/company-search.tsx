@@ -22,12 +22,14 @@ interface CompanySearchProps {
   onCompanySelect: (profile: CompanyProfileResponse) => void;
   onClear?: () => void;
   selectedCompany?: { name: string; number: string } | null;
+  onCompanyAlreadyRegistered?: (isRegistered: boolean) => void;
 }
 
 export function CompanySearch({
   onCompanySelect,
   onClear,
   selectedCompany,
+  onCompanyAlreadyRegistered,
 }: CompanySearchProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<CompanySearchItem[]>([]);
@@ -36,6 +38,7 @@ export function CompanySearch({
   const [showDropdown, setShowDropdown] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [alreadyRegistered, setAlreadyRegistered] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -149,6 +152,7 @@ export function CompanySearch({
     setQuery(company.company_name);
     setIsLoadingProfile(true);
     setError(null);
+    setAlreadyRegistered(false);
 
     try {
       const response = await fetch(
@@ -161,6 +165,25 @@ export function CompanySearch({
       }
 
       const profile: CompanyProfileResponse = await response.json();
+
+      // Check if this CRN is already registered in our system
+      try {
+        const checkRes = await fetch("/api/register/check-company", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ crn: company.company_number }),
+        });
+        const checkResult = await checkRes.json();
+        if (!checkResult.available) {
+          setAlreadyRegistered(true);
+          onCompanyAlreadyRegistered?.(true);
+        } else {
+          onCompanyAlreadyRegistered?.(false);
+        }
+      } catch {
+        // If CRN check fails, don't block — final registration will catch it
+      }
+
       onCompanySelect(profile);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load company details");
@@ -176,6 +199,8 @@ export function CompanySearch({
     setShowDropdown(false);
     setError(null);
     setHighlightedIndex(-1);
+    setAlreadyRegistered(false);
+    onCompanyAlreadyRegistered?.(false);
     onClear?.();
     inputRef.current?.focus();
   };
@@ -195,10 +220,16 @@ export function CompanySearch({
   // If company is selected, show selected state
   if (selectedCompany) {
     return (
-      <div className="relative">
-        <div className="flex items-center gap-3 p-3 rounded-xl border-2 border-[#0ea5e9]/30 bg-[#0ea5e9]/5">
-          <div className="w-10 h-10 rounded-xl bg-[#0ea5e9]/10 flex items-center justify-center flex-shrink-0">
-            <Building2 className="size-5 text-[#0ea5e9]" />
+      <div className="relative space-y-2">
+        <div className={`flex items-center gap-3 p-3 rounded-xl border-2 ${
+          alreadyRegistered
+            ? "border-destructive/30 bg-destructive/5"
+            : "border-[#0ea5e9]/30 bg-[#0ea5e9]/5"
+        }`}>
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
+            alreadyRegistered ? "bg-destructive/10" : "bg-[#0ea5e9]/10"
+          }`}>
+            <Building2 className={`size-5 ${alreadyRegistered ? "text-destructive" : "text-[#0ea5e9]"}`} />
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-semibold text-sm truncate">
@@ -209,7 +240,11 @@ export function CompanySearch({
             </p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            <CheckCircle2 className="size-5 text-emerald-500" />
+            {alreadyRegistered ? (
+              <AlertCircle className="size-5 text-destructive" />
+            ) : (
+              <CheckCircle2 className="size-5 text-emerald-500" />
+            )}
             <button
               onClick={handleClear}
               className="p-1 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
@@ -220,6 +255,18 @@ export function CompanySearch({
             </button>
           </div>
         </div>
+        {alreadyRegistered && (
+          <div className="flex items-start gap-2 p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-sm">
+            <AlertCircle className="size-4 text-destructive mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="font-medium text-destructive">This company is already registered</p>
+              <p className="text-xs text-destructive/80 mt-0.5">
+                A registered office service already exists for this company number.
+                If this is your company, please <a href="/login" className="underline font-medium">sign in</a> instead.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
