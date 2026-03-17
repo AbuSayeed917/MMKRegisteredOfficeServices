@@ -13,7 +13,6 @@ jobs:
     name: Build & Deploy to Azure
     needs: ci
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
       - name: Checkout code
@@ -25,11 +24,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Login to ACR
-        uses: azure/docker-login@v2
-        with:
-          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+        run: docker login ${{ secrets.ACR_LOGIN_SERVER }} -u ${{ secrets.ACR_USERNAME }} -p ${{ secrets.ACR_PASSWORD }}
 
       - name: Build and push Docker image
         run: |
