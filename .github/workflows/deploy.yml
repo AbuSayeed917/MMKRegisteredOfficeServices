@@ -39,13 +39,12 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run database migrations
-        run: npx prisma migrate deploy
+      - name: Install dependencies & run migrations
         env:
           DATABASE_URL: ${{ secrets.AZURE_DATABASE_URL }}
+        run: |
+          npm ci
+          npx prisma migrate deploy
 
       - name: Deploy to Container Apps
         uses: azure/container-apps-deploy-action@v2
