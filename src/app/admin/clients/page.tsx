@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -56,12 +56,12 @@ export default function AdminClientsPage() {
   const [statusFilter, setStatusFilter] = useState("");
   const [page, setPage] = useState(1);
 
-  const fetchClients = (p: number, s: string, f: string) => {
+  const fetchClients = useCallback(() => {
     setLoading(true);
     const params = new URLSearchParams();
-    params.set("page", String(p));
-    if (s) params.set("search", s);
-    if (f) params.set("status", f);
+    params.set("page", String(page));
+    if (search) params.set("search", search);
+    if (statusFilter) params.set("status", statusFilter);
 
     fetch(`/api/admin/clients?${params}`)
       .then((res) => res.json())
@@ -71,14 +71,23 @@ export default function AdminClientsPage() {
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  };
+  }, [page, search, statusFilter]);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
-  useEffect(() => { fetchClients(page, search, statusFilter); }, [page, statusFilter]);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { fetchClients(); }, [fetchClients]);
+
+  // Re-fetch when window regains focus (e.g. after approving/rejecting a client)
+  useEffect(() => {
+    const onFocus = () => fetchClients();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [fetchClients]);
 
   const handleSearch = () => {
     setPage(1);
-    fetchClients(1, search, statusFilter);
+    // fetchClients is already triggered by search/page/statusFilter dependency changes
+    // Force re-fetch in case values haven't changed
+    fetchClients();
   };
 
   return (

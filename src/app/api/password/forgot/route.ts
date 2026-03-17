@@ -16,7 +16,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 });
     }
 
-    const { email } = await request.json();
+    const body = await request.json();
+    const email = body.email?.toLowerCase().trim();
 
     if (!email) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });

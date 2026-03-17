@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -37,7 +37,7 @@ export default function NotificationsPage() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchNotifications = useCallback(() => {
     fetch("/api/dashboard")
       .then((res) => res.json())
       .then((d) => setNotifications(d.notifications || []))
@@ -45,16 +45,27 @@ export default function NotificationsPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => { fetchNotifications(); }, [fetchNotifications]);
+
+  // Re-fetch when window regains focus
+  useEffect(() => {
+    const onFocus = () => fetchNotifications();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [fetchNotifications]);
+
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const markAllRead = async () => {
     try {
-      await fetch("/api/dashboard/notifications", {
+      const res = await fetch("/api/dashboard/notifications", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ markAllRead: true }),
       });
-      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      if (res.ok) {
+        setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      }
     } catch {
       // silently fail
     }
@@ -62,14 +73,16 @@ export default function NotificationsPage() {
 
   const markAsRead = async (id: string) => {
     try {
-      await fetch("/api/dashboard/notifications", {
+      const res = await fetch("/api/dashboard/notifications", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ notificationIds: [id] }),
       });
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
-      );
+      if (res.ok) {
+        setNotifications((prev) =>
+          prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+        );
+      }
     } catch {
       // silently fail
     }

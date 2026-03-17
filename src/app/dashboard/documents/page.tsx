@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -26,7 +26,7 @@ export default function DocumentsPage() {
   const [directors, setDirectors] = useState<DirectorDoc[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchDocuments = useCallback(() => {
     fetch("/api/dashboard")
       .then((res) => res.json())
       .then((d) => {
@@ -35,6 +35,15 @@ export default function DocumentsPage() {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => { fetchDocuments(); }, [fetchDocuments]);
+
+  // Re-fetch when window regains focus (e.g. after admin updates documents)
+  useEffect(() => {
+    const onFocus = () => fetchDocuments();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [fetchDocuments]);
 
   if (loading) {
     return (
