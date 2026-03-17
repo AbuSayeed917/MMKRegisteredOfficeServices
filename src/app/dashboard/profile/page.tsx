@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -79,7 +79,7 @@ export default function ProfilePage() {
   const [verifying, setVerifying] = useState(false);
   const [verifyError, setVerifyError] = useState("");
 
-  useEffect(() => {
+  const fetchProfile = useCallback(() => {
     fetch("/api/dashboard")
       .then((res) => res.json())
       .then((d) => {
@@ -90,6 +90,15 @@ export default function ProfilePage() {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => { fetchProfile(); }, [fetchProfile]);
+
+  // Re-fetch when window regains focus (e.g. after admin changes)
+  useEffect(() => {
+    const onFocus = () => fetchProfile();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [fetchProfile]);
 
   const handleSaveProfile = async () => {
     setSavingProfile(true);
@@ -104,6 +113,7 @@ export default function ProfilePage() {
       if (res.ok) {
         setProfileSuccess(true);
         setEditing(false);
+        fetchProfile(); // Re-fetch to confirm changes
         setTimeout(() => setProfileSuccess(false), 3000);
       } else {
         const d = await res.json();

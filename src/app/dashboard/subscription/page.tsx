@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -59,13 +59,22 @@ export default function SubscriptionPage() {
   const [loading, setLoading] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
 
-  useEffect(() => {
+  const fetchSubscription = useCallback(() => {
     fetch("/api/dashboard")
       .then((res) => res.json())
       .then((d) => setData({ subscription: d.subscription, payments: d.payments }))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => { fetchSubscription(); }, [fetchSubscription]);
+
+  // Re-fetch when window regains focus
+  useEffect(() => {
+    const onFocus = () => fetchSubscription();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [fetchSubscription]);
 
   if (loading) {
     return (

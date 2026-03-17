@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -51,13 +51,22 @@ export default function AdminOverviewPage() {
   const [data, setData] = useState<OverviewData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchOverview = useCallback(() => {
     fetch("/api/admin/overview")
       .then((res) => res.json())
       .then(setData)
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => { fetchOverview(); }, [fetchOverview]);
+
+  // Re-fetch when window regains focus
+  useEffect(() => {
+    const onFocus = () => fetchOverview();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [fetchOverview]);
 
   if (loading) {
     return (

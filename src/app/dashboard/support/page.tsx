@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -63,20 +63,25 @@ export default function SupportTicketsPage() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    let cancelled = false;
+  const fetchTickets = useCallback(() => {
     fetch(`/api/support-tickets?page=${page}&limit=20`)
       .then((res) => res.json())
       .then((data) => {
-        if (!cancelled) {
-          setTickets(data.tickets || []);
-          setPagination(data.pagination || null);
-          setLoading(false);
-        }
+        setTickets(data.tickets || []);
+        setPagination(data.pagination || null);
       })
-      .catch(() => { if (!cancelled) setLoading(false); });
-    return () => { cancelled = true; };
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, [page]);
+
+  useEffect(() => { fetchTickets(); }, [fetchTickets]);
+
+  // Re-fetch when window regains focus (e.g. after replying to a ticket)
+  useEffect(() => {
+    const onFocus = () => fetchTickets();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [fetchTickets]);
 
   if (loading) {
     return (

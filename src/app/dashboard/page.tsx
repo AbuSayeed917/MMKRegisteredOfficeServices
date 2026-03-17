@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -84,7 +84,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const fetchDashboard = useCallback(() => {
     fetch("/api/dashboard")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load");
@@ -94,6 +94,15 @@ export default function DashboardPage() {
       .catch(() => setError("Failed to load dashboard data"))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => { fetchDashboard(); }, [fetchDashboard]);
+
+  // Re-fetch when window regains focus
+  useEffect(() => {
+    const onFocus = () => fetchDashboard();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [fetchDashboard]);
 
   if (loading) {
     return (
