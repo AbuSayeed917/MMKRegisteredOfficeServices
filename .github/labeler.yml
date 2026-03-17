@@ -1,0 +1,55 @@
+# Auto-label PRs based on file paths changed
+# Used by .github/workflows/auto-label.yml
+
+"area: admin":
+  - changed-files:
+      - any-glob-to-any-file: "src/app/admin/**"
+
+"area: api":
+  - changed-files:
+      - any-glob-to-any-file: "src/app/api/**"
+
+"area: dashboard":
+  - changed-files:
+      - any-glob-to-any-file: "src/app/dashboard/**"
+
+"area: auth":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/app/login/**"
+          - "src/app/register/**"
+          - "src/app/api/auth/**"
+          - "src/lib/auth*"
+
+"area: email":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/lib/email*"
+          - "src/lib/emails/**"
+
+"area: database":
+  - changed-files:
+      - any-glob-to-any-file: "prisma/**"
+
+"area: ui":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/components/**"
+          - "src/app/globals.css"
+
+"area: ci/cd":
+  - changed-files:
+      - any-glob-to-any-file: ".github/**"
+
+"area: pwa":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/components/pwa/**"
+          - "public/manifest.json"
+          - "public/sw.js"
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "package.json"
+          - "package-lock.json"

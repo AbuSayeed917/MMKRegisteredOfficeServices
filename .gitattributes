@@ -1,0 +1,39 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# JavaScript / TypeScript
+*.js text eol=lf linguist-language=TypeScript
+*.jsx text eol=lf linguist-language=TypeScript
+*.ts text eol=lf linguist-language=TypeScript
+*.tsx text eol=lf linguist-language=TypeScript
+*.mjs text eol=lf
+
+# Web
+*.css text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Config
+*.env text eol=lf
+*.prisma text eol=lf linguist-language=Prisma
+
+# Binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.pdf binary
+
+# Lock files — show in diffs but mark as generated
+package-lock.json text -diff linguist-generated=true
+
+# Ignore generated files in language stats
+prisma/migrations/** linguist-generated=true

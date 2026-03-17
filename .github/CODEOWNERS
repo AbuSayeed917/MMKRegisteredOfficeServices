@@ -1,0 +1,18 @@
+# Code owners — automatically requested for PR reviews
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything
+* @muhammadabusayeed
+
+# Admin portal
+/src/app/admin/ @muhammadabusayeed
+
+# API routes
+/src/app/api/ @muhammadabusayeed
+
+# Database schema
+/prisma/ @muhammadabusayeed
+
+# CI/CD and infrastructure
+/.github/ @muhammadabusayeed
+/infra/ @muhammadabusayeed
