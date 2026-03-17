@@ -46,9 +46,14 @@ export function SignaturePad({
       if (!ctx) return;
 
       ctx.scale(dpr, dpr);
+
+      // Fill canvas with white background
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, rect.width, rect.height);
+
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      ctx.strokeStyle = "#057baa";
+      ctx.strokeStyle = "#000000";
       ctx.lineWidth = 2.5;
       contextRef.current = ctx;
     });
@@ -151,6 +156,12 @@ export function SignaturePad({
 
     const dpr = window.devicePixelRatio || 1;
     ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+
+    // Restore white background after clearing
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+    ctx.strokeStyle = "#000000";
+
     setHasDrawn(false);
     onSignatureChange(null);
   }, [onSignatureChange]);
@@ -215,14 +226,14 @@ export function SignaturePad({
 
             {/* Signature preview */}
             {typedName.trim() && (
-              <div className="bg-white dark:bg-gray-900 border-2 border-dashed border-[var(--mmk-border)] rounded-xl p-6 text-center">
+              <div className="bg-white border-2 border-dashed border-[var(--mmk-border)] rounded-xl p-6 text-center">
                 <p
-                  className="text-2xl italic text-primary dark:text-white"
+                  className="text-2xl italic text-gray-900"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   {typedName}
                 </p>
-                <div className="w-48 h-px bg-primary/30 dark:bg-white/30 mx-auto mt-3" />
+                <div className="w-48 h-px bg-gray-400 mx-auto mt-3" />
                 <p className="text-[10px] text-muted-foreground mt-1">
                   Electronic Signature
                 </p>
