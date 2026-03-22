@@ -139,19 +139,22 @@ export default function DashboardPage() {
   const isActive = data.subscription?.status === "ACTIVE";
   const needsPayment =
     data.subscription?.status === "DRAFT" &&
-    !data.payments.some((p) => p.status === "PAID" || p.status === "SUCCEEDED");
+    !data.payments.some((p) => p.status === "SUCCEEDED");
 
   const handleCheckout = async () => {
+    if (checkoutLoading) return;
     setCheckoutLoading(true);
     try {
       const res = await fetch("/api/stripe/checkout", { method: "POST" });
+      if (!res.ok) throw new Error("Checkout failed");
       const result = await res.json();
       if (result.url) {
         window.location.href = result.url;
+      } else {
+        throw new Error("No checkout URL returned");
       }
     } catch {
-      // silently fail
-    } finally {
+      setError("Unable to start payment. Please try again or visit the Subscription page.");
       setCheckoutLoading(false);
     }
   };
@@ -171,7 +174,7 @@ export default function DashboardPage() {
     {
       icon: Banknote,
       label: "Payment",
-      done: data.payments.some((p) => p.status === "PAID"),
+      done: data.payments.some((p) => p.status === "SUCCEEDED"),
     },
     {
       icon: CheckCircle2,
@@ -268,6 +271,7 @@ export default function DashboardPage() {
             <Button
               onClick={handleCheckout}
               disabled={checkoutLoading}
+              aria-busy={checkoutLoading}
               className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-white font-semibold px-6 gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 shrink-0"
             >
               {checkoutLoading ? (
