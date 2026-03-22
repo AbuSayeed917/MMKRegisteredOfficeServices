@@ -13,7 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          throw new Error("MISSING_FIELDS");
         }
 
         const email = (credentials.email as string).toLowerCase().trim();
@@ -23,13 +23,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           where: { email },
         });
 
-        if (!user || !user.isActive) {
-          return null;
+        if (!user) {
+          throw new Error("INVALID_CREDENTIALS");
+        }
+
+        if (!user.isActive) {
+          throw new Error("ACCOUNT_INACTIVE");
         }
 
         // Check if account is locked
         if (user.lockedUntil && user.lockedUntil > new Date()) {
-          throw new Error("Account is locked. Please try again later.");
+          const minutesLeft = Math.ceil(
+            (user.lockedUntil.getTime() - Date.now()) / 60000
+          );
+          throw new Error(`ACCOUNT_LOCKED:${minutesLeft}`);
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
@@ -44,6 +51,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           // Lock account after 5 failed attempts for 15 minutes
           if (failedAttempts >= 5) {
             updateData.lockedUntil = new Date(Date.now() + 15 * 60 * 1000);
+            await db.user.update({
+              where: { id: user.id },
+              data: updateData,
+            });
+            throw new Error("ACCOUNT_LOCKED:15");
           }
 
           await db.user.update({
@@ -51,7 +63,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             data: updateData,
           });
 
-          return null;
+          const attemptsLeft = 5 - failedAttempts;
+          throw new Error(`WRONG_PASSWORD:${attemptsLeft}`);
         }
 
         // Reset failed attempts and update last login
