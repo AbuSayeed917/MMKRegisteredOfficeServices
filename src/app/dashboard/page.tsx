@@ -26,6 +26,7 @@ import {
   FileCheck,
   Banknote,
   ClipboardCheck,
+  Loader2,
 } from "lucide-react";
 
 interface DashboardData {
@@ -83,6 +84,7 @@ export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   const fetchDashboard = useCallback(() => {
     fetch("/api/dashboard")
@@ -135,6 +137,27 @@ export default function DashboardPage() {
   const subStatus = statusConfig[data.subscription?.status || "DRAFT"] || statusConfig.DRAFT;
   const latestAgreement = data.agreements[0];
   const isActive = data.subscription?.status === "ACTIVE";
+  const needsPayment =
+    data.subscription?.status === "DRAFT" &&
+    !data.payments.some((p) => p.status === "SUCCEEDED");
+
+  const handleCheckout = async () => {
+    if (checkoutLoading) return;
+    setCheckoutLoading(true);
+    try {
+      const res = await fetch("/api/stripe/checkout", { method: "POST" });
+      if (!res.ok) throw new Error("Checkout failed");
+      const result = await res.json();
+      if (result.url) {
+        window.location.href = result.url;
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch {
+      setError("Unable to start payment. Please try again or visit the Subscription page.");
+      setCheckoutLoading(false);
+    }
+  };
 
   // Journey steps for service tracker
   const journeySteps = [
@@ -151,7 +174,7 @@ export default function DashboardPage() {
     {
       icon: Banknote,
       label: "Payment",
-      done: data.payments.some((p) => p.status === "PAID"),
+      done: data.payments.some((p) => p.status === "SUCCEEDED"),
     },
     {
       icon: CheckCircle2,
@@ -229,6 +252,43 @@ export default function DashboardPage() {
           color="#38bdf8"
         />
       </div>
+
+      {/* ───── Payment CTA (DRAFT status, no payment yet) ───── */}
+      {needsPayment && (
+        <Card className="border-[#0ea5e9]/30 bg-[#0ea5e9]/5 rounded-2xl overflow-hidden">
+          <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#0ea5e9]/10 flex items-center justify-center shrink-0">
+                <CreditCard className="size-5 text-[#0ea5e9]" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">Complete Your Payment</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Your application is ready. Pay the £75 annual fee to submit it for review.
+                </p>
+              </div>
+            </div>
+            <Button
+              onClick={handleCheckout}
+              disabled={checkoutLoading}
+              aria-busy={checkoutLoading}
+              className="rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8] text-white font-semibold px-6 gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 shrink-0"
+            >
+              {checkoutLoading ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Redirecting…
+                </>
+              ) : (
+                <>
+                  <CreditCard className="size-4" />
+                  Pay Now — £75
+                </>
+              )}
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       {/* ───── Status Cards Grid ───── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
